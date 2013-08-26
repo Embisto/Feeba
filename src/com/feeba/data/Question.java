@@ -42,9 +42,6 @@ public class Question {
 				choicesString += ",";
 		}
 		
-		if(choices.size() == 0) {
-			choicesString += "\"\"";
-		}
 		choicesString += "]";
 		return choicesString;
 		

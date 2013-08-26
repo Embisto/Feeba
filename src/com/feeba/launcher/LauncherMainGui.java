@@ -1,4 +1,4 @@
-package com.feeba.launcher.gui;
+package com.feeba.launcher;
 
 import java.awt.EventQueue;
 

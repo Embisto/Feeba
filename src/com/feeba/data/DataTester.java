@@ -16,6 +16,7 @@ public class DataTester {
 		s1.moveItemToPosition(1, 3);
 		DataController dc = new DataController();
 		dc.saveAsJson(s1);
+		System.out.println(dc.loadFromJson().toString());
 	}
 
 }
