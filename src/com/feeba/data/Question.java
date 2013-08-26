@@ -33,6 +33,23 @@ public class Question {
 		return choices;
 	}
 	
+	public String getChoicesString() {
+		
+		String choicesString = "[";
+		for(int i = 0; i < choices.size();i++) {
+			choicesString += "\""+choices.get(i).toString()+"\"";
+			if(i != choices.size()-1)
+				choicesString += ",";
+		}
+		
+		if(choices.size() == 0) {
+			choicesString += "\"\"";
+		}
+		choicesString += "]";
+		return choicesString;
+		
+	}
+	
 	// check if number of choices is smaller than MAX_CHOICES
 	public boolean choiceSpaceIsAvailable() {
 		

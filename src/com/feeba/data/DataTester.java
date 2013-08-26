@@ -14,7 +14,8 @@ public class DataTester {
 		ques2.addChoice("Ja","Nein");
 		s1.addQuestion(ques1,ques2,ques3,ques4,ques5);
 		s1.moveItemToPosition(1, 3);
-		System.out.println(s1.toString());
+		DataController dc = new DataController();
+		dc.saveAsJson(s1);
 	}
 
 }
