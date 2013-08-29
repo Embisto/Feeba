@@ -41,6 +41,8 @@ public class Question {
 			if(i != choices.size()-1)
 				choicesString += ",";
 		}
+		if(choices.size() == 0)
+			choicesString += "\"\"";
 		
 		choicesString += "]";
 		return choicesString;
