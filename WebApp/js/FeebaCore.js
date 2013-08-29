@@ -1,36 +1,9 @@
-function slideshow($scope) {
-    $scope.questions = [{
-        content: "Wie viel Beine haben Ameisen?",
-        answers: ["8","10","12","6"],
-        type:"radio"
-    }, {
-        content: "Haben Sie bereits programmiert?",
-        answers: ["Ja" , "Nein"],
-        type:"radio"
+function slideshow($scope, $http) {
 
-    }, {
-        content: "Welche Farbe hat die Sonne?",
-        answers: ["Rot" , "Orange","Blau","Gelb"],
-        type:"radio"
-    }, {
-        content: "In welchem Semester studieren Sie?",
-        answers: ["1","2","3","4","5","6","7"],
-        type:"radio"
-
-    }, {
-            content: "Welche Sprachen beherrschen Sie?",
-            answers: ["Java","C","C++","C#","Objective C","Javascript","Andere"],
-            type:"checkbox"
-    }, {
-        content: "Wie geht es Ihnen?",
-        answers: [""],
-        type:"text"
-
-    }, {
-        content: "Ene, mene, ... ?",
-        answers: ["Kiste" , "Miste"],
-        type:"radio"
-    }];
+    $http.get('../ServerData/survey.feeba')
+        .then(function(res){
+            $scope.questions = res.data.questions
+        });
 
     $scope.questIndex = 0;
     $scope.nextClick = function () {

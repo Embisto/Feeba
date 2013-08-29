@@ -25,7 +25,7 @@
     <h2 id="questionContent">{{questions[questIndex].content}}</h2>
     <div id="answers">
     <ol type="A">
-        <li ng-repeat="answer in questions[questIndex].answers" fadey="500">
+        <li ng-repeat="answer in questions[questIndex].choices" fadey="500">
             <input type="{{questions[questIndex].type}}" id="{{questIndex + '' + $index}}" name="{{questIndex}}" value="{{answer}}"/>
             <label for="{{questIndex + '' + $index}}" >
                 <span></span>
