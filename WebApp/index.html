@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app>
+	<head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"> 
+        <link href='//fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
+		<title>Feeba</title>
+        <link rel="shortcut icon" href="res/img/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/styles.css">
+        <script src="js/libs/angular.min.js"></script>
+        <script src="js/libs/jquery-1.9.1.min.js"></script>
+        <script src="js/FeebaCore.js"></script>
+    </head>
+
+	<body ng-app ng-controller="slideshow">
+    <div id="hideAll"></div>
+    <div id="preloadElements"><input type="radio">
+        <input type="checkbox"></div>
+    <div id="navigationWrapper">
+        <img src="res/img/arrow_left.svg" id="arrowLeft" ng-click="previousClick()">
+        <h1 id="questionCount">Frage {{questIndex+1}}</h1>
+        <img src="res/img/arrow_right.svg" id="arrowRight" ng-click="nextClick()">
+    </div>
+    <div id="question">
+    <h2 id="questionContent">{{questions[questIndex].content}}</h2>
+    <div id="answers">
+    <ol type="A">
+        <li ng-repeat="answer in questions[questIndex].answers" fadey="500">
+            <input type="{{questions[questIndex].type}}" id="{{questIndex + '' + $index}}" name="{{questIndex}}" value="{{answer}}"/>
+            <label for="{{questIndex + '' + $index}}" >
+                <span></span>
+                {{getLetterIndex($index,questions[questIndex].type)}}{{answer}}
+            </label>
+        </li>
+    </ol>
+        </div>
+        </div>
+    <script type="text/javascript">
+
+        window.onload = function()
+        { $('#preloadElements').remove();
+            $("#hideAll").fadeOut(500);}
+    </script>
+       <script type="text/javascript" src="js/libs/d3.v3.min.js"></script>
+	   <script type="text/javascript" src="js/Bars.js"></script>
+       <script type="text/javascript" src="js/App.js"></script>
+	</body>
+</html>

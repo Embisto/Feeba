@@ -1,0 +1,119 @@
+html, body {
+
+    background: url(../res/img/gradientblue.svg) no-repeat;
+    background-size: 100%;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+	line-height: 1.4;
+}
+
+#hideAll
+{
+    background: #176085 url(../res/img/loader.gif) no-repeat center center;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 99;
+}
+
+#bars {
+
+    position: absolute;
+    bottom: 0px;
+
+}
+
+#navigationWrapper {
+
+    height:150px;
+    padding:40px;
+
+}
+
+#arrowLeft {
+
+    height:30%;
+    float:left;
+    opacity: 0;
+}
+
+#arrowRight {
+
+    height:30%;
+    float:right;
+    cursor:pointer;
+
+}
+
+#questionCount {
+
+    color: white;
+    margin-left: 40%;
+    display: inline;
+    font-size: 40px;
+
+}
+#questionContent {
+
+    width:600px;
+    color:white;
+    margin: -80px auto auto;
+    font-size: 30px;
+}
+
+#answers {
+
+width:600px;
+margin:auto;
+}
+
+
+li {
+    color: white;
+    font-size: 30px;
+    display: block;
+    width: 45%;
+    float: left;
+}
+
+input {margin:20px;}
+
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label span {
+    cursor: pointer;
+    display:inline-block;
+    width:35px;
+    height:35px;
+    margin:-5px 4px 0 0;
+    vertical-align:middle;
+    background:url(../res/img/check_radio_sheet.png) left top no-repeat;
+    cursor:pointer;
+}
+input[type="checkbox"]:checked + label span{
+    background-position:-35px top;
+}
+label {
+
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    display:none;
+}
+input[type="radio"] + label span {
+    cursor: pointer;
+    display:inline-block;
+    width:35px;
+    height:35px;
+    margin:-5px 4px 0 0;
+    vertical-align:middle;
+    background:url(../res/img/check_radio_sheet.png) -70px top no-repeat;
+    cursor:pointer;
+}
+input[type="radio"]:checked + label span{
+    background-position:-105px top;
+}

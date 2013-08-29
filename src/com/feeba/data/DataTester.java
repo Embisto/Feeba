@@ -1,5 +1,6 @@
 package com.feeba.data;
 
+
 public class DataTester {
 
 	public static void main(String[] args) {
@@ -17,6 +18,7 @@ public class DataTester {
 		DataController dc = new DataController();
 		dc.saveAsJson(s1);
 		System.out.println(dc.loadFromJson().toString());
+
 	}
 
 }
