@@ -5,9 +5,11 @@ import java.net.UnknownHostException;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+
 
 
 
@@ -20,11 +22,15 @@ public class ServerController extends Thread {
 		
 		ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
-        resource_handler.setWelcomeFiles(new String[] { "/WebApp/index.html" });
+        resource_handler.setWelcomeFiles(new String[] { "index.html" });
         resource_handler.setResourceBase(".");
         HandlerList handlers = new HandlerList();
+        
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/"); 
+        context.addServlet(new ServletHolder(new MainServlet()),"/*");
       
-        handlers.setHandlers(new Handler[] { resource_handler, new DefaultHandler() });
+        handlers.setHandlers(new Handler[] { resource_handler, context });
         server.setHandler(handlers);
         
 	    try {
@@ -37,8 +43,6 @@ public class ServerController extends Thread {
 			e.printStackTrace();
 			
 		}
-		
-		
 	}
 	
 	public static void stopServer() {

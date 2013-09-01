@@ -6,15 +6,40 @@ function slideshow($scope, $http) {
         });
 
     $scope.questIndex = 0;
+
+
+    $scope.sendAnswer = function($http,data) {
+
+     var data = $scope.getAnswer();
+
+     $http.post('/', data);
+
+    };
+
+    $scope.getAnswer = function() {
+
+      var answer = {};
+      answer.question = $scope.questIndex;
+      var values = "";
+      $.each($('input').serializeArray(), function(i, field) {
+        values += field.value+" ";
+
+});
+      values = values.substring(0, values.length - 1)
+      answer.answers = values;
+
+      return answer;
+
+    }
+
     $scope.nextClick = function () {
 
 
         if ($scope.questIndex < $scope.questions.length - 1) {
-
+            $scope.sendAnswer($http);
             $scope.hideQuestion();
             $scope.questIndex = $scope.questIndex + 1;
             Bars.redraw();
-            //setTimeout(function() {Bars.reset();},2000);
             $scope.isEndOfArray();
             $scope.animateQuestion();
 

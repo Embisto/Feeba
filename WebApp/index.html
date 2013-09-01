@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html ng-app>
 	<head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8"> 
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <link href='//fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
 		<title>Feeba</title>
         <link rel="shortcut icon" href="res/img/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/styles.css">
-        <script src="js/libs/angular.min.js"></script>
         <script src="js/libs/jquery-1.9.1.min.js"></script>
+    <script src="js/libs/angular.min.js"></script>
         <script src="js/FeebaCore.js"></script>
     </head>
 
@@ -18,7 +18,7 @@
         <input type="checkbox"></div>
     <div id="navigationWrapper">
         <img src="res/img/arrow_left.svg" id="arrowLeft" ng-click="previousClick()">
-        <h1 id="questionCount">Frage {{questIndex+1}}</h1>
+      <h1 id="questionCount">Frage {{questIndex+1}} - {{questions[questIndex].name}}</h1>
         <img src="res/img/arrow_right.svg" id="arrowRight" ng-click="nextClick()">
     </div>
     <div id="question">
@@ -26,7 +26,7 @@
     <div id="answers">
     <ol type="A">
         <li ng-repeat="answer in questions[questIndex].choices" fadey="500">
-            <input type="{{questions[questIndex].type}}" id="{{questIndex + '' + $index}}" name="{{questIndex}}" value="{{answer}}"/>
+          <input type="{{questions[questIndex].type}}" id="{{questIndex + '' + $index}}" name="{{questIndex}}" value="{{answer}}"/>
             <label for="{{questIndex + '' + $index}}" >
                 <span></span>
                 {{getLetterIndex($index,questions[questIndex].type)}}{{answer}}

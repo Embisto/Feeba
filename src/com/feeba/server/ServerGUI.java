@@ -45,6 +45,15 @@ public class ServerGUI extends JFrame {
 				try {
 					ServerGUI frame = new ServerGUI();
 					frame.setVisible(true);
+					frame.addWindowListener(new java.awt.event.WindowAdapter() {
+					    @Override
+					    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+					    
+					    	if(ServerController.isStarted())
+					    		ServerController.stopServer();
+					    }
+					});
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -160,5 +169,9 @@ public class ServerGUI extends JFrame {
 				label.setIcon(new ImageIcon(ServerGUI.class.getResource("/images/logo.png")));
 				label.setBounds(328, 39, 394, 88);
 				contentPane.add(label);
+
 	}
+
+
+
 }
