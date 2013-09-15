@@ -1,7 +1,6 @@
 package com.feeba.data;
 
 import java.util.ArrayList;
-
 public class Question {
 	
 	private final int MAX_CHOICES = 8;
@@ -10,6 +9,7 @@ public class Question {
 	private String questionText;
 	private String name;
 	private ArrayList<String> choices;
+	private ArrayList<String> results;
 	
 	/**
 	 * 
@@ -22,6 +22,7 @@ public class Question {
 		this.name = name;
 		this.questionText = questionText;
 		this.choices = new ArrayList<String>();
+		this.results = new ArrayList<String>();
 	}
 	public QuestionType getType() {
 		return type;
@@ -126,6 +127,24 @@ public class Question {
 		
 		return name + "\n\n" + questionText + "\n" + choicesString + "\n\n";
 		
+	}
+	
+	
+	public ArrayList<String> getResults() {
+		return results;
+	}
+	public void setResults(ArrayList<String> results) {
+		this.results = results;
+	}
+
+	public void addResult(String[] answers) {
+		
+	
+		for(int i = 0; i < answers.length; i++) {
+			
+			results.add(answers[i]);
+			
+		}
 	}
 
 }

@@ -20,12 +20,12 @@ function slideshow($scope, $http) {
 
       var answer = {};
       answer.question = $scope.questIndex;
-      var values = "";
+      var values = [];
       $.each($('input').serializeArray(), function(i, field) {
-        values += field.value+" ";
+        values.push(field.value);
 
 });
-      values = values.substring(0, values.length - 1)
+
       answer.answers = values;
 
       return answer;

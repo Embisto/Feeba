@@ -101,5 +101,12 @@ public class Survey {
 		
 	}
 
+	public void addData(int questionId, String[] answers) {
+		
+		Question ques = questions.get(questionId);
+		ques.addResult(answers);
+		
+	}
+
 
 }

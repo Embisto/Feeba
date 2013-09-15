@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feeba.data.ReturnDataController;
+
 
 @SuppressWarnings("serial")
 public class MainServlet extends HttpServlet
@@ -28,7 +30,8 @@ public class MainServlet extends HttpServlet
             throws ServletException, IOException
         {
     	
-    	//InputStream body = req.getInputStream();
+    	ReturnDataController.newData(convertStreamToString(req.getInputStream()));
+    	resp.getWriter().write("OK");
     	
         }
     

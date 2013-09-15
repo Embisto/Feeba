@@ -1,5 +1,7 @@
 package com.feeba.data;
 
+import com.feeba.server.ServerGUI;
+
 
 public class DataTester {
 
@@ -17,7 +19,8 @@ public class DataTester {
 		s1.moveItemToPosition(1, 3);
 		DataController dc = new DataController();
 		dc.saveAsJson(s1);
-		System.out.println(dc.loadFromJson().toString());
+		ReturnDataController.setWorkingSurvey(dc.loadFromJson());
+		ServerGUI.main(null);
 
 	}
 
