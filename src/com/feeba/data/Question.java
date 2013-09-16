@@ -146,5 +146,17 @@ public class Question {
 			
 		}
 	}
+	public String getChoicesText() {
+		
+		String s = "";
+		
+		if(type!=QuestionType.FREETEXT){
+		
+		for(int i = 0; i < choices.size();i++) {
+			s += (char)(65+i) + ": " + choices.get(i)+ " ";
 
+		
+	}}
+		return s;
+		}
 }
