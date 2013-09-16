@@ -70,4 +70,10 @@ public class ServerController extends Thread {
 		
 		return "Fehler beim abrufen der Ip-Adresse";
 	}
+
+	public static void showGui() {
+	
+		ServerGUI.main(null);
+		
+	}
 }
