@@ -10,7 +10,7 @@ import org.json.simple.parser.ParseException;
 
 public class ReturnDataController {
 
-	static Survey workingSurvey;
+	public static Survey workingSurvey;
 
 	static String[] getAnswers(String dataString) {
 
@@ -58,7 +58,6 @@ public class ReturnDataController {
 	}
 
 	public static void newData(String dataString) {
-
 		workingSurvey.addData(getQuestionId(dataString),getAnswers(dataString));
 
 	}

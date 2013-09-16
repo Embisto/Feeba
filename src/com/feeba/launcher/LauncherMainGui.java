@@ -13,6 +13,8 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
+import com.feeba.editor.EditorGUI;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -60,7 +62,8 @@ public class LauncherMainGui extends JFrame {
 		loadButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// add loading action
+				EditorGUI.main(null);
+				EditorGUI.openFileChooser();
 			}
 			
 			@Override
@@ -108,33 +111,6 @@ public class LauncherMainGui extends JFrame {
 		newButtonText.setFont(new Font("Manteka", Font.PLAIN, 25));
 		newButton.add(newButtonText);
 		
-		final JPanel resultButton = new JPanel();
-		resultButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				// add analyse action
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				enter(resultButton);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				exit(resultButton);
-			}
-		});
-		
-		resultButton.setBackground(Color.WHITE);
-		resultButton.setBounds(268, 154, 352, 40);
-		contentPane.add(resultButton);
-		
-		JLabel resultButtonText = new JLabel("Umfrage auswerten");
-		resultButtonText.setFont(new Font("Manteka", Font.PLAIN, 25));
-		resultButton.add(resultButtonText);
-		
 		JLabel Bars = new JLabel("");
 		Bars.setBounds(0, 206, 1280, 229);
 		contentPane.add(Bars);
@@ -157,5 +133,6 @@ public class LauncherMainGui extends JFrame {
 	    setCursor(cursor);
 		
 	}
+	
 	
 }

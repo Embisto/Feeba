@@ -39,22 +39,31 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JLayeredPane;
+
 import java.awt.FlowLayout;
+
 import javax.swing.SpringLayout;
+
 import java.awt.Font;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
 import com.feeba.data.QuestionType;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -65,7 +74,7 @@ public class EditorGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public JList questions;
+	public static JList questions;
 	public static JLabel backgroundPreview;
 	static JTabbedPane tabbedPane;
 	private JTextField questionNameEdit;
@@ -78,9 +87,10 @@ public class EditorGUI extends JFrame {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	private JPanel editPanel;
+	public static JPanel editPanel;
 	private JComboBox questionTypeEdit;
 	private JTextArea questionTextEdit;
+	private JPanel results;
 
 	/**
 	 * Launch the application.
@@ -191,22 +201,34 @@ public class EditorGUI extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(new LineBorder(Color.WHITE, 12));
 		tabbedPane.setBackground(null);
+		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        if(index ==1) {
+		        	generateChart(results,questions.getSelectedIndex());
+		        }
+		      }
+		    };
+		    
+		tabbedPane.addChangeListener(changeListener);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(null);
-		panel_1.setBackground(null);
-		tabbedPane.addTab("Vorschau", null, panel_1, null);
-		SpringLayout sl_panel_1 = new SpringLayout();
-		panel_1.setLayout(sl_panel_1);
+		JPanel preview = new JPanel();
+		preview.setBorder(null);
+		preview.setBackground(null);
+		tabbedPane.addTab("Vorschau", null, preview, null);
+		SpringLayout sl_preview = new SpringLayout();
+		preview.setLayout(sl_preview);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBackground(null);
-		sl_panel_1.putConstraint(SpringLayout.NORTH, layeredPane, 0, SpringLayout.NORTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.WEST, layeredPane, 0, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.SOUTH, layeredPane, 0, SpringLayout.SOUTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, layeredPane, 0, SpringLayout.EAST, panel_1);
-		panel_1.add(layeredPane);
+		sl_preview.putConstraint(SpringLayout.NORTH, layeredPane, 0, SpringLayout.NORTH, preview);
+		sl_preview.putConstraint(SpringLayout.WEST, layeredPane, 0, SpringLayout.WEST, preview);
+		sl_preview.putConstraint(SpringLayout.SOUTH, layeredPane, 0, SpringLayout.SOUTH, preview);
+		sl_preview.putConstraint(SpringLayout.EAST, layeredPane, 0, SpringLayout.EAST, preview);
+		preview.add(layeredPane);
 		SpringLayout sl_layeredPane = new SpringLayout();
 		layeredPane.setLayout(sl_layeredPane);
 		
@@ -253,20 +275,21 @@ public class EditorGUI extends JFrame {
 		
 		backgroundPreview = new JLabel("");
 		backgroundPreview.setBackground(null);
-		sl_panel_1.putConstraint(SpringLayout.NORTH, backgroundPreview, 0, SpringLayout.NORTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.WEST, backgroundPreview, 0, SpringLayout.WEST, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.SOUTH, backgroundPreview, 0, SpringLayout.SOUTH, panel_1);
-		sl_panel_1.putConstraint(SpringLayout.EAST, backgroundPreview, 0, SpringLayout.EAST, panel_1);
-		panel_1.add(backgroundPreview);
+		sl_preview.putConstraint(SpringLayout.NORTH, backgroundPreview, 0, SpringLayout.NORTH, preview);
+		sl_preview.putConstraint(SpringLayout.WEST, backgroundPreview, 0, SpringLayout.WEST, preview);
+		sl_preview.putConstraint(SpringLayout.SOUTH, backgroundPreview, 0, SpringLayout.SOUTH, preview);
+		sl_preview.putConstraint(SpringLayout.EAST, backgroundPreview, 0, SpringLayout.EAST, preview);
+		preview.add(backgroundPreview);
 		backgroundPreview.setAlignmentY(Component.TOP_ALIGNMENT);
 		backgroundPreview.setIconTextGap(0);
 		
 
 		
 		
-		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("Auswertung", null, panel_2, null);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		results = new JPanel();
+		results.setBackground(Color.WHITE);
+		tabbedPane.addTab("Auswertung", null, results, null);
+		results.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		Box questionWrapper = Box.createVerticalBox();
 		contentPane.add(questionWrapper, BorderLayout.WEST);
 		
@@ -597,7 +620,7 @@ public class EditorGUI extends JFrame {
 		editPanel.add(questionTextEdit);
 	}
 
-	public void openFileChooser() {
+	public static void openFileChooser() {
 		
 		final JFileChooser chooser = new JFileChooser("Fragebogen laden"); 
         chooser.setDialogType(JFileChooser.OPEN_DIALOG); 
@@ -605,7 +628,7 @@ public class EditorGUI extends JFrame {
         
         chooser.addChoosableFileFilter(new FileFilter() {
             public boolean accept(File f) {
-              if (f.isDirectory()) return true;
+              if (f.isDirectory()) return false;
               return f.getName().toLowerCase().endsWith(".feeba");
             }
             public String getDescription () { return "Feeba Fragebšgen (*.feeba)"; }  
@@ -709,6 +732,16 @@ public class EditorGUI extends JFrame {
 		questionNameEdit.setText(ques.getName());
 		questionTextEdit.setText(ques.getQuestionText());
 		questionTypeEdit.setSelectedItem(ques.getType());
+		
+	}
+
+	private void generateChart(JPanel results, int selectedIndex) {
+		
+		String name = EditorController.loadedSurvey.getQuestions().get(selectedIndex).getQuestionText();
+		
+		results.removeAll();
+		results.add(EditorController.pieChart(selectedIndex,name));
+		
 		
 	}
 }
