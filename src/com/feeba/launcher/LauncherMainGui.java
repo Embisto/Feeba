@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
 import com.feeba.editor.EditorGUI;
+import com.feeba.wizzard.GuiNewQuestionnaire;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -89,7 +90,7 @@ public class LauncherMainGui extends JFrame {
 		newButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// add new action
+				GuiNewQuestionnaire.main(null);
 			}
 			
 			@Override
