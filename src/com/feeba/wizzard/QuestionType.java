@@ -16,13 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JRadioButtonMenuItem;
 
 public class QuestionType extends JFrame {
 	 

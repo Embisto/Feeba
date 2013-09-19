@@ -66,6 +66,11 @@ import javax.swing.border.LineBorder;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import java.awt.ComponentOrientation;
+import java.awt.SystemColor;
 
 public class EditorGUI extends JFrame {
 
@@ -76,7 +81,7 @@ public class EditorGUI extends JFrame {
 	private JPanel contentPane;
 	public static JList questions;
 	public static JLabel backgroundPreview;
-	static JTabbedPane tabbedPane;
+	public static JTabbedPane tabbedPane;
 	private JTextField questionNameEdit;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -91,6 +96,7 @@ public class EditorGUI extends JFrame {
 	private JComboBox questionTypeEdit;
 	private JTextArea questionTextEdit;
 	private JPanel results;
+	public static Box questionWrapper;
 
 	/**
 	 * Launch the application.
@@ -100,13 +106,15 @@ public class EditorGUI extends JFrame {
 			public void run() {
 				try {
 					
-					//start editor maximized
 					EditorGUI frame = new EditorGUI();
 					frame.setState(Frame.NORMAL);
+					
+					//start editor maximized
 					Toolkit toolkit = Toolkit.getDefaultToolkit();
 					Dimension dimension = toolkit.getScreenSize();
 					frame.setSize(dimension);
 					frame.setVisible(true);
+					
 					updateBackgroundLabel(backgroundPreview,tabbedPane);
 					
 				} catch (Exception e) {
@@ -124,67 +132,74 @@ public class EditorGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public EditorGUI() {
 		setTitle("Feeba");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 821, 544);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(null);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JToolBar toolBar = new JToolBar();
-		toolBar.setPreferredSize(new Dimension(16, 60));
-		toolBar.setOpaque(false);
-		toolBar.setFloatable(false);
+		JPanel toolBar = new JPanel();
+		toolBar.setBackground(new Color(0x222325));
+		toolBar.setAlignmentY(Component.CENTER_ALIGNMENT);
+		toolBar.setPreferredSize(new Dimension(16, 50));
 		contentPane.add(toolBar, BorderLayout.NORTH);
+		SpringLayout sl_toolBar = new SpringLayout();
+		toolBar.setLayout(sl_toolBar);
 		
-		JButton btnNewButton = new JButton("Fragebogen laden");
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(EditorGUI.class.getResource("/images/logo_toolbar.png")));
+		toolBar.add(lblNewLabel);
+		
+		JPanel panel_1 = new JPanel();
+		sl_toolBar.putConstraint(SpringLayout.WEST, panel_1, 50, SpringLayout.EAST, lblNewLabel);
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		sl_toolBar.putConstraint(SpringLayout.NORTH, panel_1, 0, SpringLayout.NORTH, toolBar);
+		panel_1.setOpaque(false);
+		toolBar.add(panel_1);
+		
+		JButton btnNewButton = new JButton("Fragebogen Laden");
+		panel_1.add(btnNewButton);
+		btnNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		btnNewButton.setAlignmentY(Component.TOP_ALIGNMENT);
+		btnNewButton.setMargin(new Insets(0, 0, 0, 0));
+		btnNewButton.setPreferredSize(new Dimension(200, 50));
 		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setFont(new Font("Helvetica", Font.PLAIN, 20));
+		btnNewButton.setFont(new Font("Helvetica", Font.BOLD, 10));
 		btnNewButton.setOpaque(true);
 		btnNewButton.setBackground(new Color(0x17748F));
 		btnNewButton.setBorder(new LineBorder(new Color(0x17748F), 7));
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				openFileChooser();
-			}
-
-		});
 		
-		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-		toolBar.add(horizontalStrut_2);
-		toolBar.add(btnNewButton);
+		Component horizontalStrut = Box.createHorizontalStrut(1);
+		panel_1.add(horizontalStrut);
 		
-		JButton btnFragebogenSpeichern = new JButton("Fragebogen speichern");
+		JButton btnFragebogenSpeichern = new JButton("Fragebogen Speichern");
+		panel_1.add(btnFragebogenSpeichern);
+		btnFragebogenSpeichern.setMargin(new Insets(0, 0, 0, 0));
+		btnFragebogenSpeichern.setPreferredSize(new Dimension(200, 50));
 		btnFragebogenSpeichern.setForeground(Color.WHITE);
-		btnFragebogenSpeichern.setFont(new Font("Helvetica", Font.PLAIN, 20));
+		btnFragebogenSpeichern.setFont(new Font("Helvetica", Font.BOLD, 10));
 		btnFragebogenSpeichern.setBackground(new Color(0x17748F));
 		btnFragebogenSpeichern.setOpaque(true);
 		btnFragebogenSpeichern.setBorder(new LineBorder(new Color(0x17748F), 7));
-		btnFragebogenSpeichern.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-								
-				saveFileChoser();
-			}
-
-		});
 		
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		toolBar.add(horizontalStrut);
-	
-		toolBar.add(btnFragebogenSpeichern);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(1);
+		panel_1.add(horizontalStrut_1);
 		
 		JButton btnUmfrageStarten = new JButton("Umfrage Starten");
+		panel_1.add(btnUmfrageStarten);
+		btnUmfrageStarten.setMargin(new Insets(0, 0, 0, 0));
+		btnUmfrageStarten.setPreferredSize(new Dimension(200, 50));
 		btnUmfrageStarten.setForeground(Color.WHITE);
 		btnUmfrageStarten.setBackground(new Color(0x17748F));
 		btnUmfrageStarten.setOpaque(true);
 		btnUmfrageStarten.setBorder(new LineBorder(new Color(0x17748F), 7));
-		btnUmfrageStarten.setFont(new Font("Helvetica", Font.PLAIN, 20));
+		btnUmfrageStarten.setFont(new Font("Helvetica", Font.BOLD, 10));
 		btnUmfrageStarten.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -193,10 +208,23 @@ public class EditorGUI extends JFrame {
 				
 			}
 		});
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		toolBar.add(horizontalStrut_1);
-		toolBar.add(btnUmfrageStarten);
+		btnFragebogenSpeichern.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+								
+				saveFileChoser();
+			}
+
+		});
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				openFileChooser();
+				
+			}
+
+		});
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(new LineBorder(Color.WHITE, 12));
@@ -287,14 +315,23 @@ public class EditorGUI extends JFrame {
 		
 		
 		results = new JPanel();
+		results.setEnabled(false);
 		results.setBackground(Color.WHITE);
 		tabbedPane.addTab("Auswertung", null, results, null);
+		tabbedPane.setEnabledAt(1, false);
 		results.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		Box questionWrapper = Box.createVerticalBox();
+		questionWrapper = Box.createVerticalBox();
+		questionWrapper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		questionWrapper.setAlignmentY(Component.TOP_ALIGNMENT);
+		questionWrapper.setBorder(null);
 		contentPane.add(questionWrapper, BorderLayout.WEST);
 		
 		questions = new JList();
-		questions.setBorder(new LineBorder(new Color(0, 0, 0)));
+		questions.setMinimumSize(new Dimension(200, 2000));
+		questions.setMaximumSize(new Dimension(200, 200));
+		questions.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		questions.setSelectionBackground(new Color(0x17748F));
+		questions.setBorder(null);
 		questions.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				
@@ -304,9 +341,10 @@ public class EditorGUI extends JFrame {
 				
 			}
 
-
-
 		});
+		
+		Component verticalStrut = Box.createVerticalStrut(20);
+		questionWrapper.add(verticalStrut);
 		questions.setDragEnabled(true);
 		questions.setPreferredSize(new Dimension(200, 10));
 		
@@ -314,14 +352,49 @@ public class EditorGUI extends JFrame {
 		questionScroller.setBorder(null);
 		questionWrapper.add(questionScroller);
 		
-		JLabel lblQuestions = new JLabel("Fragen");
-		lblQuestions.setForeground(Color.WHITE);
-		lblQuestions.setBorder(new LineBorder(Color.LIGHT_GRAY, 5));
-		lblQuestions.setFont(new Font("Helvetica", Font.PLAIN, 20));
-		lblQuestions.setOpaque(true);
-		lblQuestions.setBackground(Color.LIGHT_GRAY);
-		lblQuestions.setHorizontalAlignment(SwingConstants.CENTER);
-		questionScroller.setColumnHeaderView(lblQuestions);
+		JPanel panel = new JPanel();
+		panel.setOpaque(false);
+		panel.setBorder(null);
+		panel.setBackground(new Color(0x2D2F31));
+		panel.setMaximumSize(new Dimension(32767, 30));
+		panel.setPreferredSize(new Dimension(200, 30));
+		panel.setSize(new Dimension(200, 40));
+		questionWrapper.add(panel);
+		
+		JButton button = new JButton("+");
+		button.setForeground(Color.DARK_GRAY);
+		button.setBackground(SystemColor.inactiveCaption);
+		button.setFont(new Font("Helvetica", Font.PLAIN, 22));
+		button.setOpaque(true);
+		button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		button.setMargin(new Insets(0, 0, 0, 0));
+		button.setPreferredSize(new Dimension(24, 24));
+		button.setBorder(null);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		SpringLayout sl_panel = new SpringLayout();
+		sl_panel.putConstraint(SpringLayout.NORTH, button, 3, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, button, -3, SpringLayout.EAST, panel);
+		panel.setLayout(sl_panel);
+		panel.add(button);
+		
+		JButton button_1 = new JButton("-");
+		button_1.setForeground(Color.DARK_GRAY);
+		sl_panel.putConstraint(SpringLayout.EAST, button_1, -3, SpringLayout.WEST, button);
+		button_1.setFont(new Font("Helvetica", Font.PLAIN, 25));
+		button_1.setOpaque(true);
+		button_1.setBackground(SystemColor.inactiveCaptionBorder);
+		sl_panel.putConstraint(SpringLayout.SOUTH, button_1, 0, SpringLayout.SOUTH, button);
+		button_1.setPreferredSize(new Dimension(24, 24));
+		button_1.setMargin(new Insets(0, 0, 0, 0));
+		button_1.setBorder(null);
+		button_1.setAlignmentY(1.0f);
+		panel.add(button_1);
+		
+		Component verticalStrut_1 = Box.createVerticalStrut(20);
+		questionWrapper.add(verticalStrut_1);
 		
 		editPanel = new JPanel();
 		editPanel.setBorder(new LineBorder(Color.WHITE, 10));
@@ -358,6 +431,7 @@ public class EditorGUI extends JFrame {
 				Survey survey = EditorController.loadedSurvey;
 				int selectedIndex = questions.getSelectedIndex();
 				survey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
+				
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
 				
 			}
@@ -618,6 +692,7 @@ public class EditorGUI extends JFrame {
 		questionTextEdit.setBorder(new LineBorder(Color.LIGHT_GRAY, 6));
 		questionTextEdit.setRows(4);
 		editPanel.add(questionTextEdit);
+		
 	}
 
 	public static void openFileChooser() {
@@ -640,6 +715,8 @@ public class EditorGUI extends JFrame {
         final int result = chooser.showOpenDialog(null); 
 
         if (result == JFileChooser.APPROVE_OPTION) { 
+            tabbedPane.setVisible(true);
+            questionWrapper.setVisible(true);
             File inputFile = chooser.getSelectedFile(); 
             String inputDir = inputFile.getPath(); 
             EditorController.loadSurvey(inputDir,questions,backgroundPreview);
@@ -685,7 +762,7 @@ public class EditorGUI extends JFrame {
 		
 		  
 		try {
-			backgroundLabel.setIcon(new ImageIcon(resize(ImageIO.read(EditorGUI.class.getResource("/images/Background.png")),backgroundLabel.getWidth()+50,backgroundLabel.getHeight())));
+			backgroundLabel.setIcon(new ImageIcon(resize(ImageIO.read(EditorGUI.class.getResource("/images/Background.png")),backgroundLabel.getWidth(),backgroundLabel.getHeight())));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -744,4 +821,5 @@ public class EditorGUI extends JFrame {
 		
 		
 	}
+	
 }
