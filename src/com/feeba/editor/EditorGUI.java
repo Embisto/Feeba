@@ -97,6 +97,8 @@ public class EditorGUI extends JFrame {
 	private JTextArea questionTextEdit;
 	private JPanel results;
 	public static Box questionWrapper;
+	private JLabel lblAntwortmglichkeit;
+	private JPanel choicesEdit;
 
 	/**
 	 * Launch the application.
@@ -408,6 +410,11 @@ public class EditorGUI extends JFrame {
 		questionTypeEdit = new JComboBox();
 		sl_editPanel.putConstraint(SpringLayout.EAST, questionTypeEdit, -14, SpringLayout.EAST, editPanel);
 		questionTypeEdit.setModel(new DefaultComboBoxModel(QuestionType.values()));
+		questionTypeEdit.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        toggleChoices();
+		    }
+		});
 		editPanel.add(questionTypeEdit);
 		
 		JLabel questionType = new JLabel("Fragetyp:");
@@ -445,24 +452,24 @@ public class EditorGUI extends JFrame {
 		editPanel.add(questionNameEdit);
 		questionNameEdit.setColumns(10);
 		
-		JLabel lblFrage_1 = new JLabel("Frage:");
-		sl_editPanel.putConstraint(SpringLayout.SOUTH, questionNameEdit, -6, SpringLayout.NORTH, lblFrage_1);
-		lblFrage_1.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		sl_editPanel.putConstraint(SpringLayout.NORTH, lblFrage_1, 43, SpringLayout.SOUTH, lblFrage);
-		sl_editPanel.putConstraint(SpringLayout.WEST, lblFrage_1, 10, SpringLayout.WEST, editPanel);
-		editPanel.add(lblFrage_1);
+		JLabel choicesLbl = new JLabel("Frage:");
+		sl_editPanel.putConstraint(SpringLayout.SOUTH, questionNameEdit, -6, SpringLayout.NORTH, choicesLbl);
+		choicesLbl.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		sl_editPanel.putConstraint(SpringLayout.NORTH, choicesLbl, 43, SpringLayout.SOUTH, lblFrage);
+		sl_editPanel.putConstraint(SpringLayout.WEST, choicesLbl, 10, SpringLayout.WEST, editPanel);
+		editPanel.add(choicesLbl);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.WHITE);
-		sl_editPanel.putConstraint(SpringLayout.WEST, panel_4, 0, SpringLayout.WEST, editPanel);
-		sl_editPanel.putConstraint(SpringLayout.EAST, panel_4, 0, SpringLayout.EAST, editPanel);
-		editPanel.add(panel_4);
-		GridBagLayout gbl_panel_4 = new GridBagLayout();
-		gbl_panel_4.columnWidths = new int[] {40, 150, 0};
-		gbl_panel_4.rowHeights = new int[]{23, 23, 23, 23, 23, 23, 23, 23,23};
-		gbl_panel_4.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_4.setLayout(gbl_panel_4);
+		choicesEdit = new JPanel();
+		choicesEdit.setBackground(Color.WHITE);
+		sl_editPanel.putConstraint(SpringLayout.WEST, choicesEdit, 0, SpringLayout.WEST, editPanel);
+		sl_editPanel.putConstraint(SpringLayout.EAST, choicesEdit, 0, SpringLayout.EAST, editPanel);
+		editPanel.add(choicesEdit);
+		GridBagLayout gbl_choicesEdit = new GridBagLayout();
+		gbl_choicesEdit.columnWidths = new int[] {40, 150, 0};
+		gbl_choicesEdit.rowHeights = new int[]{23, 23, 23, 23, 23, 23, 23, 23,23};
+		gbl_choicesEdit.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_choicesEdit.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		choicesEdit.setLayout(gbl_choicesEdit);
 		
 		
 		JLabel lblA = new JLabel("A:  ");
@@ -472,7 +479,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblA.anchor = GridBagConstraints.EAST;
 		gbc_lblA.gridx = 0;
 		gbc_lblA.gridy = 0;
-		panel_4.add(lblA, gbc_lblA);
+		choicesEdit.add(lblA, gbc_lblA);
 		
 		textField_5 = new JTextField();
 		textField_5.setFont(new Font("Helvetica", Font.PLAIN, 20));
@@ -484,8 +491,8 @@ public class EditorGUI extends JFrame {
 		gbc_textField_5.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_5.gridx = 1;
 		gbc_textField_5.gridy = 0;
-		panel_4.add(textField_5, gbc_textField_5);
-		textField_5.setColumns(10);
+		choicesEdit.add(textField_5, gbc_textField_5);
+		textField_5.setColumns(8);
 		
 		JLabel lblB = new JLabel("B:  ");
 		lblB.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -494,7 +501,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblB.insets = new Insets(0, 0, 5, 5);
 		gbc_lblB.gridx = 0;
 		gbc_lblB.gridy = 1;
-		panel_4.add(lblB, gbc_lblB);
+		choicesEdit.add(lblB, gbc_lblB);
 		
 		textField_8 = new JTextField();
 		textField_8.setFont(new Font("Helvetica", Font.PLAIN, 20));
@@ -507,8 +514,8 @@ public class EditorGUI extends JFrame {
 		gbc_textField_8.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_8.gridx = 1;
 		gbc_textField_8.gridy = 1;
-		panel_4.add(textField_8, gbc_textField_8);
-		textField_8.setColumns(10);
+		choicesEdit.add(textField_8, gbc_textField_8);
+		textField_8.setColumns(8);
 		
 		JLabel lblC = new JLabel("C:  ");
 		lblC.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -517,7 +524,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblC.insets = new Insets(0, 0, 5, 5);
 		gbc_lblC.gridx = 0;
 		gbc_lblC.gridy = 2;
-		panel_4.add(lblC, gbc_lblC);
+		choicesEdit.add(lblC, gbc_lblC);
 		
 		textField_7 = new JTextField();
 		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
@@ -529,8 +536,8 @@ public class EditorGUI extends JFrame {
 		gbc_textField_7.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_7.gridx = 1;
 		gbc_textField_7.gridy = 2;
-		panel_4.add(textField_7, gbc_textField_7);
-		textField_7.setColumns(10);
+		choicesEdit.add(textField_7, gbc_textField_7);
+		textField_7.setColumns(8);
 		
 		JLabel lblD = new JLabel("D:  ");
 		lblD.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -539,7 +546,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblD.insets = new Insets(0, 0, 5, 5);
 		gbc_lblD.gridx = 0;
 		gbc_lblD.gridy = 3;
-		panel_4.add(lblD, gbc_lblD);
+		choicesEdit.add(lblD, gbc_lblD);
 		
 		textField_6 = new JTextField();
 		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
@@ -551,7 +558,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_6.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_6.gridx = 1;
 		gbc_textField_6.gridy = 3;
-		panel_4.add(textField_6, gbc_textField_6);
+		choicesEdit.add(textField_6, gbc_textField_6);
 		textField_6.setColumns(10);
 		
 		JLabel lblE = new JLabel("E:  ");
@@ -561,7 +568,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblE.insets = new Insets(0, 0, 5, 5);
 		gbc_lblE.gridx = 0;
 		gbc_lblE.gridy = 4;
-		panel_4.add(lblE, gbc_lblE);
+		choicesEdit.add(lblE, gbc_lblE);
 		
 		textField_4 = new JTextField();
 		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
@@ -573,7 +580,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_4.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_4.gridx = 1;
 		gbc_textField_4.gridy = 4;
-		panel_4.add(textField_4, gbc_textField_4);
+		choicesEdit.add(textField_4, gbc_textField_4);
 		textField_4.setColumns(10);
 		
 		JLabel lblF = new JLabel("F:  ");
@@ -583,7 +590,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblF.insets = new Insets(0, 0, 5, 5);
 		gbc_lblF.gridx = 0;
 		gbc_lblF.gridy = 5;
-		panel_4.add(lblF, gbc_lblF);
+		choicesEdit.add(lblF, gbc_lblF);
 		
 		textField_3 = new JTextField();
 		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
@@ -595,7 +602,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_3.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_3.gridx = 1;
 		gbc_textField_3.gridy = 5;
-		panel_4.add(textField_3, gbc_textField_3);
+		choicesEdit.add(textField_3, gbc_textField_3);
 		textField_3.setColumns(10);
 		
 		JLabel lblG = new JLabel("G:  ");
@@ -605,7 +612,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblG.insets = new Insets(0, 0, 5, 5);
 		gbc_lblG.gridx = 0;
 		gbc_lblG.gridy  = 6;
-		panel_4.add(lblG, gbc_lblG);
+		choicesEdit.add(lblG, gbc_lblG);
 		
 		textField_1 = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
@@ -617,7 +624,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 6;
-		panel_4.add(textField_1, gbc_textField_1);
+		choicesEdit.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblH = new JLabel("H:  ");
@@ -627,7 +634,7 @@ public class EditorGUI extends JFrame {
 		gbc_lblH.insets = new Insets(0, 0, 5, 5);
 		gbc_lblH.gridx = 0;
 		gbc_lblH.gridy = 7;
-		panel_4.add(lblH, gbc_lblH);
+		choicesEdit.add(lblH, gbc_lblH);
 		
 		textField_2 = new JTextField();
 		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
@@ -639,7 +646,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_2.gridx = 1;
 		gbc_textField_2.gridy = 7;
-		panel_4.add(textField_2, gbc_textField_2);
+		choicesEdit.add(textField_2, gbc_textField_2);
 		textField_2.setColumns(10);
 		
 		JLabel label_2 = new JLabel("I: ");
@@ -649,13 +656,13 @@ public class EditorGUI extends JFrame {
 		gbc_label_2.insets = new Insets(0, 0, 0, 5);
 		gbc_label_2.gridx = 0;
 		gbc_label_2.gridy = 8;
-		panel_4.add(label_2, gbc_label_2);
+		choicesEdit.add(label_2, gbc_label_2);
 		
 		
-		JLabel lblAntwortmglichkeit = new JLabel("Antwortm\u00F6glichkeiten:");
+		lblAntwortmglichkeit = new JLabel("Antwortm\u00F6glichkeiten:");
 		lblAntwortmglichkeit.setFont(new Font("Helvetica", Font.PLAIN, 15));
 		sl_editPanel.putConstraint(SpringLayout.WEST, lblAntwortmglichkeit, 10, SpringLayout.WEST, editPanel);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, panel_4, 14, SpringLayout.SOUTH, lblAntwortmglichkeit);
+		sl_editPanel.putConstraint(SpringLayout.NORTH, choicesEdit, 14, SpringLayout.SOUTH, lblAntwortmglichkeit);
 		
 		textField_9 = new JTextField();
 		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
@@ -667,7 +674,7 @@ public class EditorGUI extends JFrame {
 		gbc_textField_9.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_9.gridx = 1;
 		gbc_textField_9.gridy = 8;
-		panel_4.add(textField_9, gbc_textField_9);
+		choicesEdit.add(textField_9, gbc_textField_9);
 		textField_9.setColumns(10);
 		editPanel.add(lblAntwortmglichkeit);
 		
@@ -683,7 +690,7 @@ public class EditorGUI extends JFrame {
 		});
 		questionTextEdit.setWrapStyleWord(true);
 		questionTextEdit.setForeground(Color.WHITE);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, questionTextEdit, 6, SpringLayout.SOUTH, lblFrage_1);
+		sl_editPanel.putConstraint(SpringLayout.NORTH, questionTextEdit, 6, SpringLayout.SOUTH, choicesLbl);
 		questionTextEdit.setFont(new Font("Helvetica", Font.PLAIN, 20));
 		sl_editPanel.putConstraint(SpringLayout.NORTH, lblAntwortmglichkeit, 20, SpringLayout.SOUTH, questionTextEdit);
 		sl_editPanel.putConstraint(SpringLayout.WEST, questionTextEdit, 0, SpringLayout.WEST, questionType);
@@ -809,6 +816,7 @@ public class EditorGUI extends JFrame {
 		questionNameEdit.setText(ques.getName());
 		questionTextEdit.setText(ques.getQuestionText());
 		questionTypeEdit.setSelectedItem(ques.getType());
+		toggleChoices();
 		
 	}
 
@@ -822,4 +830,30 @@ public class EditorGUI extends JFrame {
 		
 	}
 	
+	public void toggleChoices() {
+		JComboBox jcb = getQuestionTypeEdit();
+		if(jcb.getSelectedItem().equals(QuestionType.FREETEXT)) {
+			
+			lblAntwortmglichkeit.setVisible(false);
+			choicesEdit.setVisible(false);
+		}
+		else {
+			
+			lblAntwortmglichkeit.setVisible(true);
+			choicesEdit.setVisible(true);
+			
+		}
+		
+	}
+	
+	
+	protected JComboBox getQuestionTypeEdit() {
+		return questionTypeEdit;
+	}
+	public JLabel getLblAntwortmglichkeit() {
+		return lblAntwortmglichkeit;
+	}
+	public JPanel getChoicesEdit() {
+		return choicesEdit;
+	}
 }
