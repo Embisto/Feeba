@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JButton;
@@ -66,9 +67,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import java.awt.ComponentOrientation;
 import java.awt.SystemColor;
+import java.awt.event.MouseMotionAdapter;
 
 public class EditorGUI extends JFrame {
 
@@ -91,6 +92,7 @@ public class EditorGUI extends JFrame {
 	private JTextField textField_8;
 	private JTextField textField_9;
 	public static JPanel editPanel;
+	boolean mouseDragging = false;
 	private JComboBox questionTypeEdit;
 	private JTextArea questionTextEdit;
 	private JPanel results;
@@ -335,7 +337,7 @@ public class EditorGUI extends JFrame {
 				int selectedIndex = questions.getSelectedIndex();
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
 				fillEditFields(selectedIndex,questionNameEdit,questionTextEdit,questionTypeEdit);
-				generateChart(results,questions.getSelectedIndex());
+				//generateChart(results,questions.getSelectedIndex());
 				
 			}
 
@@ -343,7 +345,6 @@ public class EditorGUI extends JFrame {
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		questionWrapper.add(verticalStrut);
-		questions.setDragEnabled(true);
 		questions.setPreferredSize(new Dimension(200, 10));
 		
 		JScrollPane questionScroller = new JScrollPane(questions);
@@ -448,6 +449,7 @@ public class EditorGUI extends JFrame {
 				survey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
 				
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
+				
 				
 			}
 		});
@@ -707,6 +709,7 @@ public class EditorGUI extends JFrame {
 				int selectedIndex = questions.getSelectedIndex();
 				survey.getQuestions().get(selectedIndex).setQuestionText(questionTextEdit.getText().toString());
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
+				initModel(questions);
 			}
 		});
 		questionTextEdit.setForeground(Color.WHITE);
@@ -791,14 +794,12 @@ public class EditorGUI extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		DefaultListModel model = new DefaultListModel();
-		int index = 1;
-	    for(Question q : loadedSurvey.getQuestions()){
-	         model.addElement("Frage " + (index++) +": " +q.getName());
-	    } 
-	    
-	    list.setModel(model);     
+		initModel(list);
 	    list.setSelectedIndex(0);
+	    
+	    MouseAdapter listener = new ReorderListener(list);
+	    list.addMouseListener(listener);
+	    list.addMouseMotionListener(listener);
 		
 		
 	}
@@ -818,7 +819,7 @@ public class EditorGUI extends JFrame {
 		
 		Survey survey = EditorController.loadedSurvey;
 		Question ques = survey.getQuestions().get(selectedIndex);
-		name.setText("Frage " + (selectedIndex+1) +" - " + ques.getName());
+		name.setText("Frage " + (questions.getSelectedIndex()+1) + " - " + ques.getName());
 		text.setText(ques.getQuestionText());
 		answers.setText(ques.getChoicesText());
 		
@@ -860,6 +861,18 @@ public class EditorGUI extends JFrame {
 			
 		}
 		
+	}
+	
+	public static void initModel(JList list) {
+		
+		DefaultListModel model = new DefaultListModel();
+		int index = 1;
+	    for(Question q : EditorController.loadedSurvey.getQuestions()){
+	         model.addElement("Frage " + (index++) +": " +q.getName());
+	    } 
+	    
+	    list.setModel(model);  
+	    
 	}
 	
 	
