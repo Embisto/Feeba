@@ -19,4 +19,20 @@ public enum QuestionType {
 		}
 	}
 	
+	public String toString() {
+		
+switch(this) {
+		
+		case MULTIPLE_CHOICE:
+			return "Multiple Choice";
+		case SINGLE_SELECTION:
+			return "Einfachauswahl";
+		case FREETEXT:
+			return "Freitext";
+		default:
+			return"";
+		}
+		
+	}
+	
 }
