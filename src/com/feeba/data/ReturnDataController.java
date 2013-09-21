@@ -8,9 +8,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.feeba.core.FeebaCore;
+import com.feeba.editor.EditorController;
+import com.feeba.editor.EditorGUI;
+
 public class ReturnDataController {
 
-	public static Survey workingSurvey;
 
 	static String[] getAnswers(String dataString) {
 
@@ -58,14 +61,9 @@ public class ReturnDataController {
 	}
 
 	public static void newData(String dataString) {
-		workingSurvey.addData(getQuestionId(dataString),getAnswers(dataString));
-
+		FeebaCore.currentSurvey.addData(getQuestionId(dataString),getAnswers(dataString));
+		EditorController.generateChart(EditorGUI.results, getQuestionId(dataString));
 	}
 
-	public static void setWorkingSurvey(Survey survey) {
-
-		workingSurvey = survey;
-
-	}
 
 }

@@ -6,11 +6,15 @@ import java.awt.event.MouseEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
+import com.feeba.core.FeebaCore;
+import com.feeba.data.Survey;
+
 class ReorderListener extends MouseAdapter {
 
 	   private JList list;
 	   private int pressIndex = 0;
 	   private int releaseIndex = 0;
+	   private Survey survey = FeebaCore.currentSurvey;
 
 	   public ReorderListener(JList list) {
 	      if (!(list.getModel() instanceof DefaultListModel)) {
@@ -29,7 +33,7 @@ class ReorderListener extends MouseAdapter {
 	      releaseIndex = list.locationToIndex(e.getPoint());
 	      if (releaseIndex != pressIndex && releaseIndex != -1) {
 	         reorder();
-	         EditorGUI.initModel(list);
+	         EditorController.initModel(list);
 	      }
 	   }
 
@@ -47,6 +51,6 @@ class ReorderListener extends MouseAdapter {
 	      Object dragee = model.elementAt(pressIndex);
 	      model.removeElementAt(pressIndex);
 	      model.insertElementAt(dragee, releaseIndex);
-	      EditorController.loadedSurvey.moveItemToPosition(pressIndex, releaseIndex);
+	      survey.moveItemToPosition(pressIndex, releaseIndex);
 	   }
 	}

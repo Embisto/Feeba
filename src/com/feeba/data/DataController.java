@@ -1,12 +1,12 @@
 package com.feeba.data;
 
 import java.io.BufferedReader;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.feeba.core.FeebaCore;
 import com.google.gson.Gson;
 
 
@@ -14,10 +14,10 @@ public class DataController {
 	
 	final String PATH = "ServerData/survey.feeba";
 	
-	public void saveAsJson(Survey survey) {
+	public void saveAsJson() {
 		
 		
-		saveAsJson(survey,PATH);
+		saveAsJson(PATH);
 		
 	}
 	
@@ -27,8 +27,9 @@ public class DataController {
 		
 	}
 	
-	public void saveAsJson(Survey survey,String path) {
+	public void saveAsJson(String path) {
 		
+		Survey survey = FeebaCore.currentSurvey;
 		ArrayList<Question> questions = survey.getQuestions();
 		
 		// create json String

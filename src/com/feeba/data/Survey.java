@@ -107,6 +107,19 @@ public class Survey {
 		ques.addResult(answers);
 		
 	}
+	
+	//checks if data has been received 
+	public boolean checkForData(int questIndex) {
+		
+	 Question ques = questions.get(questIndex);
+	 
+	 if(ques.getResults()==null)
+		 return false;
+	 if(ques.getResults().size()==0)
+		 return false;
+	 return true;
+		
+	}
 
 
 }

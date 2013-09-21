@@ -13,13 +13,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
+import com.feeba.core.FeebaCore;
 import com.feeba.data.Question;
+import com.feeba.data.ReturnDataController;
 import com.feeba.data.Survey;
 
 import java.awt.event.MouseAdapter;
@@ -27,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.awt.Component;
 
 import javax.swing.Box;
@@ -63,13 +65,14 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.ComponentOrientation;
 import java.awt.SystemColor;
-import java.awt.event.MouseMotionAdapter;
 
 public class EditorGUI extends JFrame {
 
@@ -95,11 +98,11 @@ public class EditorGUI extends JFrame {
 	boolean mouseDragging = false;
 	private JComboBox questionTypeEdit;
 	private JTextArea questionTextEdit;
-	private JPanel results;
+	public static JPanel results;
 	public static Box questionWrapper;
 	private JLabel lblAntwortmglichkeit;
 	private JPanel choicesEdit;
-	public final Color UICOLOR = new Color(0x17748F);
+	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
 	/**
 	 * Launch the application.
 	 */
@@ -236,7 +239,7 @@ public class EditorGUI extends JFrame {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        if(index ==1) {
-		        	generateChart(results,questions.getSelectedIndex());
+		        	EditorController.generateChart(results,questions.getSelectedIndex());
 		        }
 		      }
 		    };
@@ -314,10 +317,10 @@ public class EditorGUI extends JFrame {
 		
 
 		results = new JPanel();
+		results.setOpaque(false);
 		results.setEnabled(false);
 		results.setBackground(Color.WHITE);
 		tabbedPane.addTab("Auswertung", null, results, null);
-		tabbedPane.setEnabledAt(1, false);
 		results.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		questionWrapper = Box.createVerticalBox();
 		questionWrapper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -337,7 +340,7 @@ public class EditorGUI extends JFrame {
 				int selectedIndex = questions.getSelectedIndex();
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
 				fillEditFields(selectedIndex,questionNameEdit,questionTextEdit,questionTypeEdit);
-				//generateChart(results,questions.getSelectedIndex());
+				EditorController.generateChart(results,selectedIndex);
 				
 			}
 
@@ -407,12 +410,14 @@ public class EditorGUI extends JFrame {
 		questionTypeEdit = new JComboBox();
 		sl_editPanel.putConstraint(SpringLayout.EAST, questionTypeEdit, -14, SpringLayout.EAST, editPanel);
 		questionTypeEdit.setModel(new DefaultComboBoxModel(QuestionType.values()));
-		questionTypeEdit.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		        EditorController.loadedSurvey.getQuestions().get(questions.getSelectedIndex()).changeQuestionType((QuestionType)questionTypeEdit.getSelectedItem());
-		        toggleChoices();
-		    }
-		});
+		questionTypeEdit.addItemListener(new ItemListener() {
+		     @Override
+		     public void itemStateChanged(ItemEvent e) {
+		    	 System.out.println("Change:" + e.paramString());
+		    	 //EditorController.loadedSurvey.getQuestions().get(questions.getSelectedIndex()).changeQuestionType((QuestionType)questionTypeEdit.getSelectedItem());
+			     toggleChoices();
+		     }
+		 });
 		editPanel.add(questionTypeEdit);
 		
 		JLabel questionType = new JLabel("Fragetyp:     ");
@@ -444,10 +449,8 @@ public class EditorGUI extends JFrame {
 		questionNameEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				Survey survey = EditorController.loadedSurvey;
 				int selectedIndex = questions.getSelectedIndex();
-				survey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
-				
+				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
 				
 				
@@ -705,11 +708,9 @@ public class EditorGUI extends JFrame {
 		questionTextEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				Survey survey = EditorController.loadedSurvey;
 				int selectedIndex = questions.getSelectedIndex();
-				survey.getQuestions().get(selectedIndex).setQuestionText(questionTextEdit.getText().toString());
+				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setQuestionText(questionTextEdit.getText().toString());
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
-				initModel(questions);
 			}
 		});
 		questionTextEdit.setForeground(Color.WHITE);
@@ -718,6 +719,65 @@ public class EditorGUI extends JFrame {
 		questionTextEdit.setBorder(new LineBorder(Color.LIGHT_GRAY, 6));
 		questionTextEdit.setRows(3);
 		editPanel.add(questionTextEdit);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
+		panel_2.setPreferredSize(new Dimension(250, 10));
+		contentPane.add(panel_2, BorderLayout.EAST);
+		SpringLayout sl_panel_2 = new SpringLayout();
+		panel_2.setLayout(sl_panel_2);
+		
+		JComboBox comboBox = new JComboBox();
+		sl_panel_2.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.EAST, comboBox, -52, SpringLayout.EAST, panel_2);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm"}));
+		panel_2.add(comboBox);
+		
+		JLabel lblDiagrammtyp = new JLabel("Diagrammtyp:     ");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, comboBox, 50, SpringLayout.NORTH, lblDiagrammtyp);
+		sl_panel_2.putConstraint(SpringLayout.NORTH, lblDiagrammtyp, 50, SpringLayout.NORTH, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.WEST, lblDiagrammtyp, 0, SpringLayout.WEST, comboBox);
+		lblDiagrammtyp.setOpaque(true);
+		lblDiagrammtyp.setForeground(Color.WHITE);
+		lblDiagrammtyp.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		lblDiagrammtyp.setBorder(new LineBorder(UICOLOR, 7));
+		lblDiagrammtyp.setBackground(new Color(23, 116, 143));
+		panel_2.add(lblDiagrammtyp);
+		
+		JButton btnNewButton_1 = new JButton("Daten zur\u00FCcksetzen");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				EditorController.resetResults(questions.getSelectedIndex());
+				EditorController.generateChart(results, questions.getSelectedIndex());
+			}
+		});
+		sl_panel_2.putConstraint(SpringLayout.WEST, btnNewButton_1, 10, SpringLayout.WEST, panel_2);
+		sl_panel_2.putConstraint(SpringLayout.EAST, btnNewButton_1, 240, SpringLayout.WEST, panel_2);
+		panel_2.add(btnNewButton_1);
+		
+		JLabel lblDiagrammaktionen = new JLabel("Diagrammaktionen:     ");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnNewButton_1, 50, SpringLayout.NORTH, lblDiagrammaktionen);
+		sl_panel_2.putConstraint(SpringLayout.NORTH, lblDiagrammaktionen, 50, SpringLayout.NORTH, comboBox);
+		sl_panel_2.putConstraint(SpringLayout.WEST, lblDiagrammaktionen, 0, SpringLayout.WEST, comboBox);
+		lblDiagrammaktionen.setOpaque(true);
+		lblDiagrammaktionen.setForeground(Color.WHITE);
+		lblDiagrammaktionen.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		lblDiagrammaktionen.setBorder(new LineBorder(UICOLOR, 7));
+		lblDiagrammaktionen.setBackground(new Color(23, 116, 143));
+		panel_2.add(lblDiagrammaktionen);
+		
+		JButton btnDiagrammAlsBild = new JButton("Diagramm als Bild speichern...");
+		sl_panel_2.putConstraint(SpringLayout.NORTH, btnDiagrammAlsBild, 40, SpringLayout.NORTH, btnNewButton_1);
+		btnDiagrammAlsBild.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				EditorController.saveChartImage((JLabel) results.getComponents()[0], questions.getSelectedIndex());
+			}
+		});
+		sl_panel_2.putConstraint(SpringLayout.WEST, btnDiagrammAlsBild, 0, SpringLayout.WEST, comboBox);
+		panel_2.add(btnDiagrammAlsBild);
 		
 	}
 
@@ -729,7 +789,7 @@ public class EditorGUI extends JFrame {
         
         chooser.addChoosableFileFilter(new FileFilter() {
             public boolean accept(File f) {
-              if (f.isDirectory()) return false;
+              if (f.isDirectory()) return true;
               return f.getName().toLowerCase().endsWith(".feeba");
             }
             public String getDescription () { return "Feeba Fragebšgen (*.feeba)"; }  
@@ -744,7 +804,7 @@ public class EditorGUI extends JFrame {
             tabbedPane.setVisible(true);
             questionWrapper.setVisible(true);
             File inputFile = chooser.getSelectedFile(); 
-            String inputDir = inputFile.getPath(); 
+            String inputDir = inputFile.getPath();
             EditorController.loadSurvey(inputDir,questions,backgroundPreview);
             editPanel.setVisible(true);
             
@@ -755,7 +815,7 @@ public class EditorGUI extends JFrame {
 	private void saveFileChoser() {
 		
 		JFileChooser chooser = new JFileChooser();
-		chooser.setSelectedFile(new File(EditorController.loadedSurvey.getName()+".feeba"));
+		chooser.setSelectedFile(new File(FeebaCore.currentSurvey.getName()+".feeba"));
         chooser.setDialogTitle("Speichern unter...");
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
         chooser.addChoosableFileFilter(new FileFilter() {
@@ -782,43 +842,12 @@ public class EditorGUI extends JFrame {
         } 
 		
 	}
-
-	public static void showData(Survey loadedSurvey, JList list, JLabel backgroundLabel) {
-		
-		
-		  
-		try {
-			backgroundLabel.setIcon(new ImageIcon(resize(ImageIO.read(EditorGUI.class.getResource("/images/Background.png")),backgroundLabel.getWidth(),backgroundLabel.getHeight())));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		initModel(list);
-	    list.setSelectedIndex(0);
-	    
-	    MouseAdapter listener = new ReorderListener(list);
-	    list.addMouseListener(listener);
-	    list.addMouseMotionListener(listener);
-		
-		
-	}
 	
-	//http://stackoverflow.com/questions/14548808/scale-the-imageicon-automatically-to-label-size
-	
-	public static BufferedImage resize(BufferedImage image, int width, int height) {
-	    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-	    Graphics2D g2d = (Graphics2D) bi.createGraphics();
-	    g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-	    g2d.drawImage(image, 0, 0, width, height, null);
-	    g2d.dispose();
-	    return bi;
-	}
 	
 	private void fillPreviewFields(int selectedIndex, JLabel name, JLabel text, JLabel answers) {
 		
-		Survey survey = EditorController.loadedSurvey;
-		Question ques = survey.getQuestions().get(selectedIndex);
+
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		name.setText("Frage " + (questions.getSelectedIndex()+1) + " - " + ques.getName());
 		text.setText(ques.getQuestionText());
 		answers.setText(ques.getChoicesText());
@@ -828,8 +857,7 @@ public class EditorGUI extends JFrame {
 	private void fillEditFields(int selectedIndex, JTextField questionNameEdit,
 			JTextArea questionTextEdit, JComboBox questionTypeEdit) {
 		
-		Survey survey = EditorController.loadedSurvey;
-		Question ques = survey.getQuestions().get(selectedIndex);
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		questionNameEdit.setText(ques.getName());
 		questionTextEdit.setText(ques.getQuestionText());
 		questionTypeEdit.setSelectedItem(ques.getType());
@@ -837,15 +865,7 @@ public class EditorGUI extends JFrame {
 		
 	}
 
-	private void generateChart(JPanel results, int selectedIndex) {
-		
-		String name = EditorController.loadedSurvey.getQuestions().get(selectedIndex).getQuestionText();
-		
-		results.removeAll();
-		results.add(EditorController.pieChart(selectedIndex,name));
-		
-		
-	}
+	
 	
 	public void toggleChoices() {
 		JComboBox jcb = getQuestionTypeEdit();
@@ -861,18 +881,6 @@ public class EditorGUI extends JFrame {
 			
 		}
 		
-	}
-	
-	public static void initModel(JList list) {
-		
-		DefaultListModel model = new DefaultListModel();
-		int index = 1;
-	    for(Question q : EditorController.loadedSurvey.getQuestions()){
-	         model.addElement("Frage " + (index++) +": " +q.getName());
-	    } 
-	    
-	    list.setModel(model);  
-	    
 	}
 	
 	

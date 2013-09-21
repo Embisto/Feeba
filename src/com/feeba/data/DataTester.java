@@ -18,8 +18,6 @@ public class DataTester {
 		s1.addQuestion(ques1,ques2,ques3,ques4,ques5);
 		s1.moveItemToPosition(1, 3);
 		DataController dc = new DataController();
-		dc.saveAsJson(s1);
-		ReturnDataController.setWorkingSurvey(dc.loadFromJson());
 		ServerGUI.main(null);
 
 	}
