@@ -334,13 +334,14 @@ public class EditorGUI extends JFrame {
 		gbl_results.rowWeights = new double[]{Double.MIN_VALUE};
 		results.setLayout(gbl_results);
 		questionWrapper = Box.createVerticalBox();
+		questionWrapper.setPreferredSize(new Dimension(200, 200));
 		questionWrapper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		questionWrapper.setAlignmentY(Component.TOP_ALIGNMENT);
 		questionWrapper.setBorder(null);
 		contentPane.add(questionWrapper, BorderLayout.WEST);
 		
 		questions = new JList();
-		questions.setMinimumSize(new Dimension(200, 2000));
+		questions.setMinimumSize(new Dimension(200, 200));
 		questions.setMaximumSize(new Dimension(200, 200));
 		questions.setFont(new Font("Helvetica", Font.PLAIN, 15));
 		questions.setSelectionBackground(new Color(0x17748F));
