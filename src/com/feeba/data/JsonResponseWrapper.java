@@ -8,6 +8,7 @@ public class JsonResponseWrapper {
 		
 		public String content;
 		public ArrayList<String> choices;
+		public ArrayList<String> results;
 		public String name;
 		public String type;
 		
@@ -26,6 +27,7 @@ public class JsonResponseWrapper {
 	
 	private String surveyName;
 	private ArrayList<QuestionWrapper> questions;
+	private ArrayList<QuestionWrapper> results;
 	public String getSurveyName() {
 		return surveyName;
 	}
@@ -34,6 +36,9 @@ public class JsonResponseWrapper {
 	}
 	public ArrayList<QuestionWrapper> getQuestions() {
 		return questions;
+	}
+	public ArrayList<QuestionWrapper> getResults() {
+		return results;
 	}
 	public void setQuestions(ArrayList<QuestionWrapper> questions) {
 		this.questions = questions;

@@ -42,6 +42,7 @@ public class DataController {
 			json.append(putInQuotes("name")+":"+putInQuotes(questions.get(i).getName())+",");
 			json.append(putInQuotes("content")+":"+putInQuotes(questions.get(i).getQuestionText())+",");
 			json.append(putInQuotes("choices")+":"+questions.get(i).getChoicesString()+",");
+			json.append(putInQuotes("results")+":"+questions.get(i).getResultsString()+",");
 			json.append(putInQuotes("type")+":"+putInQuotes(questions.get(i).getType().getJsonText()));
 			json.append("},{");
 
@@ -100,7 +101,9 @@ public class DataController {
 										  response.getQuestions().get(i).getQuestionType());
 			for(String choice : response.getQuestions().get(i).choices)
 				quest.addChoice(choice);
-			
+			if(response.getQuestions().get(i).results!=null){
+				quest.addResult(response.getQuestions().get(i).results.toArray(new String[response.getQuestions().get(i).results.size()]));
+			}
 			surv.addQuestion(quest);
 			
 			

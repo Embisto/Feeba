@@ -167,4 +167,20 @@ public class Question {
 	}}
 		return s;
 		}
+	
+	public String getResultsString() {
+		
+		String resultString = "[";
+		for(int i = 0; i < results.size();i++) {
+			resultString += "\""+results.get(i).toString()+"\"";
+			if(i != results.size()-1)
+				resultString += ",";
+		}
+		if(results.size() == 0)
+			resultString += "\"\"";
+		
+		resultString += "]";
+		
+		return resultString;
+	}
 }
