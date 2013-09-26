@@ -103,6 +103,7 @@ public class EditorGUI extends JFrame {
 	private JLabel lblAntwortmglichkeit;
 	private JPanel choicesEdit;
 	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
+	public static JComboBox comboBox;
 	/**
 	 * Launch the application.
 	 */
@@ -317,11 +318,15 @@ public class EditorGUI extends JFrame {
 		
 
 		results = new JPanel();
-		results.setOpaque(false);
 		results.setEnabled(false);
 		results.setBackground(Color.WHITE);
 		tabbedPane.addTab("Auswertung", null, results, null);
-		results.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		GridBagLayout gbl_results = new GridBagLayout();
+		gbl_results.columnWidths = new int[]{0};
+		gbl_results.rowHeights = new int[]{0};
+		gbl_results.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_results.rowWeights = new double[]{Double.MIN_VALUE};
+		results.setLayout(gbl_results);
 		questionWrapper = Box.createVerticalBox();
 		questionWrapper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		questionWrapper.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -727,10 +732,15 @@ public class EditorGUI extends JFrame {
 		SpringLayout sl_panel_2 = new SpringLayout();
 		panel_2.setLayout(sl_panel_2);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		sl_panel_2.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, panel_2);
 		sl_panel_2.putConstraint(SpringLayout.EAST, comboBox, -52, SpringLayout.EAST, panel_2);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
+		comboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        EditorController.generateChart(results, questions.getSelectedIndex());
+		    }
+		});
 		panel_2.add(comboBox);
 		
 		JLabel lblDiagrammtyp = new JLabel("Diagrammtyp:     ");

@@ -10,6 +10,7 @@ import static com.googlecode.charts4j.Color.CORAL;
 import static com.googlecode.charts4j.Color.CRIMSON;
 import static com.googlecode.charts4j.Color.CYAN;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -38,6 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
+import com.feeba.data.QuestionType;
 import com.feeba.data.ReturnDataController;
 import com.feeba.data.Survey;
 import com.feeba.server.ServerController;
@@ -45,11 +47,15 @@ import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
 import com.googlecode.charts4j.AxisStyle;
 import com.googlecode.charts4j.AxisTextAlignment;
+import com.googlecode.charts4j.BarChart;
 import com.googlecode.charts4j.Color;
 import com.googlecode.charts4j.Data;
+import com.googlecode.charts4j.Fill;
+import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
 import com.googlecode.charts4j.LineStyle;
 import com.googlecode.charts4j.PieChart;
+import com.googlecode.charts4j.Plot;
 import com.googlecode.charts4j.Plots;
 import com.googlecode.charts4j.RadarChart;
 import com.googlecode.charts4j.RadarPlot;
@@ -123,6 +129,42 @@ public class EditorController {
 		
 	}
 	
+	public static JLabel barChart(int selectedIndex, String chartTitle) {
+		
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
+		double[] dataArray = new double[ques.getChoices().size()];
+		for(int i = 0;i < ques.getChoices().size();i++)
+		{
+			
+			dataArray[i] = ((double)Collections.frequency(ques.getResults(),ques.getChoices().get(i))/(double)ques.getResults().size())*100;
+			
+		}
+		Data data = new Data(dataArray);
+		Plot plot = Plots.newPlot(data);
+		plot.setColor(Color.newColor("17748F"));
+		
+		for(int j = 0;j < dataArray.length;j++) {
+			plot.addTextMarker((int)dataArray[j]+" %", BLACK, 16, j);
+		}
+		BarChart chart = GCharts.newBarChart(plot);
+        chart.setBarWidth(80);
+        chart.setTitle(chartTitle, BLACK, 16);
+        chart.setSize(600, 500);
+        chart.addXAxisLabels(AxisLabelsFactory.newAxisLabels(ques.getChoices()));
+        chart.addYAxisLabels(AxisLabelsFactory.newAxisLabels(Arrays.asList("0 %", "20 %", "40 %", "60 %", "80 %", "100 %")));
+		
+		 JLabel label = new JLabel();
+			try {
+				label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart.toURLString()))));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+	        return label;
+	}
+	
 	public static JLabel radarChart(int selectedIndex, String chartTitle) {
 		
 		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
@@ -143,7 +185,8 @@ public class EditorController {
         plot.setLineStyle(LineStyle.newLineStyle(4, 1, 0));
         RadarChart chart = GCharts.newRadarChart(plot);
         chart.setTitle(chartTitle, BLACK, 20);
-        chart.setSize(400, 400);
+        chart.setSize(500, 500);
+        chart.setSpline(true);
         RadialAxisLabels radialAxisLabels = AxisLabelsFactory.newRadialAxisLabels(ques.getChoices());
         radialAxisLabels.setRadialAxisStyle(BLACK, 12);
         chart.addRadialAxisLabels(radialAxisLabels);
@@ -204,7 +247,8 @@ public class EditorController {
 	    }
 	    
         chart.setTitle(chartTitle, BLACK, 16);
-        chart.setSize(600, 300);
+        chart.setSize(700, 330);
+        chart.setThreeD(true);
         JLabel label = new JLabel();
 		try {
 			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart.toURLString()))));
@@ -277,12 +321,49 @@ public class EditorController {
 			}
 			
 			else {
+			
+			if(!FeebaCore.currentSurvey.getQuestions().get(selectedIndex).getType().equals(QuestionType.FREETEXT)) {
+			
+				switch(EditorGUI.comboBox.getSelectedIndex()){
+				case 0:
+					results.add(EditorController.pieChart(selectedIndex,name));
+					break;
+				case 1:
+					results.add(EditorController.barChart(selectedIndex,name));
+					break;
+				case 2:
+					results.add(EditorController.radarChart(selectedIndex,name));
+					break;
+				}
+				}
+			
+			else {
 				
-			results.add(EditorController.radarChart(selectedIndex,name));
+				results.add(EditorController.freetextChart(selectedIndex,name));
+				
+			}
 			
 			}
 			
+			results.updateUI();
 			
+			
+		}
+
+		private static Component freetextChart(int selectedIndex, String name) {
+			JLabel label = new JLabel();
+			String text = "<HTML>";
+			ArrayList<String> results = FeebaCore.currentSurvey.getQuestions().get(selectedIndex).getResults();
+			for(int i = 0; i < results.size();i++) {
+				
+				text += results.get(i) + "<BR>";
+				
+			}
+			
+			text+="</HTML>";
+			
+			label.setText(text);
+			return label;
 		}
 		
 	
