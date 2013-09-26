@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.awt.Component;
 
 import javax.swing.Box;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -208,8 +209,10 @@ public class EditorGUI extends JFrame {
 		btnUmfrageStarten.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				EditorController.startSurvey();
+				if(FeebaCore.currentSurvey!=null){
+				EditorController.startSurvey();}
+	        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
+
 				
 			}
 		});
@@ -240,7 +243,10 @@ public class EditorGUI extends JFrame {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        if(index ==1) {
-		        	EditorController.generateChart(results,questions.getSelectedIndex());
+		        	
+		        	if(FeebaCore.currentSurvey!=null){
+		        	EditorController.generateChart(results,questions.getSelectedIndex());}
+		        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
 		        }
 		      }
 		    };
@@ -738,8 +744,7 @@ public class EditorGUI extends JFrame {
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
 		comboBox.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		        EditorController.generateChart(results, questions.getSelectedIndex());
-		    }
+		        EditorController.generateChart(results, questions.getSelectedIndex());}
 		});
 		panel_2.add(comboBox);
 		
