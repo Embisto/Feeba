@@ -366,5 +366,10 @@ public class EditorController {
 			return label;
 		}
 		
-	
+		public static void toggleOptionPanel(JPanel panel1,JPanel panel2, boolean isVisible1, boolean isVisible2) {
+			
+			panel1.setVisible(isVisible1);
+			panel2.setVisible(isVisible2);
+			
+		}
 }

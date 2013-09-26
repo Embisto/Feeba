@@ -95,7 +95,7 @@ public class EditorGUI extends JFrame {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	public static JPanel editPanel;
+	public static JPanel previewOptions;
 	boolean mouseDragging = false;
 	private JComboBox questionTypeEdit;
 	private JTextArea questionTextEdit;
@@ -105,6 +105,7 @@ public class EditorGUI extends JFrame {
 	private JPanel choicesEdit;
 	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
 	public static JComboBox comboBox;
+	private JPanel resultOptions;
 	/**
 	 * Launch the application.
 	 */
@@ -237,21 +238,7 @@ public class EditorGUI extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(new LineBorder(Color.WHITE, 12));
 		tabbedPane.setBackground(null);
-		
-		ChangeListener changeListener = new ChangeListener() {
-		      public void stateChanged(ChangeEvent changeEvent) {
-		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-		        int index = sourceTabbedPane.getSelectedIndex();
-		        if(index ==1) {
-		        	
-		        	if(FeebaCore.currentSurvey!=null){
-		        	EditorController.generateChart(results,questions.getSelectedIndex());}
-		        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
-		        }
-		      }
-		    };
-		    
-		tabbedPane.addChangeListener(changeListener);
+	
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel preview = new JPanel();
@@ -410,17 +397,92 @@ public class EditorGUI extends JFrame {
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		questionWrapper.add(verticalStrut_1);
 		
-		editPanel = new JPanel();
-		editPanel.setBorder(new LineBorder(Color.WHITE, 10));
-		editPanel.setBackground(Color.WHITE);
-		editPanel.setPreferredSize(new Dimension(250, 10));
-		contentPane.add(editPanel, BorderLayout.EAST);
-		SpringLayout sl_editPanel = new SpringLayout();
-		editPanel.setLayout(sl_editPanel);
-		editPanel.setVisible(false);
+		JPanel options = new JPanel();
+		options.setOpaque(false);
+		options.setMaximumSize(new Dimension(200, 32767));
+		options.setMinimumSize(new Dimension(200, 10));
+		options.setPreferredSize(new Dimension(250, 10));
+		contentPane.add(options, BorderLayout.EAST);
+		
+		resultOptions = new JPanel();
+		resultOptions.setVisible(false);
+		resultOptions.setMinimumSize(new Dimension(200, 200));
+		resultOptions.setOpaque(false);
+		options.add(resultOptions);
+		resultOptions.setPreferredSize(new Dimension(250, 400));
+		SpringLayout sl_resultOptions = new SpringLayout();
+		resultOptions.setLayout(sl_resultOptions);
+		
+		comboBox = new JComboBox();
+		sl_resultOptions.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.EAST, comboBox, -52, SpringLayout.EAST, resultOptions);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
+		comboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        EditorController.generateChart(results, questions.getSelectedIndex());}
+		});
+		resultOptions.add(comboBox);
+		
+		JLabel lblDiagrammtyp = new JLabel("Diagrammtyp:     ");
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, lblDiagrammtyp, 21, SpringLayout.NORTH, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.EAST, lblDiagrammtyp, -115, SpringLayout.EAST, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, comboBox, 50, SpringLayout.NORTH, lblDiagrammtyp);
+		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammtyp, 0, SpringLayout.WEST, comboBox);
+		lblDiagrammtyp.setOpaque(true);
+		lblDiagrammtyp.setForeground(Color.WHITE);
+		lblDiagrammtyp.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		lblDiagrammtyp.setBorder(new LineBorder(UICOLOR, 7));
+		lblDiagrammtyp.setBackground(new Color(23, 116, 143));
+		resultOptions.add(lblDiagrammtyp);
+		
+		JButton btnNewButton_1 = new JButton("Daten zur\u00FCcksetzen");
+		sl_resultOptions.putConstraint(SpringLayout.WEST, btnNewButton_1, 10, SpringLayout.WEST, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.EAST, btnNewButton_1, -10, SpringLayout.EAST, resultOptions);
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				EditorController.resetResults(questions.getSelectedIndex());
+				EditorController.generateChart(results, questions.getSelectedIndex());
+			}
+		});
+		resultOptions.add(btnNewButton_1);
+		
+		JLabel lblDiagrammaktionen = new JLabel("Diagrammaktionen:     ");
+		sl_resultOptions.putConstraint(SpringLayout.EAST, lblDiagrammaktionen, -80, SpringLayout.EAST, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, btnNewButton_1, 50, SpringLayout.NORTH, lblDiagrammaktionen);
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, lblDiagrammaktionen, 50, SpringLayout.NORTH, comboBox);
+		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammaktionen, 0, SpringLayout.WEST, comboBox);
+		lblDiagrammaktionen.setOpaque(true);
+		lblDiagrammaktionen.setForeground(Color.WHITE);
+		lblDiagrammaktionen.setFont(new Font("Helvetica", Font.PLAIN, 15));
+		lblDiagrammaktionen.setBorder(new LineBorder(UICOLOR, 7));
+		lblDiagrammaktionen.setBackground(new Color(23, 116, 143));
+		resultOptions.add(lblDiagrammaktionen);
+		
+		JButton btnDiagrammAlsBild = new JButton("Diagramm als Bild speichern...");
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, btnDiagrammAlsBild, 40, SpringLayout.NORTH, btnNewButton_1);
+		sl_resultOptions.putConstraint(SpringLayout.EAST, btnDiagrammAlsBild, -5, SpringLayout.EAST, resultOptions);
+		btnDiagrammAlsBild.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				EditorController.saveChartImage((JLabel) results.getComponents()[0], questions.getSelectedIndex());
+			}
+		});
+		sl_resultOptions.putConstraint(SpringLayout.WEST, btnDiagrammAlsBild, 0, SpringLayout.WEST, comboBox);
+		resultOptions.add(btnDiagrammAlsBild);
+		
+		previewOptions = new JPanel();
+		previewOptions.setVisible(false);
+		options.add(previewOptions);
+		previewOptions.setBorder(new LineBorder(Color.WHITE, 10));
+		previewOptions.setBackground(Color.WHITE);
+		previewOptions.setPreferredSize(new Dimension(250, 70000));
+		SpringLayout sl_previewOptions = new SpringLayout();
+		previewOptions.setLayout(sl_previewOptions);
 		
 		questionTypeEdit = new JComboBox();
-		sl_editPanel.putConstraint(SpringLayout.EAST, questionTypeEdit, -14, SpringLayout.EAST, editPanel);
+		sl_previewOptions.putConstraint(SpringLayout.EAST, questionTypeEdit, -14, SpringLayout.EAST, previewOptions);
 		questionTypeEdit.setModel(new DefaultComboBoxModel(QuestionType.values()));
 		questionTypeEdit.addItemListener(new ItemListener() {
 		     @Override
@@ -430,7 +492,7 @@ public class EditorGUI extends JFrame {
 			     toggleChoices();
 		     }
 		 });
-		editPanel.add(questionTypeEdit);
+		previewOptions.add(questionTypeEdit);
 		
 		JLabel questionType = new JLabel("Fragetyp:     ");
 		questionType.setBorder(new LineBorder(UICOLOR, 7));
@@ -438,26 +500,26 @@ public class EditorGUI extends JFrame {
 		questionType.setOpaque(true);
 		questionType.setBackground(UICOLOR);
 		questionType.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		sl_editPanel.putConstraint(SpringLayout.WEST, questionType, 10, SpringLayout.WEST, editPanel);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, questionTypeEdit, 6, SpringLayout.SOUTH, questionType);
-		sl_editPanel.putConstraint(SpringLayout.WEST, questionTypeEdit, 10, SpringLayout.WEST, questionType);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, questionType, 10, SpringLayout.NORTH, editPanel);
-		editPanel.add(questionType);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, questionType, 10, SpringLayout.WEST, previewOptions);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, questionTypeEdit, 6, SpringLayout.SOUTH, questionType);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, questionTypeEdit, 10, SpringLayout.WEST, questionType);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, questionType, 10, SpringLayout.NORTH, previewOptions);
+		previewOptions.add(questionType);
 		
 		JLabel lblFrage = new JLabel("Name:    ");
-		sl_editPanel.putConstraint(SpringLayout.WEST, lblFrage, 0, SpringLayout.WEST, questionType);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, lblFrage, 0, SpringLayout.WEST, questionType);
 		lblFrage.setOpaque(true);
 		lblFrage.setBackground(UICOLOR);
 		lblFrage.setBorder(new LineBorder(UICOLOR, 7));
 		lblFrage.setForeground(Color.WHITE);
 		lblFrage.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		sl_editPanel.putConstraint(SpringLayout.NORTH, lblFrage, 10, SpringLayout.SOUTH, questionTypeEdit);
-		editPanel.add(lblFrage);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, lblFrage, 10, SpringLayout.SOUTH, questionTypeEdit);
+		previewOptions.add(lblFrage);
 		
 		questionNameEdit = new JTextField();
-		sl_editPanel.putConstraint(SpringLayout.NORTH, questionNameEdit, 10, SpringLayout.SOUTH, lblFrage);
-		sl_editPanel.putConstraint(SpringLayout.WEST, questionNameEdit, 0, SpringLayout.WEST, questionTypeEdit);
-		sl_editPanel.putConstraint(SpringLayout.EAST, questionNameEdit, 0, SpringLayout.EAST, questionTypeEdit);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, questionNameEdit, 10, SpringLayout.SOUTH, lblFrage);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, questionNameEdit, 0, SpringLayout.WEST, questionTypeEdit);
+		sl_previewOptions.putConstraint(SpringLayout.EAST, questionNameEdit, 0, SpringLayout.EAST, questionTypeEdit);
 		questionNameEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -472,23 +534,23 @@ public class EditorGUI extends JFrame {
 		questionNameEdit.setFont(new Font("Helvetica", Font.PLAIN, 20));
 		questionNameEdit.setBackground(Color.LIGHT_GRAY);
 		questionNameEdit.setBorder(new LineBorder(Color.LIGHT_GRAY, 7));
-		editPanel.add(questionNameEdit);
+		previewOptions.add(questionNameEdit);
 		questionNameEdit.setColumns(10);
 		
 		JLabel choicesLbl = new JLabel("Frage:    ");
-		sl_editPanel.putConstraint(SpringLayout.NORTH, choicesLbl, 10, SpringLayout.SOUTH, questionNameEdit);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, choicesLbl, 10, SpringLayout.SOUTH, questionNameEdit);
 		choicesLbl.setOpaque(true);
 		choicesLbl.setBackground(UICOLOR);
 		choicesLbl.setBorder(new LineBorder(UICOLOR, 7));
 		choicesLbl.setForeground(Color.WHITE);
 		choicesLbl.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		sl_editPanel.putConstraint(SpringLayout.WEST, choicesLbl, 10, SpringLayout.WEST, editPanel);
-		editPanel.add(choicesLbl);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, choicesLbl, 10, SpringLayout.WEST, previewOptions);
+		previewOptions.add(choicesLbl);
 		
 		choicesEdit = new JPanel();
-		sl_editPanel.putConstraint(SpringLayout.WEST, choicesEdit, 0, SpringLayout.WEST, questionNameEdit);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, choicesEdit, 0, SpringLayout.WEST, questionNameEdit);
 		choicesEdit.setBackground(Color.WHITE);
-		editPanel.add(choicesEdit);
+		previewOptions.add(choicesEdit);
 		GridBagLayout gbl_choicesEdit = new GridBagLayout();
 		gbl_choicesEdit.columnWidths = new int[] {40, 150, 0};
 		gbl_choicesEdit.rowHeights = new int[] {20, 20, 20, 20, 20, 20, 20, 20, 20};
@@ -508,7 +570,8 @@ public class EditorGUI extends JFrame {
 		
 		textField_5 = new JTextField();
 		textField_5.setFont(new Font("Helvetica", Font.PLAIN, 20));
-		textField_5.setBorder(new LineBorder(new Color(192, 192, 192), 4));		textField_5.setBackground(Color.LIGHT_GRAY);
+		textField_5.setBorder(new LineBorder(new Color(192, 192, 192), 4));		
+		textField_5.setBackground(Color.LIGHT_GRAY);
 		textField_5.setForeground(Color.WHITE);
 		textField_5.setBackground(Color.LIGHT_GRAY);
 		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
@@ -692,8 +755,8 @@ public class EditorGUI extends JFrame {
 		lblAntwortmglichkeit.setBorder(new LineBorder(UICOLOR, 7));
 		lblAntwortmglichkeit.setForeground(Color.WHITE);
 		lblAntwortmglichkeit.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		sl_editPanel.putConstraint(SpringLayout.WEST, lblAntwortmglichkeit, 10, SpringLayout.WEST, editPanel);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, choicesEdit, 14, SpringLayout.SOUTH, lblAntwortmglichkeit);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, lblAntwortmglichkeit, 10, SpringLayout.WEST, previewOptions);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, choicesEdit, 14, SpringLayout.SOUTH, lblAntwortmglichkeit);
 		
 		textField_9 = new JTextField();
 		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
@@ -707,16 +770,16 @@ public class EditorGUI extends JFrame {
 		gbc_textField_9.gridy = 8;
 		choicesEdit.add(textField_9, gbc_textField_9);
 		textField_9.setColumns(10);
-		editPanel.add(lblAntwortmglichkeit);
+		previewOptions.add(lblAntwortmglichkeit);
 		
 		questionTextEdit = new JTextArea();
-		sl_editPanel.putConstraint(SpringLayout.NORTH, lblAntwortmglichkeit, 10, SpringLayout.SOUTH, questionTextEdit);
-		sl_editPanel.putConstraint(SpringLayout.NORTH, questionTextEdit, 10, SpringLayout.SOUTH, choicesLbl);
-		sl_editPanel.putConstraint(SpringLayout.WEST, questionTextEdit, 0, SpringLayout.WEST, questionTypeEdit);
-		sl_editPanel.putConstraint(SpringLayout.EAST, questionTextEdit, 0, SpringLayout.EAST, questionTypeEdit);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, lblAntwortmglichkeit, 10, SpringLayout.SOUTH, questionTextEdit);
+		sl_previewOptions.putConstraint(SpringLayout.NORTH, questionTextEdit, 10, SpringLayout.SOUTH, choicesLbl);
+		sl_previewOptions.putConstraint(SpringLayout.WEST, questionTextEdit, 0, SpringLayout.WEST, questionTypeEdit);
+		sl_previewOptions.putConstraint(SpringLayout.EAST, questionTextEdit, 0, SpringLayout.EAST, questionTypeEdit);
 		questionTextEdit.setLineWrap(true);
 		questionTextEdit.setWrapStyleWord(true);
-		sl_editPanel.putConstraint(SpringLayout.EAST, choicesEdit, 0, SpringLayout.EAST, questionTextEdit);
+		sl_previewOptions.putConstraint(SpringLayout.EAST, choicesEdit, 0, SpringLayout.EAST, questionTextEdit);
 		questionTextEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -730,70 +793,26 @@ public class EditorGUI extends JFrame {
 		questionTextEdit.setBackground(Color.LIGHT_GRAY);
 		questionTextEdit.setBorder(new LineBorder(Color.LIGHT_GRAY, 6));
 		questionTextEdit.setRows(3);
-		editPanel.add(questionTextEdit);
+		previewOptions.add(questionTextEdit);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setOpaque(false);
-		panel_2.setPreferredSize(new Dimension(250, 10));
-		contentPane.add(panel_2, BorderLayout.EAST);
-		SpringLayout sl_panel_2 = new SpringLayout();
-		panel_2.setLayout(sl_panel_2);
-		
-		comboBox = new JComboBox();
-		sl_panel_2.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, comboBox, -52, SpringLayout.EAST, panel_2);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
-		comboBox.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		        EditorController.generateChart(results, questions.getSelectedIndex());}
-		});
-		panel_2.add(comboBox);
-		
-		JLabel lblDiagrammtyp = new JLabel("Diagrammtyp:     ");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, comboBox, 50, SpringLayout.NORTH, lblDiagrammtyp);
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblDiagrammtyp, 50, SpringLayout.NORTH, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.WEST, lblDiagrammtyp, 0, SpringLayout.WEST, comboBox);
-		lblDiagrammtyp.setOpaque(true);
-		lblDiagrammtyp.setForeground(Color.WHITE);
-		lblDiagrammtyp.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		lblDiagrammtyp.setBorder(new LineBorder(UICOLOR, 7));
-		lblDiagrammtyp.setBackground(new Color(23, 116, 143));
-		panel_2.add(lblDiagrammtyp);
-		
-		JButton btnNewButton_1 = new JButton("Daten zur\u00FCcksetzen");
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				EditorController.resetResults(questions.getSelectedIndex());
-				EditorController.generateChart(results, questions.getSelectedIndex());
-			}
-		});
-		sl_panel_2.putConstraint(SpringLayout.WEST, btnNewButton_1, 10, SpringLayout.WEST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, btnNewButton_1, 240, SpringLayout.WEST, panel_2);
-		panel_2.add(btnNewButton_1);
-		
-		JLabel lblDiagrammaktionen = new JLabel("Diagrammaktionen:     ");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, btnNewButton_1, 50, SpringLayout.NORTH, lblDiagrammaktionen);
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblDiagrammaktionen, 50, SpringLayout.NORTH, comboBox);
-		sl_panel_2.putConstraint(SpringLayout.WEST, lblDiagrammaktionen, 0, SpringLayout.WEST, comboBox);
-		lblDiagrammaktionen.setOpaque(true);
-		lblDiagrammaktionen.setForeground(Color.WHITE);
-		lblDiagrammaktionen.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		lblDiagrammaktionen.setBorder(new LineBorder(UICOLOR, 7));
-		lblDiagrammaktionen.setBackground(new Color(23, 116, 143));
-		panel_2.add(lblDiagrammaktionen);
-		
-		JButton btnDiagrammAlsBild = new JButton("Diagramm als Bild speichern...");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, btnDiagrammAlsBild, 40, SpringLayout.NORTH, btnNewButton_1);
-		btnDiagrammAlsBild.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				EditorController.saveChartImage((JLabel) results.getComponents()[0], questions.getSelectedIndex());
-			}
-		});
-		sl_panel_2.putConstraint(SpringLayout.WEST, btnDiagrammAlsBild, 0, SpringLayout.WEST, comboBox);
-		panel_2.add(btnDiagrammAlsBild);
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        if(index == 0) {
+		        	EditorController.toggleOptionPanel(resultOptions, previewOptions, false, true);
+		        }
+		        if(index ==1) {
+		        	
+		        	if(FeebaCore.currentSurvey!=null){
+		        	EditorController.toggleOptionPanel(resultOptions, previewOptions, true, false);
+		        	EditorController.generateChart(results,questions.getSelectedIndex());}
+		        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
+		        }
+		      }
+		    };
+		    
+		tabbedPane.addChangeListener(changeListener);
 		
 	}
 
@@ -822,7 +841,8 @@ public class EditorGUI extends JFrame {
             File inputFile = chooser.getSelectedFile(); 
             String inputDir = inputFile.getPath();
             EditorController.loadSurvey(inputDir,questions,backgroundPreview);
-            editPanel.setVisible(true);
+            previewOptions.setVisible(true);
+            questions.requestFocus();
             
         } 
 			
@@ -908,5 +928,8 @@ public class EditorGUI extends JFrame {
 	}
 	public JPanel getChoicesEdit() {
 		return choicesEdit;
+	}
+	public JPanel getResultOptions() {
+		return resultOptions;
 	}
 }
