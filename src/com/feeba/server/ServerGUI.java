@@ -20,8 +20,12 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import javax.swing.ImageIcon;
+
+import net.glxn.qrgen.QRCode;
 
 
 public class ServerGUI extends JFrame {
@@ -35,6 +39,7 @@ public class ServerGUI extends JFrame {
 	private JLabel ipadress;
 	private JButton startStopServer;
 	private JLabel serverState;
+	private JLabel qrLabel;
 
 	/**
 	 * Launch the application.
@@ -86,6 +91,7 @@ public class ServerGUI extends JFrame {
 
 					ServerController.stopServer();
 					ipadress.setText("");
+					qrLabel.setIcon(null);
 					startStopServer.setText("Server starten");
 					serverThread.interrupt();
 					serverState.setForeground(Color.DARK_GRAY);
@@ -107,6 +113,7 @@ public class ServerGUI extends JFrame {
 					});
 					
 					ipadress.setText(ServerController.getIp()+":8080");
+					qrLabel.setIcon(generateQR(ServerController.getIp()+":8080"));
 					startStopServer.setText("Server stoppen");
 					serverThread.start();
 					serverState.setText("Aktiv");
@@ -164,14 +171,30 @@ public class ServerGUI extends JFrame {
 				lblAktuellerServerStatus.setBounds(25, 160, 142, 16);
 				contentPane.add(lblAktuellerServerStatus);
 				
-				JLabel label = new JLabel("");
-				label.setHorizontalAlignment(SwingConstants.CENTER);
-				label.setIcon(new ImageIcon(ServerGUI.class.getResource("/images/logo.png")));
-				label.setBounds(328, 39, 394, 88);
-				contentPane.add(label);
+				JLabel logo = new JLabel("");
+				logo.setHorizontalAlignment(SwingConstants.CENTER);
+				logo.setIcon(new ImageIcon(ServerGUI.class.getResource("/images/logo.png")));
+				logo.setBounds(232, 42, 394, 88);
+				contentPane.add(logo);
+				
+				qrLabel = new JLabel();
+				qrLabel.setOpaque(true);
+				qrLabel.setBackground(Color.WHITE);
+				qrLabel.setBounds(584, 28, 140, 140);
+				contentPane.add(qrLabel);
+				
 
 	}
-
-
-
+	
+	private ImageIcon generateQR(String s) {
+		
+		File file = QRCode.from(s).withSize(140, 140).file();
+		ImageIcon icon = new ImageIcon(file.getPath());
+		
+		return icon;
+		
+		
+		
+		
+	}
 }
