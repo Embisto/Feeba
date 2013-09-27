@@ -4,15 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JButton;
@@ -20,15 +16,11 @@ import javax.swing.JTabbedPane;
 
 import com.feeba.core.FeebaCore;
 import com.feeba.data.Question;
-import com.feeba.data.ReturnDataController;
-import com.feeba.data.Survey;
+
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.awt.Component;
 
 import javax.swing.Box;
@@ -50,8 +42,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JLayeredPane;
-
-import java.awt.FlowLayout;
 
 import javax.swing.SpringLayout;
 

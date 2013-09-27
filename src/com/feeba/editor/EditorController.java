@@ -23,8 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
@@ -34,14 +33,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
 import com.feeba.data.QuestionType;
-import com.feeba.data.ReturnDataController;
-import com.feeba.data.Survey;
 import com.feeba.server.ServerController;
 import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
@@ -50,8 +45,6 @@ import com.googlecode.charts4j.AxisTextAlignment;
 import com.googlecode.charts4j.BarChart;
 import com.googlecode.charts4j.Color;
 import com.googlecode.charts4j.Data;
-import com.googlecode.charts4j.Fill;
-import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
 import com.googlecode.charts4j.LineStyle;
 import com.googlecode.charts4j.PieChart;
