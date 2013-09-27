@@ -18,6 +18,41 @@ html, body {
     z-index: 99;
 }
 
+#welcome
+{
+    background: url(../res/img/gradientblue.svg);
+    background-size:100%;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 50;
+}
+
+#welcomeText {
+
+
+   width:600px;
+   color:white;
+   margin: 80px auto auto;
+   font-size: 30px;
+
+}
+
+#startButton{
+
+  background: white;
+  float:right;
+  margin: 100px -10px;
+  color: black;
+  font-size:40px;
+  padding: 5px 60px 5px 10px;
+  cursor:pointer;
+
+
+}
+
 #bars {
 
     position: absolute;
@@ -50,7 +85,6 @@ html, body {
 #questionCount {
 
     color: white;
-    margin-left: 40%;
     display: inline;
     font-size: 40px;
 
@@ -59,7 +93,7 @@ html, body {
 
     width:600px;
     color:white;
-    margin: -80px auto auto;
+    margin: auto auto;
     font-size: 30px;
 }
 

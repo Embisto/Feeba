@@ -14,11 +14,15 @@
 
 	<body ng-app ng-controller="slideshow">
     <div id="hideAll"></div>
+    <div id="welcome">
+      <h1 id = welcomeText> {{welcomeMessage}}</h1>
+      <div id="startButton">Los geht's!</div>
+    </div>
     <div id="preloadElements"><input type="radio">
         <input type="checkbox"></div>
     <div id="navigationWrapper">
         <!--<img src="res/img/arrow_left.svg" id="arrowLeft" ng-click="previousClick()">-->
-      <h1 id="questionCount">Frage {{questIndex+1}} - {{questions[questIndex].name}}</h1>
+      <h1 id="questionCount">Frage {{questIndex+1}} von {{questions.length}} - {{questions[questIndex].name}}</h1>
         <img src="res/img/arrow_right.svg" id="arrowRight" ng-click="nextClick()">
     </div>
     <div id="question">
@@ -39,7 +43,10 @@
 
         window.onload = function()
         { $('#preloadElements').remove();
-            $("#hideAll").fadeOut(500);}
+         $("#hideAll").fadeOut(500);
+         $("#startButton").click(function(){
+           $("#welcome").fadeOut(500);
+         });}
     </script>
        <script type="text/javascript" src="js/libs/d3.v3.min.js"></script>
 	   <script type="text/javascript" src="js/Bars.js"></script>

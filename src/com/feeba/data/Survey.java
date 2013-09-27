@@ -7,6 +7,7 @@ public class Survey {
 	
 	private ArrayList<Question> questions;
 	private String name;
+	private String welcomeMessage;
 	
 	/**
 	 * 
@@ -119,6 +120,14 @@ public class Survey {
 		 return false;
 	 return true;
 		
+	}
+
+	public String getWelcomeMessage() {
+		return welcomeMessage;
+	}
+
+	public void setWelcomeMessage(String welcomeMessage) {
+		this.welcomeMessage = welcomeMessage;
 	}
 
 

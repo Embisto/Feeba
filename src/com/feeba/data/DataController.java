@@ -35,7 +35,9 @@ public class DataController {
 		// create json String
 		
 		StringBuffer json = new StringBuffer("{"+putInQuotes("surveyName")+":");
-		json.append(putInQuotes(survey.getName())+","+putInQuotes("questions")+":[{");
+		json.append(putInQuotes(survey.getName())+",");
+		json.append(putInQuotes("welcomeMessage")+":" + putInQuotes(survey.getWelcomeMessage())+","+putInQuotes("questions")+":[{");
+
 		
 		for(int i = 0; i < questions.size();i++) {
 		
@@ -91,6 +93,7 @@ public class DataController {
 		
 		//create Survey-Object
 		Survey surv = new Survey(response.getSurveyName());
+		surv.setWelcomeMessage(response.getWelcomeMessage());
 		
 		for (int i = 0; i < response.getQuestions().size();i++) {
 			

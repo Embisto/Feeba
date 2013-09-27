@@ -2,11 +2,11 @@ function slideshow($scope, $http) {
 
     $http.get('../ServerData/survey.feeba')
         .then(function(res){
-            $scope.questions = res.data.questions
+            $scope.questions = res.data.questions;
+            $scope.welcomeMessage = res.data.welcomeMessage;
         });
 
     $scope.questIndex = 0;
-
 
     $scope.sendAnswer = function($http,data) {
 
@@ -32,16 +32,25 @@ function slideshow($scope, $http) {
 
     }
 
+
     $scope.nextClick = function () {
 
 
-        if ($scope.questIndex < $scope.questions.length - 1) {
+        if ($scope.questIndex < $scope.questions.length) {
             $scope.sendAnswer($http);
             $scope.hideQuestion();
             $scope.questIndex = $scope.questIndex + 1;
             Bars.redraw();
             $scope.isEndOfArray();
             $scope.animateQuestion();
+
+        }
+
+        if($scope.questIndex == $scope.questions.length ) {
+
+          $("#questionCount").text("");
+          $("#questionContent").text("Die Beantwortung des Fragebogens ist nun zu Ende! Vielen Dank fuer Ihre Teilnahme!");
+          Bars.redraw();
 
         }
 
@@ -86,7 +95,7 @@ function slideshow($scope, $http) {
 
     }
 
-        if($scope.questIndex == $scope.questions.length - 1) {
+        if($scope.questIndex == $scope.questions.length) {
 
             $('#arrowRight').css({cursor:'default',
                                  opacity: 0}); }
