@@ -140,7 +140,9 @@ public class Question {
 	public void changeQuestionType(QuestionType type) {
 		
 			this.type = type;
-			this.choices = new ArrayList<String>();
+			if(type.equals(QuestionType.FREETEXT))
+				this.choices = new ArrayList<String>();
+			
 			this.results = new ArrayList<String>();
 			
 	}
