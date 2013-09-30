@@ -98,6 +98,7 @@ public class EditorGUI extends JFrame {
 	public static JComboBox comboBox;
 	private JPanel resultOptions;
 	private static JButton removeButton;
+	private static JButton addButton;
 	/**
 	 * Launch the application.
 	 */
@@ -355,24 +356,45 @@ public class EditorGUI extends JFrame {
 		panel.setSize(new Dimension(200, 40));
 		questionWrapper.add(panel);
 		
-		JButton button = new JButton("+");
-		button.setForeground(Color.DARK_GRAY);
-		button.setBackground(SystemColor.inactiveCaption);
-		button.setFont(new Font("Helvetica", Font.PLAIN, 22));
-		button.setOpaque(true);
-		button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		button.setMargin(new Insets(0, 0, 0, 0));
-		button.setPreferredSize(new Dimension(24, 24));
-		button.setBorder(null);
-		button.addActionListener(new ActionListener() {
+		addButton = new JButton("+");
+		addButton.setVisible(false);
+		addButton.setForeground(Color.DARK_GRAY);
+		addButton.setBackground(SystemColor.inactiveCaption);
+		addButton.setFont(new Font("Helvetica", Font.PLAIN, 22));
+		addButton.setOpaque(true);
+		addButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		addButton.setMargin(new Insets(0, 0, 0, 0));
+		addButton.setPreferredSize(new Dimension(24, 24));
+		addButton.setBorder(null);
+		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String s = (String)JOptionPane.showInputDialog(
+	                    null,
+	                    "Bitte geben Sie den Namen der Frage ein:\n",
+	                    "Neue Frage",
+	                    JOptionPane.PLAIN_MESSAGE,
+	                    null,
+	                    null,
+	                    "");
+
+	//If a string was returned, say so.
+	if ((s != null) && (s.length() > 0)) {
+	    
+		
+		EditorController.addQuestion(s);
+		EditorController.initModel(questions);
+		questions.setSelectedIndex(questions.getModel().getSize()-1);
+		
+	}
+
+	//If you're here, the return value was null/empty.
 			}
 		});
 		SpringLayout sl_panel = new SpringLayout();
-		sl_panel.putConstraint(SpringLayout.NORTH, button, 3, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, button, -3, SpringLayout.EAST, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, addButton, 3, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, addButton, -3, SpringLayout.EAST, panel);
 		panel.setLayout(sl_panel);
-		panel.add(button);
+		panel.add(addButton);
 		
 		removeButton = new JButton("-");
 		removeButton.setVisible(false);
@@ -394,11 +416,11 @@ public class EditorGUI extends JFrame {
 		});
 		
 		removeButton.setForeground(Color.DARK_GRAY);
-		sl_panel.putConstraint(SpringLayout.EAST, removeButton, -3, SpringLayout.WEST, button);
+		sl_panel.putConstraint(SpringLayout.EAST, removeButton, -3, SpringLayout.WEST, addButton);
 		removeButton.setFont(new Font("Helvetica", Font.PLAIN, 25));
 		removeButton.setOpaque(true);
 		removeButton.setBackground(SystemColor.inactiveCaptionBorder);
-		sl_panel.putConstraint(SpringLayout.SOUTH, removeButton, 0, SpringLayout.SOUTH, button);
+		sl_panel.putConstraint(SpringLayout.SOUTH, removeButton, 0, SpringLayout.SOUTH, addButton);
 		removeButton.setPreferredSize(new Dimension(24, 24));
 		removeButton.setMargin(new Insets(0, 0, 0, 0));
 		removeButton.setBorder(null);
@@ -863,6 +885,7 @@ public class EditorGUI extends JFrame {
             EditorController.loadSurvey(inputDir,questions,backgroundPreview);
             previewOptions.setVisible(true);
             removeButton.setVisible(true);
+            addButton.setVisible(true);
             questions.requestFocus();
             
         } 

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -33,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
+
 import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
@@ -363,6 +363,12 @@ public class EditorController {
 			
 			panel1.setVisible(isVisible1);
 			panel2.setVisible(isVisible2);
+			
+		}
+
+		public static void addQuestion(String s) {
+			Question ques = new Question(s, "Beispielfragetext", QuestionType.FREETEXT);
+			FeebaCore.currentSurvey.addQuestion(ques);
 			
 		}
 }
