@@ -97,6 +97,7 @@ public class EditorGUI extends JFrame {
 	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
 	public static JComboBox comboBox;
 	private JPanel resultOptions;
+	private static JButton removeButton;
 	/**
 	 * Launch the application.
 	 */
@@ -328,9 +329,10 @@ public class EditorGUI extends JFrame {
 			public void valueChanged(ListSelectionEvent arg0) {
 				
 				int selectedIndex = questions.getSelectedIndex();
+				if(selectedIndex!=-1){
 				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
 				fillEditFields(selectedIndex,questionNameEdit,questionTextEdit,questionTypeEdit);
-				EditorController.generateChart(results,selectedIndex);
+				EditorController.generateChart(results,selectedIndex);}
 				
 			}
 
@@ -372,18 +374,36 @@ public class EditorGUI extends JFrame {
 		panel.setLayout(sl_panel);
 		panel.add(button);
 		
-		JButton button_1 = new JButton("-");
-		button_1.setForeground(Color.DARK_GRAY);
-		sl_panel.putConstraint(SpringLayout.EAST, button_1, -3, SpringLayout.WEST, button);
-		button_1.setFont(new Font("Helvetica", Font.PLAIN, 25));
-		button_1.setOpaque(true);
-		button_1.setBackground(SystemColor.inactiveCaptionBorder);
-		sl_panel.putConstraint(SpringLayout.SOUTH, button_1, 0, SpringLayout.SOUTH, button);
-		button_1.setPreferredSize(new Dimension(24, 24));
-		button_1.setMargin(new Insets(0, 0, 0, 0));
-		button_1.setBorder(null);
-		button_1.setAlignmentY(1.0f);
-		panel.add(button_1);
+		removeButton = new JButton("-");
+		removeButton.setVisible(false);
+		removeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int result = JOptionPane.showConfirmDialog(
+					    null,
+					    "Mšchten sie Frage "+(questions.getSelectedIndex()+1)+" wirklich lšschen?",
+					    "",
+					    JOptionPane.YES_NO_OPTION);
+				
+				if(result == 0) {
+					
+					removeQuestion();
+					
+				}
+			}
+		});
+		
+		removeButton.setForeground(Color.DARK_GRAY);
+		sl_panel.putConstraint(SpringLayout.EAST, removeButton, -3, SpringLayout.WEST, button);
+		removeButton.setFont(new Font("Helvetica", Font.PLAIN, 25));
+		removeButton.setOpaque(true);
+		removeButton.setBackground(SystemColor.inactiveCaptionBorder);
+		sl_panel.putConstraint(SpringLayout.SOUTH, removeButton, 0, SpringLayout.SOUTH, button);
+		removeButton.setPreferredSize(new Dimension(24, 24));
+		removeButton.setMargin(new Insets(0, 0, 0, 0));
+		removeButton.setBorder(null);
+		removeButton.setAlignmentY(1.0f);
+		panel.add(removeButton);
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		questionWrapper.add(verticalStrut_1);
@@ -808,6 +828,14 @@ public class EditorGUI extends JFrame {
 		
 	}
 
+	protected void removeQuestion() {
+		
+		FeebaCore.currentSurvey.removeQuestionAt(questions.getSelectedIndex());
+		EditorController.initModel(questions);
+		questions.setSelectedIndex(0);
+		
+	}
+
 	public static void openFileChooser() {
 		
 		final JFileChooser chooser = new JFileChooser("Fragebogen laden"); 
@@ -834,6 +862,7 @@ public class EditorGUI extends JFrame {
             String inputDir = inputFile.getPath();
             EditorController.loadSurvey(inputDir,questions,backgroundPreview);
             previewOptions.setVisible(true);
+            removeButton.setVisible(true);
             questions.requestFocus();
             
         } 
@@ -874,7 +903,6 @@ public class EditorGUI extends JFrame {
 	
 	private void fillPreviewFields(int selectedIndex, JLabel name, JLabel text, JLabel answers) {
 		
-
 		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		name.setText("Frage " + (questions.getSelectedIndex()+1) + " - " + ques.getName());
 		text.setText(ques.getQuestionText());
@@ -884,7 +912,7 @@ public class EditorGUI extends JFrame {
 	
 	private void fillEditFields(int selectedIndex, JTextField questionNameEdit,
 			JTextArea questionTextEdit, JComboBox questionTypeEdit) {
-		
+
 		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		questionNameEdit.setText(ques.getName());
 		questionTextEdit.setText(ques.getQuestionText());
@@ -920,8 +948,8 @@ public class EditorGUI extends JFrame {
 	}
 
 	public void toggleChoices() {
-		JComboBox jcb = getQuestionTypeEdit();
-		if(jcb.getSelectedItem().equals(QuestionType.FREETEXT)) {
+
+		if(questionTypeEdit.getSelectedItem().equals(QuestionType.FREETEXT)) {
 			
 			lblAntwortmglichkeit.setVisible(false);
 			choicesEdit.setVisible(false);
@@ -935,17 +963,4 @@ public class EditorGUI extends JFrame {
 		
 	}
 	
-	
-	protected JComboBox getQuestionTypeEdit() {
-		return questionTypeEdit;
-	}
-	public JLabel getLblAntwortmglichkeit() {
-		return lblAntwortmglichkeit;
-	}
-	public JPanel getChoicesEdit() {
-		return choicesEdit;
-	}
-	public JPanel getResultOptions() {
-		return resultOptions;
-	}
 }
