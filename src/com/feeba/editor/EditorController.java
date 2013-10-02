@@ -33,6 +33,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
+import org.mcavallo.opencloud.Cloud;
+import org.mcavallo.opencloud.Tag;
+import org.mcavallo.opencloud.formatters.HTMLFormatter;
+
 import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
@@ -344,17 +348,25 @@ public class EditorController {
 		}
 
 		private static Component freetextChart(int selectedIndex, String name) {
+			
 			JLabel label = new JLabel();
-			String text = "<HTML>";
 			ArrayList<String> results = FeebaCore.currentSurvey.getQuestions().get(selectedIndex).getResults();
-			for(int i = 0; i < results.size();i++) {
+			Cloud cloud = new Cloud(); 
+			
+			cloud.setMaxWeight(20); 
+			cloud.setDefaultLink("");
+
+			
+           for(int i = 0; i < results.size();i++) {
 				
-				text += results.get(i) + "<BR>";
+        	   Tag tag = new Tag(results.get(i));
+        	   cloud.addTag(tag);    
 				
 			}
-			
-			text+="</HTML>";
-			
+           
+           	HTMLFormatter formatter = new HTMLFormatter();
+           	formatter.setHtmlTemplateTag("<span style=\"font-size: %tag-weight%px; color: #17748F\">%tag-name%    </span>\n");
+			String text =  "<HTML><body>" + formatter.html(cloud) + "</body></html>";
 			label.setText(text);
 			return label;
 		}
