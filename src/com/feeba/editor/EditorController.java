@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -88,13 +89,14 @@ public class EditorController {
 	
 	public static void saveChartImage(JLabel label, int selectedIndex) {
 		
-		ImageIcon icon = (ImageIcon) label.getIcon();
-		Image img = icon.getImage();
+		//ImageIcon icon = (ImageIcon) label.getIcon();
+		//Image img = icon.getImage();
 
-		BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage bi = new BufferedImage(label.getWidth(),label.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
+
 
 		Graphics2D g2 = bi.createGraphics();
-		g2.drawImage(img, 0, 0, null);
+		label.paint(g2);
 		g2.dispose();
 		
 		JFileChooser chooser = new JFileChooser();
@@ -320,8 +322,9 @@ public class EditorController {
 			else {
 			
 			if(!FeebaCore.currentSurvey.getQuestions().get(selectedIndex).getType().equals(QuestionType.FREETEXT)) {
-			
-				switch(EditorGUI.comboBox.getSelectedIndex()){
+				
+				int selectedChartTypeIndex = EditorGUI.chartTypeSelector.getSelectedIndex();
+				switch(selectedChartTypeIndex){
 				case 0:
 					results.add(EditorController.pieChart(selectedIndex,name));
 					break;
@@ -332,10 +335,13 @@ public class EditorController {
 					results.add(EditorController.radarChart(selectedIndex,name));
 					break;
 				}
+				EditorGUI.chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
+				EditorGUI.chartTypeSelector.setSelectedIndex(selectedChartTypeIndex);
 				}
 			
 			else {
 				
+				EditorGUI.chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Wordcloud"}));
 				results.add(EditorController.freetextChart(selectedIndex,name));
 				
 			}

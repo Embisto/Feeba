@@ -95,7 +95,7 @@ public class EditorGUI extends JFrame {
 	private JLabel lblAntwortmglichkeit;
 	private JPanel choicesEdit;
 	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
-	public static JComboBox comboBox;
+	public static JComboBox chartTypeSelector;
 	private JPanel resultOptions;
 	private static JButton removeButton;
 	private static JButton addButton;
@@ -325,7 +325,7 @@ public class EditorGUI extends JFrame {
 		questions.setMaximumSize(new Dimension(200, 200));
 		questions.setFont(new Font("Helvetica", Font.PLAIN, 15));
 		questions.setSelectionBackground(new Color(0x17748F));
-		questions.setBorder(null);
+		questions.setBorder(new LineBorder(Color.WHITE, 8));
 		questions.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				
@@ -356,16 +356,15 @@ public class EditorGUI extends JFrame {
 		panel.setSize(new Dimension(200, 40));
 		questionWrapper.add(panel);
 		
-		addButton = new JButton("+");
+		addButton = new JButton("Hinzuf\u00FCgen");
 		addButton.setVisible(false);
-		addButton.setForeground(Color.DARK_GRAY);
-		addButton.setBackground(SystemColor.inactiveCaption);
-		addButton.setFont(new Font("Helvetica", Font.PLAIN, 22));
+		addButton.setForeground(Color.WHITE);
+		addButton.setBackground(FeebaCore.FEEBA_BLUE);
+		addButton.setFont(new Font("Helvetica", Font.PLAIN, 16));
 		addButton.setOpaque(true);
 		addButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		addButton.setMargin(new Insets(0, 0, 0, 0));
-		addButton.setPreferredSize(new Dimension(24, 24));
-		addButton.setBorder(null);
+		addButton.setBorder(new LineBorder(FeebaCore.FEEBA_BLUE, 6));
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String s = (String)JOptionPane.showInputDialog(
@@ -396,7 +395,7 @@ public class EditorGUI extends JFrame {
 		panel.setLayout(sl_panel);
 		panel.add(addButton);
 		
-		removeButton = new JButton("-");
+		removeButton = new JButton("L\u00F6schen");
 		removeButton.setVisible(false);
 		removeButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -415,15 +414,14 @@ public class EditorGUI extends JFrame {
 			}
 		});
 		
-		removeButton.setForeground(Color.DARK_GRAY);
+		removeButton.setForeground(Color.WHITE);
 		sl_panel.putConstraint(SpringLayout.EAST, removeButton, -3, SpringLayout.WEST, addButton);
-		removeButton.setFont(new Font("Helvetica", Font.PLAIN, 25));
+		removeButton.setFont(new Font("Helvetica", Font.PLAIN, 16));
 		removeButton.setOpaque(true);
-		removeButton.setBackground(SystemColor.inactiveCaptionBorder);
+		removeButton.setBackground(FeebaCore.FEEBA_BLUE);
 		sl_panel.putConstraint(SpringLayout.SOUTH, removeButton, 0, SpringLayout.SOUTH, addButton);
-		removeButton.setPreferredSize(new Dimension(24, 24));
 		removeButton.setMargin(new Insets(0, 0, 0, 0));
-		removeButton.setBorder(null);
+		removeButton.setBorder(new LineBorder(FeebaCore.FEEBA_BLUE, 6));
 		removeButton.setAlignmentY(1.0f);
 		panel.add(removeButton);
 		
@@ -446,21 +444,21 @@ public class EditorGUI extends JFrame {
 		SpringLayout sl_resultOptions = new SpringLayout();
 		resultOptions.setLayout(sl_resultOptions);
 		
-		comboBox = new JComboBox();
-		sl_resultOptions.putConstraint(SpringLayout.WEST, comboBox, 10, SpringLayout.WEST, resultOptions);
-		sl_resultOptions.putConstraint(SpringLayout.EAST, comboBox, -52, SpringLayout.EAST, resultOptions);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
-		comboBox.addActionListener (new ActionListener () {
+		chartTypeSelector = new JComboBox();
+		sl_resultOptions.putConstraint(SpringLayout.WEST, chartTypeSelector, 10, SpringLayout.WEST, resultOptions);
+		sl_resultOptions.putConstraint(SpringLayout.EAST, chartTypeSelector, -52, SpringLayout.EAST, resultOptions);
+		chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
+		chartTypeSelector.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        EditorController.generateChart(results, questions.getSelectedIndex());}
 		});
-		resultOptions.add(comboBox);
+		resultOptions.add(chartTypeSelector);
 		
 		JLabel lblDiagrammtyp = new JLabel("Diagrammtyp:     ");
 		sl_resultOptions.putConstraint(SpringLayout.NORTH, lblDiagrammtyp, 21, SpringLayout.NORTH, resultOptions);
 		sl_resultOptions.putConstraint(SpringLayout.EAST, lblDiagrammtyp, -115, SpringLayout.EAST, resultOptions);
-		sl_resultOptions.putConstraint(SpringLayout.NORTH, comboBox, 50, SpringLayout.NORTH, lblDiagrammtyp);
-		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammtyp, 0, SpringLayout.WEST, comboBox);
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, chartTypeSelector, 50, SpringLayout.NORTH, lblDiagrammtyp);
+		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammtyp, 0, SpringLayout.WEST, chartTypeSelector);
 		lblDiagrammtyp.setOpaque(true);
 		lblDiagrammtyp.setForeground(Color.WHITE);
 		lblDiagrammtyp.setFont(new Font("Helvetica", Font.PLAIN, 15));
@@ -483,8 +481,8 @@ public class EditorGUI extends JFrame {
 		JLabel lblDiagrammaktionen = new JLabel("Diagrammaktionen:     ");
 		sl_resultOptions.putConstraint(SpringLayout.EAST, lblDiagrammaktionen, -80, SpringLayout.EAST, resultOptions);
 		sl_resultOptions.putConstraint(SpringLayout.NORTH, btnNewButton_1, 50, SpringLayout.NORTH, lblDiagrammaktionen);
-		sl_resultOptions.putConstraint(SpringLayout.NORTH, lblDiagrammaktionen, 50, SpringLayout.NORTH, comboBox);
-		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammaktionen, 0, SpringLayout.WEST, comboBox);
+		sl_resultOptions.putConstraint(SpringLayout.NORTH, lblDiagrammaktionen, 50, SpringLayout.NORTH, chartTypeSelector);
+		sl_resultOptions.putConstraint(SpringLayout.WEST, lblDiagrammaktionen, 0, SpringLayout.WEST, chartTypeSelector);
 		lblDiagrammaktionen.setOpaque(true);
 		lblDiagrammaktionen.setForeground(Color.WHITE);
 		lblDiagrammaktionen.setFont(new Font("Helvetica", Font.PLAIN, 15));
@@ -502,7 +500,7 @@ public class EditorGUI extends JFrame {
 				EditorController.saveChartImage((JLabel) results.getComponents()[0], questions.getSelectedIndex());
 			}
 		});
-		sl_resultOptions.putConstraint(SpringLayout.WEST, btnDiagrammAlsBild, 0, SpringLayout.WEST, comboBox);
+		sl_resultOptions.putConstraint(SpringLayout.WEST, btnDiagrammAlsBild, 0, SpringLayout.WEST, chartTypeSelector);
 		resultOptions.add(btnDiagrammAlsBild);
 		
 		previewOptions = new JPanel();
@@ -986,4 +984,7 @@ public class EditorGUI extends JFrame {
 		
 	}
 	
+	public JComboBox getChartTypeSelector() {
+		return chartTypeSelector;
+	}
 }
