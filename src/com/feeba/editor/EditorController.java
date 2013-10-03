@@ -32,6 +32,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import org.mcavallo.opencloud.Cloud;
@@ -387,6 +388,30 @@ public class EditorController {
 		public static void addQuestion(String s) {
 			Question ques = new Question(s, "Beispielfragetext", QuestionType.FREETEXT);
 			FeebaCore.currentSurvey.addQuestion(ques);
+			
+		}
+		
+		public static void updateChoices(int selectedIndex, JTextField[] inputs) {
+			
+			int latestUsedIndex = 7;
+			Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
+			
+			while(inputs[latestUsedIndex].getText().equals(""))
+			{
+				latestUsedIndex--;
+			}
+			
+			ArrayList<String> newChoices = new ArrayList<String>();
+			
+			for (int i = 0; i < latestUsedIndex+1;i++) {
+				
+				newChoices.add(inputs[i].getText());
+				
+			}
+			
+			
+			ques.setChoices(newChoices);
+			
 			
 		}
 }

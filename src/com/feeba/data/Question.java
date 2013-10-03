@@ -1,6 +1,7 @@
 package com.feeba.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 public class Question {
 	
 	private final int MAX_CHOICES = 8;
@@ -61,12 +62,13 @@ public class Question {
 	
 	public void setChoices(ArrayList<String> choices) {
 		
-		if(choiceSpaceIsAvailable()) {
+		this.choices = choices;
+				
+		if(!choiceSpaceIsAvailable()) {
 			
 			choices = (ArrayList<String>) choices.subList(0, 9);
 		}
 		
-		this.choices = choices;
 	}
 	
 	public void addChoice(String text, String... texts) {

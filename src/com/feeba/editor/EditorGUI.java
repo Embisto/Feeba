@@ -85,6 +85,7 @@ public class EditorGUI extends JFrame {
 	private JTextField fieldC;
 	private JTextField fieldB;
 	private JTextField fieldI;
+	JTextField[] editFields;
 	public static JPanel previewOptions;
 	private static boolean listenerEnabled = false;
 	boolean mouseDragging = false;
@@ -600,12 +601,14 @@ public class EditorGUI extends JFrame {
 		gbc_lblA.gridy = 0;
 		choicesEdit.add(lblA, gbc_lblA);
 		
+	
 		fieldA = new JTextField();
 		fieldA.setFont(new Font("Helvetica", Font.PLAIN, 20));
 		fieldA.setBorder(new LineBorder(new Color(192, 192, 192), 4));		
 		fieldA.setBackground(Color.LIGHT_GRAY);
 		fieldA.setForeground(Color.WHITE);
 		fieldA.setBackground(Color.LIGHT_GRAY);
+
 		GridBagConstraints gbc_fieldA = new GridBagConstraints();
 		gbc_fieldA.fill = GridBagConstraints.BOTH;
 		gbc_fieldA.insets = new Insets(0, 0, 5, 0);
@@ -845,6 +848,13 @@ public class EditorGUI extends JFrame {
 		    };
 		    
 		tabbedPane.addChangeListener(changeListener);
+		editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH,fieldI};
+		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questions, editFields, questionName, questionText, questionChoices);
+		for(int i = 0; i < editFields.length ; i++) {
+			
+			editFields[i].addKeyListener(cca);
+			
+		}
 		
 	}
 
@@ -922,7 +932,7 @@ public class EditorGUI extends JFrame {
 	}
 	
 	
-	private void fillPreviewFields(int selectedIndex, JLabel name, JLabel text, JLabel answers) {
+	public static void fillPreviewFields(int selectedIndex, JLabel name, JLabel text, JLabel answers) {
 		
 		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		name.setText("Frage " + (questions.getSelectedIndex()+1) + " - " + ques.getName());
@@ -952,8 +962,7 @@ public class EditorGUI extends JFrame {
 		if(ques.getType().equals(QuestionType.FREETEXT)) {
 			return;
 		}
-		
-		JTextField[] editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH,fieldI};
+	
 		
 		for (JTextField field:editFields) {
 			field.setText("");
