@@ -52,5 +52,6 @@ class ReorderListener extends MouseAdapter {
 	      model.removeElementAt(pressIndex);
 	      model.insertElementAt(dragee, releaseIndex);
 	      survey.moveItemToPosition(pressIndex, releaseIndex);
+	      EditorController.initModel(list);
 	   }
 	}
