@@ -63,7 +63,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.ComponentOrientation;
-import java.awt.SystemColor;
 
 public class EditorGUI extends JFrame {
 
@@ -84,7 +83,6 @@ public class EditorGUI extends JFrame {
 	private JTextField fieldD;
 	private JTextField fieldC;
 	private JTextField fieldB;
-	private JTextField fieldI;
 	JTextField[] editFields;
 	public static JPanel previewOptions;
 	private static boolean listenerEnabled = false;

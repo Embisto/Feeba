@@ -12,7 +12,6 @@ import static com.googlecode.charts4j.Color.CYAN;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;

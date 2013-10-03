@@ -1,7 +1,6 @@
 package com.feeba.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 public class Question {
 	
 	private final int MAX_CHOICES = 8;
