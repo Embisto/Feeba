@@ -62,7 +62,7 @@ html, body {
 
 #navigationWrapper {
 
-    height:150px;
+    height:70px;
     padding:40px;
 
 }
@@ -91,7 +91,7 @@ html, body {
 }
 #questionContent {
 
-    width:600px;
+    width:900px;
     color:white;
     margin: auto auto;
     font-size: 30px;
