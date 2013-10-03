@@ -160,17 +160,23 @@ public class Question {
 	}
 	public String getChoicesText() {
 		
-		String s = "";
+		String s = "<HTML>";
 		
 		if(type!=QuestionType.FREETEXT){
 		
 		for(int i = 0; i < choices.size();i++) {
-			s += (char)(65+i) + ": " + choices.get(i)+ " ";
+			s += (char)(65+i) + ": " + choices.get(i)+ "      ";
+			
+			if (i % 2 != 0) {
+				s+="<BR>";
+			}
 
 		
 	}}
+		s += "</HTML>";
 		return s;
 		}
+	
 	
 	public String getResultsString() {
 		
