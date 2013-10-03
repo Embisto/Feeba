@@ -284,8 +284,8 @@ public class EditorGUI extends JFrame {
 		panel_3.add(questionText);
 		
 		final JLabel questionChoices = new JLabel("");
+		sl_panel_3.putConstraint(SpringLayout.NORTH, questionChoices, 50, SpringLayout.SOUTH, questionText);
 		questionChoices.setBackground(null);
-		sl_panel_3.putConstraint(SpringLayout.SOUTH, questionChoices, 80, SpringLayout.SOUTH, questionText);
 		questionChoices.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
 		questionChoices.setForeground(Color.WHITE);
 		questionChoices.setHorizontalAlignment(SwingConstants.CENTER);
@@ -773,15 +773,6 @@ public class EditorGUI extends JFrame {
 		choicesEdit.add(fieldH, gbc_fieldH);
 		fieldH.setColumns(10);
 		
-		JLabel lblI = new JLabel("I : ");
-		lblI.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblI = new GridBagConstraints();
-		gbc_lblI.anchor = GridBagConstraints.WEST;
-		gbc_lblI.fill = GridBagConstraints.VERTICAL;
-		gbc_lblI.insets = new Insets(0, 0, 0, 5);
-		gbc_lblI.gridx = 0;
-		gbc_lblI.gridy = 8;
-		choicesEdit.add(lblI, gbc_lblI);
 		
 		
 		lblAntwortmglichkeit = new JLabel("Antwortm\u00F6glichkeiten:    ");
@@ -793,18 +784,7 @@ public class EditorGUI extends JFrame {
 		sl_previewOptions.putConstraint(SpringLayout.WEST, lblAntwortmglichkeit, 10, SpringLayout.WEST, previewOptions);
 		sl_previewOptions.putConstraint(SpringLayout.NORTH, choicesEdit, 14, SpringLayout.SOUTH, lblAntwortmglichkeit);
 		
-		fieldI = new JTextField();
-		GridBagConstraints gbc_fieldI = new GridBagConstraints();
-		gbc_fieldI.fill = GridBagConstraints.BOTH;
-		fieldI.setFont(new Font("Helvetica", Font.PLAIN, 20));
-		fieldI.setBackground(Color.LIGHT_GRAY);
-		fieldI.setForeground(Color.WHITE);
-		fieldI.setBorder(new LineBorder(new Color(192, 192, 192), 4));
-		gbc_fieldI.insets = new Insets(0, 0, 5, 0);
-		gbc_fieldI.gridx = 1;
-		gbc_fieldI.gridy = 8;
-		choicesEdit.add(fieldI, gbc_fieldI);
-		fieldI.setColumns(10);
+		
 		previewOptions.add(lblAntwortmglichkeit);
 		
 		questionTextEdit = new JTextArea();
@@ -848,7 +828,7 @@ public class EditorGUI extends JFrame {
 		    };
 		    
 		tabbedPane.addChangeListener(changeListener);
-		editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH,fieldI};
+		editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH};
 		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questions, editFields, questionName, questionText, questionChoices);
 		for(int i = 0; i < editFields.length ; i++) {
 			
@@ -950,6 +930,12 @@ public class EditorGUI extends JFrame {
 		listenerEnabled = false;
 		questionTypeEdit.setSelectedItem(ques.getType());
 		listenerEnabled = true;
+		
+		for (JTextField field:editFields) {
+			field.setText("");
+			
+		}
+		
 		toggleChoices();
 		fillChoices(ques);
 		
@@ -963,11 +949,6 @@ public class EditorGUI extends JFrame {
 			return;
 		}
 	
-		
-		for (JTextField field:editFields) {
-			field.setText("");
-			
-		}
 		
 		for (int i = 0; i< ques.getChoices().size();i++)
 		{
