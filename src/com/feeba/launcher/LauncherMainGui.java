@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
 import com.feeba.editor.EditorGUI;
+import com.feeba.editor.components.FeebaLoadingFilechooser;
 import com.feeba.wizzard.GuiNewQuestionnaire;
 
 import java.awt.event.MouseAdapter;
@@ -64,7 +65,8 @@ public class LauncherMainGui extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				EditorGUI.main(null);
-				EditorGUI.openFileChooser();
+				FeebaLoadingFilechooser fc = new FeebaLoadingFilechooser("Fragebogen laden...");
+				fc.show();
 			}
 			
 			@Override
