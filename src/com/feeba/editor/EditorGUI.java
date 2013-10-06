@@ -34,7 +34,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.JLayeredPane;
 import javax.swing.SpringLayout;
 
 import java.awt.Font;
@@ -44,6 +43,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import com.feeba.data.QuestionType;
 import com.feeba.editor.components.FeebaToolbar;
+import com.feeba.editor.components.PreviewPanel;
 
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -60,6 +60,7 @@ import java.awt.ComponentOrientation;
 public class EditorGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static PreviewPanel pp;
 	private JPanel contentPane;
 	public static JList questions;
 	public static JLabel backgroundPreview;
@@ -105,17 +106,11 @@ public class EditorGUI extends JFrame {
 					frame.setSize(dimension);
 					frame.setVisible(true);
 					
-					updateBackgroundLabel(backgroundPreview,centerTab);
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 
-			private void updateBackgroundLabel(JLabel label, JTabbedPane pane) {
-				label.setSize(new Dimension(pane.getWidth(),pane.getHeight()));
-				
-			}
 		});
 	}
 
@@ -143,75 +138,11 @@ public class EditorGUI extends JFrame {
 	
 		contentPane.add(centerTab, BorderLayout.CENTER);
 		
-		JPanel preview = new JPanel();
-		preview.setBorder(null);
-		preview.setBackground(null);
-		centerTab.addTab("Vorschau", null, preview, null);
-		SpringLayout sl_preview = new SpringLayout();
-		preview.setLayout(sl_preview);
-		
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBackground(null);
-		sl_preview.putConstraint(SpringLayout.NORTH, layeredPane, 0, SpringLayout.NORTH, preview);
-		sl_preview.putConstraint(SpringLayout.WEST, layeredPane, 0, SpringLayout.WEST, preview);
-		sl_preview.putConstraint(SpringLayout.SOUTH, layeredPane, 0, SpringLayout.SOUTH, preview);
-		sl_preview.putConstraint(SpringLayout.EAST, layeredPane, 0, SpringLayout.EAST, preview);
-		preview.add(layeredPane);
-		SpringLayout sl_layeredPane = new SpringLayout();
-		layeredPane.setLayout(sl_layeredPane);
-		
-		JPanel previewPanel = new JPanel();
-		previewPanel.setOpaque(false);
-		sl_layeredPane.putConstraint(SpringLayout.NORTH, previewPanel, 0, SpringLayout.NORTH, layeredPane);
-		sl_layeredPane.putConstraint(SpringLayout.WEST, previewPanel, 0, SpringLayout.WEST, layeredPane);
-		sl_layeredPane.putConstraint(SpringLayout.SOUTH, previewPanel, 444, SpringLayout.NORTH, layeredPane);
-		sl_layeredPane.putConstraint(SpringLayout.EAST, previewPanel, 0, SpringLayout.EAST, layeredPane);
-		previewPanel.setBackground(null);
-		layeredPane.add(previewPanel);
-		SpringLayout sl_previewPanel = new SpringLayout();
-		previewPanel.setLayout(sl_previewPanel);
-		
-		final JLabel questionName = new JLabel("");
-		questionName.setFont(new Font("Helvetica", Font.PLAIN, 30));
-		questionName.setForeground(Color.WHITE);
-		sl_previewPanel.putConstraint(SpringLayout.NORTH, questionName, 103, SpringLayout.NORTH, previewPanel);
-		sl_previewPanel.putConstraint(SpringLayout.WEST, questionName, 0, SpringLayout.WEST, previewPanel);
-		sl_previewPanel.putConstraint(SpringLayout.EAST, questionName, 0, SpringLayout.EAST, previewPanel);
-		questionName.setHorizontalAlignment(SwingConstants.CENTER);
-		questionName.setBackground(null);
-		previewPanel.add(questionName);
-		
-		final JLabel questionText = new JLabel("");
-		questionText.setBackground(null);
-		sl_previewPanel.putConstraint(SpringLayout.SOUTH, questionText, 100, SpringLayout.SOUTH, questionName);
-		questionText.setFont(new Font("Helvetica", Font.PLAIN, 20));
-		questionText.setForeground(Color.WHITE);
-		questionText.setHorizontalAlignment(SwingConstants.CENTER);
-		sl_previewPanel.putConstraint(SpringLayout.WEST, questionText, 0, SpringLayout.WEST, previewPanel);
-		sl_previewPanel.putConstraint(SpringLayout.EAST, questionText, 0, SpringLayout.EAST, previewPanel);
-		previewPanel.add(questionText);
-		
-		final JLabel questionChoices = new JLabel("");
-		sl_previewPanel.putConstraint(SpringLayout.NORTH, questionChoices, 50, SpringLayout.SOUTH, questionText);
-		questionChoices.setBackground(null);
-		questionChoices.setFont(new Font("Lucida Grande", Font.PLAIN, 23));
-		questionChoices.setForeground(Color.WHITE);
-		questionChoices.setHorizontalAlignment(SwingConstants.CENTER);
-		sl_previewPanel.putConstraint(SpringLayout.WEST, questionChoices, 0, SpringLayout.WEST, previewPanel);
-		sl_previewPanel.putConstraint(SpringLayout.EAST, questionChoices, 0, SpringLayout.EAST, previewPanel);
-		previewPanel.add(questionChoices);
-		
-		backgroundPreview = new JLabel("");
-		backgroundPreview.setBackground(null);
-		sl_preview.putConstraint(SpringLayout.NORTH, backgroundPreview, 0, SpringLayout.NORTH, preview);
-		sl_preview.putConstraint(SpringLayout.WEST, backgroundPreview, 0, SpringLayout.WEST, preview);
-		sl_preview.putConstraint(SpringLayout.SOUTH, backgroundPreview, 0, SpringLayout.SOUTH, preview);
-		sl_preview.putConstraint(SpringLayout.EAST, backgroundPreview, 0, SpringLayout.EAST, preview);
-		preview.add(backgroundPreview);
-		backgroundPreview.setAlignmentY(Component.TOP_ALIGNMENT);
-		backgroundPreview.setIconTextGap(0);
-		
+		// add PreviewPanel
+		pp = new PreviewPanel();
+		centerTab.addTab("Vorschau", null, pp, null);
 
+		
 		results = new JPanel();
 		results.setEnabled(false);
 		results.setBackground(Color.WHITE);
@@ -240,7 +171,7 @@ public class EditorGUI extends JFrame {
 				
 				int selectedIndex = questions.getSelectedIndex();
 				if(selectedIndex!=-1){
-				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
+				pp.fillPreviewFields(selectedIndex);
 				fillEditFields(selectedIndex,questionNameEdit,questionTextEdit,questionTypeEdit);
 				EditorController.generateChart(results,selectedIndex);}
 				
@@ -430,7 +361,7 @@ public class EditorGUI extends JFrame {
 		    	 if(listenerEnabled ) {
 		    	 FeebaCore.currentSurvey.getQuestions().get(questions.getSelectedIndex()).changeQuestionType((QuestionType)questionTypeEdit.getSelectedItem());
 			     toggleChoices();
-			     fillPreviewFields(questions.getSelectedIndex(),questionName,questionText,questionChoices);}
+			     pp.fillPreviewFields(questions.getSelectedIndex());}
 		     }
 		 });
 		previewOptions.add(questionTypeEdit);
@@ -466,7 +397,7 @@ public class EditorGUI extends JFrame {
 			public void keyReleased(KeyEvent arg0) {
 				int selectedIndex = questions.getSelectedIndex();
 				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
-				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
+				pp.fillPreviewFields(selectedIndex);
 				
 				
 			}
@@ -708,7 +639,7 @@ public class EditorGUI extends JFrame {
 			public void keyReleased(KeyEvent arg0) {
 				int selectedIndex = questions.getSelectedIndex();
 				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setQuestionText(questionTextEdit.getText().toString());
-				fillPreviewFields(selectedIndex,questionName,questionText,questionChoices);
+				pp.fillPreviewFields(selectedIndex);
 			}
 		});
 		questionTextEdit.setForeground(Color.WHITE);
@@ -737,7 +668,7 @@ public class EditorGUI extends JFrame {
 		    
 		centerTab.addChangeListener(changeListener);
 		editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH};
-		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questions, editFields, questionName, questionText, questionChoices);
+		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questions, editFields, pp);
 		for(int i = 0; i < editFields.length ; i++) {
 			
 			editFields[i].addKeyListener(cca);
@@ -751,15 +682,6 @@ public class EditorGUI extends JFrame {
 		FeebaCore.currentSurvey.removeQuestionAt(questions.getSelectedIndex());
 		EditorController.initModel(questions);
 		questions.setSelectedIndex(0);
-		
-	}
-	
-	public static void fillPreviewFields(int selectedIndex, JLabel name, JLabel text, JLabel answers) {
-		
-		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
-		name.setText("Frage " + (questions.getSelectedIndex()+1) + " - " + ques.getName());
-		text.setText(ques.getQuestionText());
-		answers.setText(ques.getChoicesText());
 		
 	}
 	
@@ -824,7 +746,7 @@ public class EditorGUI extends JFrame {
 		    
 		    centerTab.setVisible(true);
 	        questionWrapper.setVisible(true);
-	        EditorController.loadSurvey(inputDir,questions,backgroundPreview);
+	        EditorController.loadSurvey(inputDir,questions,pp);
 	        previewOptions.setVisible(true);
 	        removeButton.setVisible(true);
 	        addButton.setVisible(true);

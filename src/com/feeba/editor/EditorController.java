@@ -12,7 +12,6 @@ import static com.googlecode.charts4j.Color.CYAN;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,6 +41,7 @@ import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
 import com.feeba.data.QuestionType;
+import com.feeba.editor.components.PreviewPanel;
 import com.feeba.server.ServerController;
 import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
@@ -68,10 +68,10 @@ public class EditorController {
 	static DataController dc = new DataController();
 
 	
-	public static void loadSurvey(String file, JList list,JLabel backgroundLabel) {
+	public static void loadSurvey(String file, JList list,PreviewPanel pp) {
 		
 		FeebaCore.currentSurvey = dc.loadFromJson(file);
-		showData(list,backgroundLabel);
+		showData(list,pp);
 		
 	}
 
@@ -261,14 +261,9 @@ public class EditorController {
         return label;
     }
 	
-	public static void showData(JList list, JLabel backgroundLabel) {
+	public static void showData(JList list, PreviewPanel pp) {
 		
-		try {
-			backgroundLabel.setIcon(new ImageIcon(resize(ImageIO.read(EditorGUI.class.getResource("/images/Background.png")),backgroundLabel.getWidth(),backgroundLabel.getHeight())));
-		} catch (IOException e) {
-			System.err.println("Error loading Background");
-		}
-		
+		pp.updateBackground();
 
 	    initModel(list);
 	    list.setSelectedIndex(0);
@@ -280,15 +275,7 @@ public class EditorController {
 		
 	}
 	
-	    //http://stackoverflow.com/questions/14548808/scale-the-imageicon-automatically-to-label-size
-		public static BufferedImage resize(BufferedImage image, int width, int height) {
-		    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-		    Graphics2D g2d = (Graphics2D) bi.createGraphics();
-		    g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-		    g2d.drawImage(image, 0, 0, width, height, null);
-		    g2d.dispose();
-		    return bi;
-		}
+
 		
 		public static void initModel(JList list) {
 			
