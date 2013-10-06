@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -59,13 +58,11 @@ public class FeebaToolbar extends JPanel {
 		
 
 		JPanel buttons = new JPanel();
-		sl_toolBar.putConstraint(SpringLayout.WEST, buttons, 50, SpringLayout.EAST, feebaLogo);
+		sl_toolBar.putConstraint(SpringLayout.WEST, buttons, 30, SpringLayout.EAST, feebaLogo);
 		sl_toolBar.putConstraint(SpringLayout.NORTH, buttons, 0, SpringLayout.NORTH, this);
 		buttons.setOpaque(false);
 		add(buttons);
 		
-		Component horizontalStrut = Box.createHorizontalStrut(1);
-
 		
 		//createButtons
 		loadSurveyButton = new FeebaButton("Fragebogen Laden");
@@ -79,12 +76,9 @@ public class FeebaToolbar extends JPanel {
 
 		//addButtons
 		buttons.add(loadSurveyButton);
-		buttons.add(horizontalStrut);
 		buttons.add(saveSurveyButton);
-		buttons.add(horizontalStrut);
-		buttons.add(startSurveyButton);
-		buttons.add(horizontalStrut);
 		buttons.add(newSurveyButton);
+		buttons.add(startSurveyButton);
 
 	}
 	

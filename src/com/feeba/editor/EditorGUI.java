@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
@@ -17,11 +16,8 @@ import com.feeba.data.Question;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Component;
 
-import javax.swing.Box;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -32,8 +28,6 @@ import java.awt.Insets;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.SpringLayout;
 
 import java.awt.Font;
@@ -44,6 +38,7 @@ import javax.swing.DefaultComboBoxModel;
 import com.feeba.data.QuestionType;
 import com.feeba.editor.components.FeebaToolbar;
 import com.feeba.editor.components.PreviewPanel;
+import com.feeba.editor.components.QuestionContainer;
 
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -55,17 +50,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.ComponentOrientation;
 
 public class EditorGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static PreviewPanel pp;
 	private JPanel contentPane;
-	public static JList questions;
 	public static JLabel backgroundPreview;
 	public static JTabbedPane centerTab;
-	private JTextField questionNameEdit;
+	private static JTextField questionNameEdit;
 	private JTextField fieldG;
 	private JTextField fieldH;
 	private JTextField fieldF;
@@ -74,21 +67,20 @@ public class EditorGUI extends JFrame {
 	private JTextField fieldD;
 	private JTextField fieldC;
 	private JTextField fieldB;
-	JTextField[] editFields;
+	static JTextField[] editFields;
 	public static JPanel previewOptions;
 	private static boolean listenerEnabled = false;
 	boolean mouseDragging = false;
-	private JComboBox questionTypeEdit;
-	private JTextArea questionTextEdit;
+	private static JComboBox questionTypeEdit;
+	private static JTextArea questionTextEdit;
 	public static JPanel results;
-	public static Box questionWrapper;
-	private JLabel lblAntwortmglichkeit;
-	private JPanel choicesEdit;
+	public static QuestionContainer questionList;
+	private static JLabel lblAntwortmglichkeit;
+	private static JPanel choicesEdit;
 	public final Color UICOLOR = FeebaCore.FEEBA_BLUE;
 	public static JComboBox chartTypeSelector;
 	private JPanel resultOptions;
-	private static JButton removeButton;
-	private static JButton addButton;
+
 	/**
 	 * Launch the application.
 	 */
@@ -132,10 +124,11 @@ public class EditorGUI extends JFrame {
 		//add toolbar
 		contentPane.add(new FeebaToolbar(), BorderLayout.NORTH);
 
+		//add center tabs
 		centerTab = new JTabbedPane(JTabbedPane.TOP);
 		centerTab.setBorder(new LineBorder(Color.WHITE, 12));
 		centerTab.setBackground(null);
-	
+		
 		contentPane.add(centerTab, BorderLayout.CENTER);
 		
 		// add PreviewPanel
@@ -143,6 +136,7 @@ public class EditorGUI extends JFrame {
 		centerTab.addTab("Vorschau", null, pp, null);
 
 		
+		// create and add resultsTab
 		results = new JPanel();
 		results.setEnabled(false);
 		results.setBackground(Color.WHITE);
@@ -153,120 +147,10 @@ public class EditorGUI extends JFrame {
 		gbl_results.columnWeights = new double[]{Double.MIN_VALUE};
 		gbl_results.rowWeights = new double[]{Double.MIN_VALUE};
 		results.setLayout(gbl_results);
-		questionWrapper = Box.createVerticalBox();
-		questionWrapper.setPreferredSize(new Dimension(200, 200));
-		questionWrapper.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		questionWrapper.setAlignmentY(Component.TOP_ALIGNMENT);
-		questionWrapper.setBorder(null);
-		contentPane.add(questionWrapper, BorderLayout.WEST);
 		
-		questions = new JList();
-		questions.setMinimumSize(new Dimension(200, 200));
-		questions.setMaximumSize(new Dimension(200, 200));
-		questions.setFont(new Font("Helvetica", Font.PLAIN, 15));
-		questions.setSelectionBackground(new Color(0x17748F));
-		questions.setBorder(new LineBorder(Color.WHITE, 8));
-		questions.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
-				
-				int selectedIndex = questions.getSelectedIndex();
-				if(selectedIndex!=-1){
-				pp.fillPreviewFields(selectedIndex);
-				fillEditFields(selectedIndex,questionNameEdit,questionTextEdit,questionTypeEdit);
-				EditorController.generateChart(results,selectedIndex);}
-				
-			}
-
-		});
-		
-		Component verticalStrut = Box.createVerticalStrut(20);
-		questionWrapper.add(verticalStrut);
-		questions.setPreferredSize(new Dimension(200, 10));
-		
-		JScrollPane questionScroller = new JScrollPane(questions);
-		questionScroller.setBorder(null);
-		questionWrapper.add(questionScroller);
-		
-		JPanel panel = new JPanel();
-		panel.setOpaque(false);
-		panel.setBorder(null);
-		panel.setBackground(new Color(0x2D2F31));
-		panel.setMaximumSize(new Dimension(32767, 30));
-		panel.setPreferredSize(new Dimension(200, 30));
-		panel.setSize(new Dimension(200, 40));
-		questionWrapper.add(panel);
-		
-		addButton = new JButton("Hinzuf\u00FCgen");
-		addButton.setVisible(false);
-		addButton.setForeground(Color.WHITE);
-		addButton.setBackground(FeebaCore.FEEBA_BLUE);
-		addButton.setFont(new Font("Helvetica", Font.PLAIN, 16));
-		addButton.setOpaque(true);
-		addButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		addButton.setMargin(new Insets(0, 0, 0, 0));
-		addButton.setBorder(new LineBorder(FeebaCore.FEEBA_BLUE, 6));
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String s = (String)JOptionPane.showInputDialog(
-	                    null,
-	                    "Bitte geben Sie den Namen der Frage ein:\n",
-	                    "Neue Frage",
-	                    JOptionPane.PLAIN_MESSAGE,
-	                    null,
-	                    null,
-	                    "");
-
-	//If a string was returned, say so.
-	if ((s != null) && (s.length() > 0)) {
-	    
-		
-		EditorController.addQuestion(s);
-		EditorController.initModel(questions);
-		questions.setSelectedIndex(questions.getModel().getSize()-1);
-		
-	}
-
-	//If you're here, the return value was null/empty.
-			}
-		});
-		SpringLayout sl_panel = new SpringLayout();
-		sl_panel.putConstraint(SpringLayout.NORTH, addButton, 3, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, addButton, -3, SpringLayout.EAST, panel);
-		panel.setLayout(sl_panel);
-		panel.add(addButton);
-		
-		removeButton = new JButton("L\u00F6schen");
-		removeButton.setVisible(false);
-		removeButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				int result = JOptionPane.showConfirmDialog(
-					    null,
-					    "Mšchten sie Frage "+(questions.getSelectedIndex()+1)+" wirklich lšschen?",
-					    "",
-					    JOptionPane.YES_NO_OPTION);
-				
-				if(result == 0) {
-					
-					removeQuestion();
-					
-				}
-			}
-		});
-		
-		removeButton.setForeground(Color.WHITE);
-		sl_panel.putConstraint(SpringLayout.EAST, removeButton, -3, SpringLayout.WEST, addButton);
-		removeButton.setFont(new Font("Helvetica", Font.PLAIN, 16));
-		removeButton.setOpaque(true);
-		removeButton.setBackground(FeebaCore.FEEBA_BLUE);
-		sl_panel.putConstraint(SpringLayout.SOUTH, removeButton, 0, SpringLayout.SOUTH, addButton);
-		removeButton.setMargin(new Insets(0, 0, 0, 0));
-		removeButton.setBorder(new LineBorder(FeebaCore.FEEBA_BLUE, 6));
-		removeButton.setAlignmentY(1.0f);
-		panel.add(removeButton);
-		
-		Component verticalStrut_1 = Box.createVerticalStrut(20);
-		questionWrapper.add(verticalStrut_1);
+		// add questionList
+		questionList = new QuestionContainer();
+		contentPane.add(questionList, BorderLayout.WEST);
 		
 		JPanel options = new JPanel();
 		options.setOpaque(false);
@@ -290,7 +174,7 @@ public class EditorGUI extends JFrame {
 		chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
 		chartTypeSelector.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		        EditorController.generateChart(results, questions.getSelectedIndex());}
+		        EditorController.generateChart(results, questionList.getSelectedIndex());}
 		});
 		resultOptions.add(chartTypeSelector);
 		
@@ -312,8 +196,8 @@ public class EditorGUI extends JFrame {
 		resetDataButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				EditorController.resetResults(questions.getSelectedIndex());
-				EditorController.generateChart(results, questions.getSelectedIndex());
+				EditorController.resetResults(questionList.getSelectedIndex());
+				EditorController.generateChart(results, questionList.getSelectedIndex());
 			}
 		});
 		resultOptions.add(resetDataButton);
@@ -337,7 +221,7 @@ public class EditorGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				EditorController.saveChartImage((JLabel) results.getComponents()[0], questions.getSelectedIndex());
+				EditorController.saveChartImage((JLabel) results.getComponents()[0], questionList.getSelectedIndex());
 			}
 		});
 		sl_resultOptions.putConstraint(SpringLayout.WEST, saveAsImageButton, 0, SpringLayout.WEST, chartTypeSelector);
@@ -359,9 +243,9 @@ public class EditorGUI extends JFrame {
 		     @Override
 		     public void itemStateChanged(ItemEvent e) {
 		    	 if(listenerEnabled ) {
-		    	 FeebaCore.currentSurvey.getQuestions().get(questions.getSelectedIndex()).changeQuestionType((QuestionType)questionTypeEdit.getSelectedItem());
+		    	 FeebaCore.currentSurvey.getQuestions().get(questionList.getSelectedIndex()).changeQuestionType((QuestionType)questionTypeEdit.getSelectedItem());
 			     toggleChoices();
-			     pp.fillPreviewFields(questions.getSelectedIndex());}
+			     pp.fillPreviewFields(questionList.getSelectedIndex());}
 		     }
 		 });
 		previewOptions.add(questionTypeEdit);
@@ -395,7 +279,7 @@ public class EditorGUI extends JFrame {
 		questionNameEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				int selectedIndex = questions.getSelectedIndex();
+				int selectedIndex = questionList.getSelectedIndex();
 				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setName(questionNameEdit.getText().toString());
 				pp.fillPreviewFields(selectedIndex);
 				
@@ -637,7 +521,7 @@ public class EditorGUI extends JFrame {
 		questionTextEdit.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				int selectedIndex = questions.getSelectedIndex();
+				int selectedIndex = questionList.getSelectedIndex();
 				FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setQuestionText(questionTextEdit.getText().toString());
 				pp.fillPreviewFields(selectedIndex);
 			}
@@ -660,7 +544,7 @@ public class EditorGUI extends JFrame {
 		        	
 		        	if(FeebaCore.currentSurvey!=null){
 		        	EditorController.toggleOptionPanel(resultOptions, previewOptions, true, false);
-		        	EditorController.generateChart(results,questions.getSelectedIndex());}
+		        	EditorController.generateChart(results,questionList.getSelectedIndex());}
 		        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
 		        }
 		      }
@@ -668,7 +552,7 @@ public class EditorGUI extends JFrame {
 		    
 		centerTab.addChangeListener(changeListener);
 		editFields = new JTextField[] {fieldA,fieldB,fieldC,fieldD,fieldE,fieldF,fieldG,fieldH};
-		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questions, editFields, pp);
+		ChoicesChangedAdapter cca = new ChoicesChangedAdapter(questionList.getQuestionList(), editFields, pp);
 		for(int i = 0; i < editFields.length ; i++) {
 			
 			editFields[i].addKeyListener(cca);
@@ -677,16 +561,15 @@ public class EditorGUI extends JFrame {
 		
 	}
 
-	protected void removeQuestion() {
+	public static void removeQuestion() {
 		
-		FeebaCore.currentSurvey.removeQuestionAt(questions.getSelectedIndex());
-		EditorController.initModel(questions);
-		questions.setSelectedIndex(0);
+		FeebaCore.currentSurvey.removeQuestionAt(questionList.getSelectedIndex());
+		EditorController.initModel(questionList.getQuestionList());
+		questionList.getQuestionList().setSelectedIndex(0);
 		
 	}
 	
-	private void fillEditFields(int selectedIndex, JTextField questionNameEdit,
-			JTextArea questionTextEdit, JComboBox questionTypeEdit) {
+	private static void fillEditFields(int selectedIndex) {
 
 		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
 		questionNameEdit.setText(ques.getName());
@@ -707,7 +590,7 @@ public class EditorGUI extends JFrame {
 
 	
 	
-	private void fillChoices(Question ques) {
+	private static void fillChoices(Question ques) {
 		
 		if(ques.getType().equals(QuestionType.FREETEXT)) {
 			return;
@@ -722,7 +605,7 @@ public class EditorGUI extends JFrame {
 		
 	}
 
-	public void toggleChoices() {
+	public static void toggleChoices() {
 
 		if(questionTypeEdit.getSelectedItem().equals(QuestionType.FREETEXT)) {
 			
@@ -745,12 +628,21 @@ public class EditorGUI extends JFrame {
 	public static void finishLoadingFile(String inputDir) {
 		    
 		    centerTab.setVisible(true);
-	        questionWrapper.setVisible(true);
-	        EditorController.loadSurvey(inputDir,questions,pp);
+	        questionList.setVisible(true);
+	        EditorController.loadSurvey(inputDir,questionList.getQuestionList(),pp);
 	        previewOptions.setVisible(true);
-	        removeButton.setVisible(true);
-	        addButton.setVisible(true);
-	        questions.requestFocus();
+	        questionList.setButtonsVisible();
+	        questionList.getQuestionList().requestFocus();
+		
+	}
+	
+	public static void selectedQuestionChanged() {
+		
+		int selectedIndex = questionList.getSelectedIndex();
+		
+		pp.fillPreviewFields(selectedIndex);
+		fillEditFields(selectedIndex);
+		EditorController.generateChart(results,selectedIndex);
 		
 	}
 }

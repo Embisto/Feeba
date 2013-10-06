@@ -62,7 +62,7 @@ public class ReturnDataController {
 
 	public static void newData(String dataString) {
 		FeebaCore.currentSurvey.addData(getQuestionId(dataString),getAnswers(dataString));
-		if(getQuestionId(dataString)==EditorGUI.questions.getSelectedIndex()){
+		if(getQuestionId(dataString)==EditorGUI.questionList.getSelectedIndex()){
 		EditorController.generateChart(EditorGUI.results, getQuestionId(dataString));}
 	}
 

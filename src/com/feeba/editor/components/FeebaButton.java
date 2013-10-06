@@ -52,6 +52,12 @@ public class FeebaButton extends JButton {
 		
 	}
 	
+	public void isQuestionToolbarButton() {
+		
+		setFont(new Font("Helvetica", Font.BOLD, 12));
+		
+	}
+	
 	
 	
 }
