@@ -99,7 +99,8 @@ public class FeebaToolbar extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 								
-				//saveFileChoser();
+				FeebaSaveFilechooser fc = new FeebaSaveFilechooser("Fragebogen speichern...");
+				fc.show();
 			}
 
 		});

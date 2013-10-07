@@ -30,7 +30,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import org.mcavallo.opencloud.Cloud;
@@ -41,6 +40,7 @@ import com.feeba.core.FeebaCore;
 import com.feeba.data.DataController;
 import com.feeba.data.Question;
 import com.feeba.data.QuestionType;
+import com.feeba.editor.components.PreviewOptions;
 import com.feeba.editor.components.PreviewPanel;
 import com.feeba.editor.components.ResultOptions;
 import com.feeba.server.ServerController;
@@ -89,9 +89,6 @@ public class EditorController {
 	}
 	
 	public static void saveChartImage(JLabel label, int selectedIndex) {
-		
-		//ImageIcon icon = (ImageIcon) label.getIcon();
-		//Image img = icon.getImage();
 
 		BufferedImage bi = new BufferedImage(label.getWidth(),label.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
 
@@ -378,27 +375,14 @@ public class EditorController {
 			
 		}
 		
-		public static void updateChoices(int selectedIndex, JTextField[] inputs) {
+
+		public static void fillEditFields(int selectedIndex,
+				PreviewOptions previewOptions) {
 			
-			int latestUsedIndex = 7;
 			Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
-			
-			while(inputs[latestUsedIndex].getText().equals(""))
-			{
-				latestUsedIndex--;
-			}
-			
-			ArrayList<String> newChoices = new ArrayList<String>();
-			
-			for (int i = 0; i < latestUsedIndex+1;i++) {
-				
-				newChoices.add(inputs[i].getText());
-				
-			}
-			
-			
-			ques.setChoices(newChoices);
+			previewOptions.fillEditFields(ques);
 			
 			
 		}
+
 }
