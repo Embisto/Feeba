@@ -42,6 +42,7 @@ import com.feeba.data.DataController;
 import com.feeba.data.Question;
 import com.feeba.data.QuestionType;
 import com.feeba.editor.components.PreviewPanel;
+import com.feeba.editor.components.ResultOptions;
 import com.feeba.server.ServerController;
 import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
@@ -310,7 +311,7 @@ public class EditorController {
 			
 			if(!FeebaCore.currentSurvey.getQuestions().get(selectedIndex).getType().equals(QuestionType.FREETEXT)) {
 				
-				int selectedChartTypeIndex = EditorGUI.chartTypeSelector.getSelectedIndex();
+				int selectedChartTypeIndex = EditorGUI.getChartTypeSelector().getSelectedIndex();
 				switch(selectedChartTypeIndex){
 				case 0:
 					results.add(EditorController.pieChart(selectedIndex,name));
@@ -322,13 +323,13 @@ public class EditorController {
 					results.add(EditorController.radarChart(selectedIndex,name));
 					break;
 				}
-				EditorGUI.chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
-				EditorGUI.chartTypeSelector.setSelectedIndex(selectedChartTypeIndex);
+				EditorGUI.getChartTypeSelector().setModel(new DefaultComboBoxModel(new String[] {"Kuchendiagramm", "Balkendiagramm", "Radardiagramm"}));
+				EditorGUI.getChartTypeSelector().setSelectedIndex(selectedChartTypeIndex);
 				}
 			
 			else {
 				
-				EditorGUI.chartTypeSelector.setModel(new DefaultComboBoxModel(new String[] {"Wordcloud"}));
+				EditorGUI.getChartTypeSelector().setModel(new DefaultComboBoxModel(new String[] {"Wordcloud"}));
 				results.add(EditorController.freetextChart(selectedIndex,name));
 				
 			}
@@ -364,7 +365,7 @@ public class EditorController {
 			return label;
 		}
 		
-		public static void toggleOptionPanel(JPanel panel1,JPanel panel2, boolean isVisible1, boolean isVisible2) {
+		public static void toggleOptionPanel(ResultOptions panel1,JPanel panel2, boolean isVisible1, boolean isVisible2) {
 			
 			panel1.setVisible(isVisible1);
 			panel2.setVisible(isVisible2);
