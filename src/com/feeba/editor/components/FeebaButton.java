@@ -48,7 +48,7 @@ public class FeebaButton extends JButton {
 		
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setAlignmentY(Component.TOP_ALIGNMENT);
-		setPreferredSize(new Dimension(200, 50));
+		setPreferredSize(new Dimension(150, 50));
 		
 	}
 	

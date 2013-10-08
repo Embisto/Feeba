@@ -24,6 +24,9 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
+import com.feeba.data.DataController;
+import com.feeba.editor.EditorController;
+
 import net.glxn.qrgen.QRCode;
 
 
@@ -55,6 +58,8 @@ public class ServerGUI extends JFrame {
 					    
 					    	if(ServerController.isStarted())
 					    		ServerController.stopServer();
+					    		EditorController.serverWindowIsOpen = false;
+
 					    }
 					});
 					
@@ -98,9 +103,11 @@ public class ServerGUI extends JFrame {
 				}
 
 				else {
-
+					
 					serverState.setText("Starte...");
-
+					DataController dc = new DataController();
+					dc.saveAsJson();
+					
 					serverThread = new Thread(new Runnable() {
 						
 						public void run() {
@@ -181,6 +188,11 @@ public class ServerGUI extends JFrame {
 				qrLabel.setBackground(Color.WHITE);
 				qrLabel.setBounds(584, 28, 140, 140);
 				contentPane.add(qrLabel);
+				
+				JLabel lblAchtungnderungenAm = new JLabel("ACHTUNG: \u00C4nderungen am Fragebogen werden erst nach Neustart des Servers wirksam.");
+				lblAchtungnderungenAm.setForeground(Color.WHITE);
+				lblAchtungnderungenAm.setBounds(104, 252, 618, 16);
+				contentPane.add(lblAchtungnderungenAm);
 				
 
 	}

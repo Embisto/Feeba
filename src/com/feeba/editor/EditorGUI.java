@@ -28,6 +28,7 @@ import com.feeba.editor.components.PreviewOptions;
 import com.feeba.editor.components.PreviewPanel;
 import com.feeba.editor.components.QuestionContainer;
 import com.feeba.editor.components.ResultOptions;
+import com.feeba.tools.ImageTools;
 
 
 
@@ -178,7 +179,7 @@ public class EditorGUI extends JFrame {
 
 	public static void saveChartImage() {
 		
-		EditorController.saveChartImage((JLabel) results.getComponents()[0], questionList.getSelectedIndex());
+		ImageTools.saveChartImage((JLabel) results.getComponents()[0], questionList.getSelectedIndex());
 		
 	}
 
@@ -195,6 +196,8 @@ public class EditorGUI extends JFrame {
 		int selectedIndex = questionList.getSelectedIndex();
 		FeebaCore.currentSurvey.getQuestions().get(selectedIndex).setName(s);
 		pp.fillPreviewFields(selectedIndex);
+		EditorController.initModel(questionList.getQuestionList());
+		questionList.getQuestionList().setSelectedIndex(selectedIndex);
 		
 	}
 

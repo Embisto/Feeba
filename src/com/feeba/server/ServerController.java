@@ -18,7 +18,6 @@ public class ServerController extends Thread {
 	private static Server server = new Server(8080);
 
 	public static void startServer() {
-	
 		
 		ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);

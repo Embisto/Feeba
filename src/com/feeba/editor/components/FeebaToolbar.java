@@ -25,6 +25,7 @@ public class FeebaToolbar extends JPanel {
 	private FeebaButton saveSurveyButton;
 	private FeebaButton startSurveyButton;
 	private FeebaButton newSurveyButton;
+	private FeebaButton editSurveyButton;
 	
 	public FeebaToolbar() {
 		
@@ -58,7 +59,7 @@ public class FeebaToolbar extends JPanel {
 		
 
 		JPanel buttons = new JPanel();
-		sl_toolBar.putConstraint(SpringLayout.WEST, buttons, 30, SpringLayout.EAST, feebaLogo);
+		sl_toolBar.putConstraint(SpringLayout.WEST, buttons, 0, SpringLayout.EAST, feebaLogo);
 		sl_toolBar.putConstraint(SpringLayout.NORTH, buttons, 0, SpringLayout.NORTH, this);
 		buttons.setOpaque(false);
 		add(buttons);
@@ -69,14 +70,18 @@ public class FeebaToolbar extends JPanel {
 		loadSurveyButton.isToolbarButton();
 		saveSurveyButton = new FeebaButton("Fragebogen Speichern");
 		saveSurveyButton.isToolbarButton();
-		startSurveyButton = new FeebaButton("Umfrage Starten");
+		editSurveyButton = new FeebaButton("Fragebogen Bearbeiten");
+		editSurveyButton.isToolbarButton();
+		startSurveyButton = new FeebaButton("Fragebogen Starten");
 		startSurveyButton.isToolbarButton();
 		newSurveyButton = new FeebaButton("Neuer Fragebogen");
 		newSurveyButton.isToolbarButton();
+		
 
 		//addButtons
 		buttons.add(loadSurveyButton);
 		buttons.add(saveSurveyButton);
+		buttons.add(editSurveyButton);
 		buttons.add(newSurveyButton);
 		buttons.add(startSurveyButton);
 
