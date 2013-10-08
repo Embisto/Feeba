@@ -14,6 +14,9 @@ public class DataController {
 	
 	final String PATH = "ServerData/survey.feeba";
 	
+	/**
+	 * saves currenSurvey in default location (jSon file for the server)
+	 */
 	public void saveAsJson() {
 		
 		
@@ -21,11 +24,22 @@ public class DataController {
 		
 	}
 	
+	/**
+	 * Puts a certain string s in quotes
+	 * @param s String to quote
+	 * @return quoted String
+	 */
+	
 	public String putInQuotes(String s) {
 		
 		return "\""+s+"\"";
 		
 	}
+	
+	/**
+	 * Saves JSon file to a certain path
+	 * @param path where to save the file
+	 */
 	
 	public void saveAsJson(String path) {
 		
@@ -66,11 +80,23 @@ public class DataController {
 		}		
 	}
 
+	/**
+	 * loads file from default location
+	 * @return loaded Survey
+	 */
+	
 	public Survey loadFromJson() {
 		
 		return loadFromJson(PATH);
 		
 	}
+	
+	/**
+	 * loads file from certain location
+	 * @param path path to load from
+	 * @return loaded survey
+	 */
+	
 	public Survey loadFromJson(String path) {
 		
 

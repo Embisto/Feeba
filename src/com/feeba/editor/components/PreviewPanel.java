@@ -141,6 +141,9 @@ public class PreviewPanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Updates background according to current size of panel
+	 */
 	public void updateBackground() {
 		
 		int height = backgroundPreview.getHeight();

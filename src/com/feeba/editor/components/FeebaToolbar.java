@@ -70,7 +70,7 @@ public class FeebaToolbar extends JPanel {
 		loadSurveyButton.isToolbarButton();
 		saveSurveyButton = new FeebaButton("Fragebogen Speichern");
 		saveSurveyButton.isToolbarButton();
-		editSurveyButton = new FeebaButton("Fragebogen Bearbeiten");
+		editSurveyButton = new FeebaButton("Metadaten Bearbeiten");
 		editSurveyButton.isToolbarButton();
 		startSurveyButton = new FeebaButton("Fragebogen Starten");
 		startSurveyButton.isToolbarButton();
@@ -100,12 +100,28 @@ public class FeebaToolbar extends JPanel {
 				
 			}
 		});
+		
+		editSurveyButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(FeebaCore.currentSurvey!=null){
+					EditorController.startMetaDataEditor();}
+		        else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}				
+				
+			}
+
+		});
+		
 		saveSurveyButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-								
-				FeebaSaveFilechooser fc = new FeebaSaveFilechooser("Fragebogen speichern...");
-				fc.show();
+					
+				if(FeebaCore.currentSurvey!=null){
+					FeebaSaveFilechooser fc = new FeebaSaveFilechooser("Fragebogen speichern...");
+					fc.show();
+					}
+		        else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}	
+
 			}
 
 		});

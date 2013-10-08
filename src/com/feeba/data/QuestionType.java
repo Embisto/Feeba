@@ -4,6 +4,9 @@ public enum QuestionType {
 	
 	MULTIPLE_CHOICE,SINGLE_SELECTION,FREETEXT;
 	
+	/*
+	 * returns a String with an equivalent HTML-InputType
+	 */
 	public String getJsonText() {
 		
 		switch(this) {

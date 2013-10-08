@@ -36,6 +36,7 @@ public class ServerGUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static ServerGUI frame;
 	private Thread serverThread;
 	private JPanel contentPane;
 	private JLabel ipadress;
@@ -50,7 +51,7 @@ public class ServerGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ServerGUI frame = new ServerGUI();
+					frame = new ServerGUI();
 					frame.setVisible(true);
 					frame.addWindowListener(new java.awt.event.WindowAdapter() {
 					    @Override

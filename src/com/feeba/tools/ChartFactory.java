@@ -47,25 +47,37 @@ import com.googlecode.charts4j.Slice;
 
 public class ChartFactory {
 
+	/**
+	 * Creates a barChart
+	 * @param selectedIndex index of question for which a chart should be created
+	 * @param chartTitle the title of the chart
+	 * @return returns JLabel with chart as ImageIcon
+	 */
+	
 	public static JLabel barChart(int selectedIndex, String chartTitle) {
 
-		Question ques = FeebaCore.currentSurvey.getQuestions().get(
-				selectedIndex);
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
+		
 		double[] dataArray = new double[ques.getChoices().size()];
+		
 		for (int i = 0; i < ques.getChoices().size(); i++) {
 
 			dataArray[i] = ((double) Collections.frequency(ques.getResults(),
-					ques.getChoices().get(i)) / (double) ques.getResults()
-					.size()) * 100;
+					ques.getChoices().get(i)) / (double) ques.getResults().size()) * 100;
 
 		}
+		
 		Data data = new Data(dataArray);
 		Plot plot = Plots.newPlot(data);
+		
 		plot.setColor(Color.newColor("17748F"));
 
 		for (int j = 0; j < dataArray.length; j++) {
+			
 			plot.addTextMarker((int) dataArray[j] + " %", BLACK, 16, j);
+			
 		}
+		
 		BarChart chart = GCharts.newBarChart(plot);
 		chart.setBarWidth(80);
 		chart.setTitle(chartTitle, BLACK, 16);
@@ -74,24 +86,37 @@ public class ChartFactory {
 		chart.addYAxisLabels(AxisLabelsFactory.newAxisLabels(Arrays.asList(
 				"0 %", "20 %", "40 %", "60 %", "80 %", "100 %")));
 
+		
 		JLabel label = new JLabel();
+		
 		try {
-			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart
-					.toURLString()))));
+			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart.toURLString()))));
+			
 		} catch (MalformedURLException e) {
+			
 			e.printStackTrace();
+			
 		} catch (IOException e) {
+			
 			e.printStackTrace();
+			
 		}
 
 		return label;
 	}
 
+	/**
+	 * Creates a radarChart
+	 * @param selectedIndex index of question for which a chart should be created
+	 * @param chartTitle the title of the chart
+	 * @return returns JLabel with chart as ImageIcon
+	 */
 	public static JLabel radarChart(int selectedIndex, String chartTitle) {
 
-		Question ques = FeebaCore.currentSurvey.getQuestions().get(
-				selectedIndex);
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
+		
 		double[] dataArray = new double[ques.getChoices().size()];
+		
 		for (int i = 0; i < ques.getChoices().size(); i++) {
 
 			dataArray[i] = ((double) Collections.frequency(ques.getResults(),
@@ -99,50 +124,65 @@ public class ChartFactory {
 					.size()) * 100;
 
 		}
-		Arrays.toString(dataArray);
+		
 		Data data = new Data(dataArray);
 		RadarPlot plot = Plots.newRadarPlot(data);
 		Color plotColor = Color.newColor("17748F");
+		
 		plot.addShapeMarkers(Shape.SQUARE, plotColor, 12);
 		plot.addShapeMarkers(Shape.SQUARE, Color.WHITE, 8);
 		plot.setColor(plotColor);
 		plot.setLineStyle(LineStyle.newLineStyle(4, 1, 0));
+		
 		RadarChart chart = GCharts.newRadarChart(plot);
 		chart.setTitle(chartTitle, BLACK, 20);
 		chart.setSize(500, 500);
 		chart.setSpline(true);
-		RadialAxisLabels radialAxisLabels = AxisLabelsFactory
-				.newRadialAxisLabels(ques.getChoices());
+		
+		RadialAxisLabels radialAxisLabels = AxisLabelsFactory.newRadialAxisLabels(ques.getChoices());
 		radialAxisLabels.setRadialAxisStyle(BLACK, 12);
+		
 		chart.addRadialAxisLabels(radialAxisLabels);
-		AxisLabels contrentricAxisLabels = AxisLabelsFactory
-				.newAxisLabels(Arrays.asList("0 %", "20 %", "40 %", "60 %",
-						"80 %", "100 %"));
-		contrentricAxisLabels.setAxisStyle(AxisStyle.newAxisStyle(BLACK, 12,
-				AxisTextAlignment.RIGHT));
+		
+		AxisLabels contrentricAxisLabels = AxisLabelsFactory.newAxisLabels(Arrays.asList("0 %", "20 %", "40 %", "60 %","80 %", "100 %"));
+		contrentricAxisLabels.setAxisStyle(AxisStyle.newAxisStyle(BLACK, 12,AxisTextAlignment.RIGHT));
+		
 		chart.addConcentricAxisLabels(contrentricAxisLabels);
 
 		JLabel label = new JLabel();
 		try {
-			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart
-					.toURLString()))));
+			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart.toURLString()))));
+		
 		} catch (MalformedURLException e) {
+			
 			e.printStackTrace();
+			
 		} catch (IOException e) {
+			
 			e.printStackTrace();
+			
 		}
 
 		return label;
 
 	}
-
+	
+	/**
+	 * Creates a pieChart
+	 * @param selectedIndex index of question for which a chart should be created
+	 * @param chartTitle the title of the chart
+	 * @return returns JLabel with chart as ImageIcon
+	 */
+	
 	public static JLabel pieChart(int selectedIndex, String chartTitle) {
 
-		Color[] colors = new Color[] { TURQUOISE, BEIGE, BISQUE, BLUE, YELLOW,
-				CORAL, CRIMSON, CYAN };
-		Question ques = FeebaCore.currentSurvey.getQuestions().get(
-				selectedIndex);
+		// array of possible Colors
+		Color[] colors = new Color[] { TURQUOISE, BEIGE, BISQUE, BLUE, YELLOW,CORAL, CRIMSON, CYAN };
+		
+		Question ques = FeebaCore.currentSurvey.getQuestions().get(selectedIndex);
+		
 		Slice[] slices = new Slice[ques.getChoices().size()];
+		
 		for (int i = 0; i < slices.length; i++) {
 			slices[i] = Slice.newSlice(Collections.frequency(ques.getResults(),
 					ques.getChoices().get(i)), colors[i], ques.getChoices()
@@ -187,20 +227,30 @@ public class ChartFactory {
 		chart.setTitle(chartTitle, BLACK, 16);
 		chart.setSize(700, 330);
 		chart.setThreeD(true);
+		
 		JLabel label = new JLabel();
+		
 		try {
-			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart
-					.toURLString()))));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			label = new JLabel(new ImageIcon(ImageIO.read(new URL(chart.toURLString()))));
+		}
+		
+		catch (MalformedURLException e) {
+
 			e.printStackTrace();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return label;
 	}
 
+	/**
+	 * Creates a wordCloud
+	 * @param selectedIndex index of question for which a chart should be created
+	 * @param name the title of the chart
+	 * @return returns JLabel with chart as ImageIcon
+	 */
 	public static JLabel freetextChart(int selectedIndex, String name) {
 
 		JLabel label = new JLabel();

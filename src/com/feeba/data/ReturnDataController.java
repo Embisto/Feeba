@@ -14,7 +14,12 @@ import com.feeba.editor.EditorGUI;
 
 public class ReturnDataController {
 
-
+	/**
+	 * Creates a String Array of the received JSon String
+	 * @param dataString the received data
+	 * @return the formatted StringArray
+	 */
+	
 	static String[] getAnswers(String dataString) {
 
 		ArrayList<String> answers = new ArrayList<String>();
@@ -41,6 +46,11 @@ public class ReturnDataController {
 
 	}
 
+	/**
+	 * Extracts the questionID of the received JSon String
+	 * @param dataString received data 
+	 * @return returns received question index
+	 */
 	static int getQuestionId(String dataString) {
 
 		JSONParser parser = new JSONParser();
@@ -59,9 +69,14 @@ public class ReturnDataController {
 		return (int) questionIndex;
 
 	}
-
+	
+	/**
+	 * adds new Data to survey and triggers a chartRepaint if the question is currently viewed by the user 
+	 * @param dataString received data
+	 */
 	public static void newData(String dataString) {
 		FeebaCore.currentSurvey.addData(getQuestionId(dataString),getAnswers(dataString));
+		
 		if(getQuestionId(dataString)==EditorGUI.questionList.getSelectedIndex()){
 		EditorController.generateChart(EditorGUI.results, getQuestionId(dataString));}
 	}

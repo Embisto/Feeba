@@ -1,7 +1,9 @@
 package com.feeba.data;
 
 import java.util.ArrayList;
-
+/**
+ * WrapperClass for gsonLibrary 
+ */
 public class JsonResponseWrapper {
 	
 	public class QuestionWrapper {

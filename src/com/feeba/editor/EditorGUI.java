@@ -68,6 +68,9 @@ public class EditorGUI extends JFrame {
 		});
 	}
 	
+	/**
+	 * Creates basic EditorGUI
+	 */
 	public EditorGUI() {
 		
 		setTitle("Feeba");
@@ -129,6 +132,9 @@ public class EditorGUI extends JFrame {
 		
 	}
 
+	/**
+	 * removes question from survey, and model and selects first item in list
+	 */
 	public static void removeQuestion() {
 		
 		FeebaCore.currentSurvey.removeQuestionAt(questionList.getSelectedIndex());
@@ -137,11 +143,18 @@ public class EditorGUI extends JFrame {
 		
 	}
 	
-
+	/**
+	 * returns the chartTypeSelector of resultOptions
+	 * @return chartTypeSelector
+	 */
 	public static JComboBox getChartTypeSelector() {
 		return resultOptions.getChartTypeSelector();
 	}
 
+	/**
+	 * Finishes the file loading process, and creates UI
+	 * @param inputDir the path of the survey to load
+	 */
 	public static void finishLoadingFile(String inputDir) {
 		    
 		    centerTab.setVisible(true);
@@ -169,7 +182,7 @@ public class EditorGUI extends JFrame {
 		EditorController.generateChart(results, questionList.getSelectedIndex());
 		
 	}
-
+	
 	public static void resetResults() {
 		
 		EditorController.resetResults(questionList.getSelectedIndex());
@@ -224,6 +237,10 @@ public class EditorGUI extends JFrame {
 		return questionList.getQuestionList();
 	}
 
+	/**
+	 * Triggered if Tab in CenterTab has changed 
+	 * @param index index of selected tab
+	 */
 	public static void changeToTab(int index) {
 		
 		 if(index == 0) {

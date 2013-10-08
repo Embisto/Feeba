@@ -15,8 +15,14 @@ import com.feeba.core.FeebaCore;
 
 public class ImageTools {
 	
+	/**
+	 * Resizes image to a specific weight and height
+	 * @param image image to resize
+	 * @param width width of new image
+	 * @param height height of new image
+	 * @return resized image
+	 */
     //http://stackoverflow.com/questions/14548808/scale-the-imageicon-automatically-to-label-size
-	
 	public static BufferedImage resize(BufferedImage image, int width, int height) {
 	    BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 	    Graphics2D g2d = (Graphics2D) bi.createGraphics();
@@ -26,6 +32,11 @@ public class ImageTools {
 	    return bi;
 	}
 	
+	/**
+	 * Saves current chart a png file
+	 * @param label the label with the chart to save
+	 * @param selectedIndex index of the question
+	 */
 	public static void saveChartImage(JLabel label, int selectedIndex) {
 
 		BufferedImage bi = new BufferedImage(label.getWidth(),label.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);

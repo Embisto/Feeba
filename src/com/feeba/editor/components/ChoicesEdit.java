@@ -83,7 +83,11 @@ public class ChoicesEdit extends JPanel {
 
 		return editFields;
 	}
-
+	
+	/**
+	 * Updates choices to current question
+	 * @param selectedIndex index of current question
+	 */
 	public void updateChoices(int selectedIndex) {
 		
 		int latestUsedIndex = 7;

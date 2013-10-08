@@ -1,1 +1,8 @@
+com.feeba.core
 com.feeba.data
+com.feeba.editor
+com.feeba.editor.components
+com.feeba.launcher
+com.feeba.server
+com.feeba.tools
+com.feeba.wizzard
