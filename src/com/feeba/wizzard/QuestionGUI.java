@@ -123,12 +123,12 @@ public class QuestionGUI extends JFrame {
             
             JPanel panel = new JPanel();
             panel.setOpaque(false);
-            panel.setBounds(305, 149, 251, 100);
+            panel.setBounds(305, 149, 381, 100);
             contentPane.add(panel);
               panel.setLayout(null);
              
               final JRadioButton rdbtnMehrfachauswahl = new JRadioButton("Mehrfachauswahl");
-              rdbtnMehrfachauswahl.setBounds(0, 0, 167, 29);
+              rdbtnMehrfachauswahl.setBounds(0, 0, 327, 29);
               panel.add(rdbtnMehrfachauswahl);
               rdbtnMehrfachauswahl.setOpaque(false);
               rdbtnMehrfachauswahl.setForeground(Color.WHITE);
@@ -136,7 +136,7 @@ public class QuestionGUI extends JFrame {
               rdbtnMehrfachauswahl.setBackground(new Color(0x17748F));
               
                final JRadioButton rdbtnFreitext = new JRadioButton("Freitext");
-               rdbtnFreitext.setBounds(0, 32, 91, 29);
+               rdbtnFreitext.setBounds(0, 32, 256, 29);
                panel.add(rdbtnFreitext);
                rdbtnFreitext.setOpaque(false);
                rdbtnFreitext.setForeground(Color.WHITE);
@@ -144,18 +144,31 @@ public class QuestionGUI extends JFrame {
                rdbtnFreitext.setBackground(new Color(0x17748F));
                
                 JRadioButton rdbtnRadiobutton = new JRadioButton("Radiobutton");
-                rdbtnRadiobutton.setBounds(0, 64, 127, 29);
+                rdbtnRadiobutton.setBounds(0, 64, 256, 29);
                 panel.add(rdbtnRadiobutton);
                 rdbtnRadiobutton.setOpaque(false);
                 rdbtnRadiobutton.setForeground(Color.WHITE);
                 rdbtnRadiobutton.setFont(new Font("Tahoma", Font.BOLD, 16));
                 rdbtnRadiobutton.setBackground(new Color(0x17748F));
                 
+                //Group the radio buttons. Dann kann immer nur eins ausgewählt werden. Oder mach es mit nem dropdown. Siehe PreviewOptions!
+                //Da würd da Code vermutlich ewtas schöner werden, also das auslesen. Is auch irgendwo zu finden. Einfach dem selectionChanged Event folgen
+//                ButtonGroup group = new ButtonGroup();
+//                group.add(birdButton);
+//                group.add(catButton);
+//                group.add(dogButton);
+//                group.add(rabbitButton);
+//                group.add(pigButton);
+
+                
                 
                 FeebaButton btnFinished = new FeebaButton("Fertig");
                 btnFinished.addMouseListener(new MouseAdapter() {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
+                		
+                		// Aulagern Code is doppelt :) 
+                		// Den typ würd ich ned in WC speichern sondern einfach hier, beziehungsweise gelich die Dropdown benutzen
                 		if(rdbtnMehrfachauswahl.isSelected() == true){
                 			WizzardController.type = QuestionType.MULTIPLE_CHOICE;
                 		} else if (rdbtnFreitext.isSelected() == true){
@@ -173,6 +186,8 @@ public class QuestionGUI extends JFrame {
                 	// IN DIESER KLASSE HIER PASSIEREN SOLL
                 	//	WizzardController.survey.addQuestion(WizzardController.question, questionArgs);56t6
                 		EditorGUI.main(null);
+                	// Hier müsste dann FeebaCore.currentSurevey auf WizzardController.survey gesetzt werden und dann in den editor geladen werden,
+                    // dazu muss ich noch ne kleinigkeit ändern
                 		
                 	}
                 });
@@ -183,8 +198,7 @@ public class QuestionGUI extends JFrame {
                 btnFinished.setBounds(656, 361, 108, 46);
                 contentPane.add(btnFinished);
                
-                FeebaButton btnNextQuestion = new FeebaButton("neue Frage");
-                btnNextQuestion.setOpaque(false);
+                FeebaButton btnNextQuestion = new FeebaButton("Neue Frage");
                 btnNextQuestion.addMouseListener(new MouseAdapter() {
                         public void mouseClicked(MouseEvent arg0) {
                         
@@ -200,8 +214,8 @@ public class QuestionGUI extends JFrame {
                         	// HIER IST MIR NICHT SO GANZ KLAR; WIE ICH DIE FRAGEN IN MEIN WIZZARD-SURVEY ABSPEICHERN SOLL... UND OB DAS ‹BERHAUPT
                         	// IN DIESER KLASSE HIER PASSIEREN SOLL
                         	//	WizzardController.survey.addQuestion(WizzardController.question, questionArgs);
-                        		EditorGUI.main(null);
-                        	QuestionGUI.main(null);
+                        		EditorGUI.main(null); // brauchts hier ned
+                        	QuestionGUI.main(null); // würd ich ned neu laden sondern einfach alle felder leeren sonst werdens 800 Felder
                         }
                 });
                 btnNextQuestion.setBounds(535, 361, 111, 46);

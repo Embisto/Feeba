@@ -73,7 +73,6 @@ public class GuiNewQuestionnaire {
                 frame.getContentPane().add(txtpnName);
                
                 JTextPane txtpnInfoscreentext = new JTextPane();
-                txtpnInfoscreentext.setFont(new Font("Tahoma", Font.BOLD, 16));
                 txtpnInfoscreentext.setEditable(false);
                 txtpnInfoscreentext.setOpaque(false);
                 txtpnInfoscreentext.setText("Infoscreentext:");
@@ -90,7 +89,7 @@ public class GuiNewQuestionnaire {
                 	public void mouseClicked(MouseEvent arg0) {
                 		WizzardController.survey.setName(nameTextField.getText());
                 		WizzardController.survey.setWelcomeMessage(infoscreentextInput.getText());
-                     QuestionGUI.main(null);
+                        QuestionGUI.main(null);
                 	}
                 });
                 btnNewQuestion.setBounds(493, 254, 110, 42);

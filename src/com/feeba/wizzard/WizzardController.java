@@ -43,11 +43,11 @@ public class WizzardController {
 	
 	
 	
-	
+	// die qürd ich void machen und new Question nennen, dann im listener alles auslesen und übergeben
 	public static Question setQuestionData(String name, String exactQuestion, QuestionType type, ArrayList<String> answers){
 		question= new Question(name, exactQuestion, type);
-		question.setResults(answers);
-		
+		question.setResults(answers); // setChoices ???
+		// und hier dann survey.addQuestion(question);
 		return question;
 	}
 	
