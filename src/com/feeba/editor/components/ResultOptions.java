@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import javax.swing.DefaultComboBoxModel;
 
 import com.feeba.editor.EditorGUI;
 
