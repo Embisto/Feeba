@@ -1,33 +1,29 @@
 package com.feeba.server;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JLabel;
-
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.CardLayout;
-
-import javax.swing.SwingConstants;
-
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+
+
+import net.glxn.qrgen.QRCode;
 
 import com.feeba.data.DataController;
 import com.feeba.editor.EditorController;
-
-import net.glxn.qrgen.QRCode;
 
 
 public class ServerGUI extends JFrame {

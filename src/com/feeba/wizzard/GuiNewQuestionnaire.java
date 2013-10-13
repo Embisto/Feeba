@@ -15,10 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import com.feeba.data.Question;
+import com.feeba.editor.components.FeebaButton;
+import com.feeba.editor.components.FeebaTextField;
+
 public class GuiNewQuestionnaire {
  
         private JFrame frame;
-        private JTextField nameTextField;
+        private FeebaTextField nameTextField;
+        private FeebaTextField infoscreentextInput;
  
         /**
          * Launch the application.
@@ -54,31 +59,15 @@ public class GuiNewQuestionnaire {
                 frame.getContentPane().setLayout(null);
                
                
-                nameTextField = new JTextField();
+                nameTextField = new FeebaTextField();
                 nameTextField.setBounds(203, 22, 166, 20);
                 frame.getContentPane().add(nameTextField);
                 nameTextField.setColumns(10);
-               
-                JButton newQuestionButton = new JButton("Neue Frage");
-                newQuestionButton.addMouseListener(new MouseAdapter() {
-                        //go to questiontype
-                        public void mouseClicked(MouseEvent e) {
-                                QuestionType.main(null);
-                                }
-                       
-                });
-                newQuestionButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                               
-                        }
-                });
-                newQuestionButton.setBounds(501, 252, 115, 23);
-                frame.getContentPane().add(newQuestionButton);
-               
+                
                 JTextPane txtpnName = new JTextPane();
                 txtpnName.setFont(new Font("Tahoma", Font.BOLD, 16));
                 txtpnName.setEditable(false);
-                txtpnName.setBackground(new Color(0x17748F));
+                txtpnName.setOpaque(false);
                 txtpnName.setText("Name:");
                 txtpnName.setBounds(43, 22, 73, 20);
                 frame.getContentPane().add(txtpnName);
@@ -86,18 +75,33 @@ public class GuiNewQuestionnaire {
                 JTextPane txtpnInfoscreentext = new JTextPane();
                 txtpnInfoscreentext.setFont(new Font("Tahoma", Font.BOLD, 16));
                 txtpnInfoscreentext.setEditable(false);
-                txtpnInfoscreentext.setBackground(new Color(0x17748F));
+                txtpnInfoscreentext.setOpaque(false);
                 txtpnInfoscreentext.setText("Infoscreentext:");
                 txtpnInfoscreentext.setBounds(43, 95, 132, 20);
                 frame.getContentPane().add(txtpnInfoscreentext);
                
-                JLabel bars = new JLabel("");
-                bars.setIcon(new ImageIcon(GuiNewQuestionnaire.class.getResource("/images/bars.png")));
-                bars.setBounds(-13, 191, 728, 235);
-                frame.getContentPane().add(bars);
+                infoscreentextInput = new FeebaTextField();
+                infoscreentextInput.setBounds(203, 95, 275, 129);
+                frame.getContentPane().add(infoscreentextInput);
+                
+                FeebaButton btnNewQuestion = new FeebaButton("Neue Frage");
+                btnNewQuestion.addMouseListener(new MouseAdapter() {
+                	@Override
+                	public void mouseClicked(MouseEvent arg0) {
+                		WizzardController.survey.setName(nameTextField.getText());
+                		WizzardController.survey.setWelcomeMessage(infoscreentextInput.getText());
+                     QuestionGUI.main(null);
+                	}
+                });
+                btnNewQuestion.setBounds(493, 254, 110, 42);
+                frame.getContentPane().add(btnNewQuestion);
+                
+                JLabel lblBackground = new JLabel("");
+                lblBackground.setIcon(new ImageIcon(GuiNewQuestionnaire.class.getResource("/images/Background.png")));
+                lblBackground.setBounds(0, -189, 639, 592);
+                frame.getContentPane().add(lblBackground);
                
-                JTextPane textPane = new JTextPane();
-                textPane.setBounds(205, 102, 275, 129);
-                frame.getContentPane().add(textPane);
+               
+               
         }
 }

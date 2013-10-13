@@ -1,24 +1,25 @@
 package com.feeba.launcher;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-
 import com.feeba.editor.EditorGUI;
+import com.feeba.editor.components.FeebaButton;
 import com.feeba.editor.components.FeebaLoadingFilechooser;
 import com.feeba.wizzard.GuiNewQuestionnaire;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LauncherMainGui extends JFrame {
 
@@ -27,10 +28,8 @@ public class LauncherMainGui extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
+	private final JLabel lblNewLabel = new JLabel("");
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -45,6 +44,7 @@ public class LauncherMainGui extends JFrame {
 		});
 	}
 
+
 	/**
 	 * Create the frame.
 	 */
@@ -55,87 +55,37 @@ public class LauncherMainGui extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 649, 450);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0x17748F));
+		
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		final JPanel loadButton = new JPanel();
-		loadButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		FeebaButton loadButton = new FeebaButton("Umfrage laden");
+		loadButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				EditorGUI.main(null);
 				FeebaLoadingFilechooser fc = new FeebaLoadingFilechooser("Fragebogen laden...");
 				fc.show();
 			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				enter(loadButton);
-				}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				exit(loadButton);
-			}
 		});
-		
-		loadButton.setBackground(Color.WHITE);
-		loadButton.setBounds(371, 28, 245, 40);
+		loadButton.setBounds(325, 29, 281, 60);
+		loadButton.setOpaque(false);
 		contentPane.add(loadButton);
 		
-		JLabel loadButtonText = new JLabel("Umfrage laden");
-		loadButtonText.setFont(new Font("Manteka", Font.PLAIN, 25));
-		loadButton.add(loadButtonText);
-		
-		final JPanel newButton = new JPanel();
-		newButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		FeebaButton questionsButton = new FeebaButton("Neue Umfrage erstellen");
+		questionsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				GuiNewQuestionnaire.main(null);
 			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				enter(newButton);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				exit(newButton);
-			}
 		});
+		questionsButton.setBounds(325, 100, 281, 67);
+		questionsButton.setOpaque(false);
+		contentPane.add(questionsButton);
+		questionsButton.setFont(new Font("Manteka", Font.PLAIN, 25));
 		
-		newButton.setBackground(Color.WHITE);
-		newButton.setBounds(237, 91, 379, 40);
-		contentPane.add(newButton);
 		
-		JLabel newButtonText = new JLabel("Neue Umfrage erstellen");
-		newButtonText.setFont(new Font("Manteka", Font.PLAIN, 25));
-		newButton.add(newButtonText);
-		
-		JLabel Bars = new JLabel("");
-		Bars.setBounds(0, 206, 1280, 229);
-		contentPane.add(Bars);
-		Bars.setIcon(new ImageIcon(LauncherMainGui.class.getResource("/images/bars.png")));
+		lblNewLabel.setIcon(new ImageIcon(LauncherMainGui.class.getResource("/images/Background.png")));
+		lblNewLabel.setBounds(10, -216, 643, 614);
+		contentPane.add(lblNewLabel);
 	}
-	
-	public void enter(JPanel panel) {
-		
-		panel.setBackground(Color.LIGHT_GRAY);
-		Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR); 
-	    setCursor(cursor);
-		
-		
-	}
-	
-	public void exit(JPanel panel) {
-		
-		panel.setBackground(Color.WHITE);
-		Cursor cursor = Cursor.getDefaultCursor();
-	    setCursor(cursor);
-		
-	}
-	
-	
 }

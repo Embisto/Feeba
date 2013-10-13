@@ -1,26 +1,22 @@
 package com.feeba.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.feeba.core.FeebaCore;
-
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
-
-import java.awt.Color;
-import java.awt.GridBagLayout;
-
-import javax.swing.JComboBox;
-
 import com.feeba.data.QuestionType;
 import com.feeba.editor.components.CenterPanel;
 import com.feeba.editor.components.FeebaToolbar;
