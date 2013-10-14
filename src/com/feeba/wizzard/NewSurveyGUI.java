@@ -11,9 +11,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 
+import com.feeba.data.Survey;
 import com.feeba.editor.components.FeebaButton;
 import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
+
 import javax.swing.JScrollPane;
 
 public class NewSurveyGUI {
@@ -92,9 +94,10 @@ public class NewSurveyGUI {
                 btnNewQuestion.addMouseListener(new MouseAdapter() {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
-                		WizzardController.survey.setName(nameTextField.getText());
+                		WizzardController.survey = new Survey(nameTextField.getText());
                 		WizzardController.survey.setWelcomeMessage(infoscreentextInput.getText());
                         NewQuestionGUI.main(null);
+                        frmNeuerFragebogen.dispose();
                 	}
                 });
                 

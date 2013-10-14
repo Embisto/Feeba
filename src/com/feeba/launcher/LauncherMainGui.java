@@ -2,7 +2,6 @@ package com.feeba.launcher;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -58,6 +57,7 @@ public class LauncherMainGui extends JFrame {
 		contentPane.setLayout(null);
 		
 		FeebaButton loadButton = new FeebaButton("Umfrage laden");
+		loadButton.isWizzardButton();
 		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditorGUI.main(null);
@@ -65,24 +65,23 @@ public class LauncherMainGui extends JFrame {
 				fc.show();
 			}
 		});
-		loadButton.setBounds(325, 29, 281, 60);
-		loadButton.setOpaque(false);
+		loadButton.setBounds(287, 44, 281, 60);
 		contentPane.add(loadButton);
 		
-		FeebaButton questionsButton = new FeebaButton("Neue Umfrage erstellen");
-		questionsButton.addActionListener(new ActionListener() {
+		FeebaButton newSurveyButton = new FeebaButton("Neue Umfrage erstellen");
+		newSurveyButton.isWizzardButton();
+		newSurveyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				NewSurveyGUI.main(null);
 			}
 		});
-		questionsButton.setBounds(325, 100, 281, 67);
-		questionsButton.setOpaque(false);
-		contentPane.add(questionsButton);
-		questionsButton.setFont(new Font("Manteka", Font.PLAIN, 25));
+		
+		newSurveyButton.setBounds(106, 135, 281, 67);
+		contentPane.add(newSurveyButton);
 		
 		
 		lblNewLabel.setIcon(new ImageIcon(LauncherMainGui.class.getResource("/images/Background.png")));
-		lblNewLabel.setBounds(10, -216, 643, 614);
+		lblNewLabel.setBounds(0, -186, 643, 614);
 		contentPane.add(lblNewLabel);
 	}
 }

@@ -18,11 +18,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
+import com.feeba.core.FeebaCore;
 import com.feeba.data.QuestionType;
 import com.feeba.editor.EditorGUI;
 import com.feeba.editor.components.FeebaButton;
 import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
+
 import javax.swing.JScrollPane;
 
 public class NewQuestionGUI extends JFrame {
@@ -41,6 +43,8 @@ public class NewQuestionGUI extends JFrame {
     private JRadioButton rdbtnRadiobutton;
     private JLabel lblAnswers;
     private JScrollPane scrollPane;
+    private FeebaButton btnNextQuestion;
+    private FeebaButton btnFinished;
 
     /**
      * Launch the application.
@@ -145,8 +149,9 @@ public class NewQuestionGUI extends JFrame {
               rdbtnMehrfachauswahl.addActionListener(new ActionListener(){
             	    public void actionPerformed(ActionEvent e) {
             	      
-            	    	textFieldAnswers.setVisible(true);
+            	    	scrollPane.setVisible(true);
             	    	lblAnswers.setVisible(true);
+            	    	enableButtons(true);
             	    }
             	});
               
@@ -160,8 +165,10 @@ public class NewQuestionGUI extends JFrame {
                rdbtnFreitext.addActionListener(new ActionListener(){
            	    public void actionPerformed(ActionEvent e) {
            	      
-           	    	textFieldAnswers.setVisible(false);
+           	    	scrollPane.setVisible(false);
         	    	lblAnswers.setVisible(false);
+        	    	enableButtons(true);
+
            	    }
            	});
                
@@ -175,8 +182,9 @@ public class NewQuestionGUI extends JFrame {
                 rdbtnRadiobutton.addActionListener(new ActionListener(){
                	    public void actionPerformed(ActionEvent e) {
                	      
-               	    	textFieldAnswers.setVisible(true);
+               	    	scrollPane.setVisible(true);
             	    	lblAnswers.setVisible(true);
+            	    	enableButtons(true);
 
                	    }
                	});
@@ -190,24 +198,17 @@ public class NewQuestionGUI extends JFrame {
                 // Weil du ned einfach ne methode innerhalb einer methode machen kannst :D
 
                 
-                FeebaButton btnFinished = new FeebaButton("Fertig");
+                btnFinished = new FeebaButton("Fertig");
+                btnFinished.setEnabled(false);
                 btnFinished.isWizzardButton();
                 btnFinished.addMouseListener(new MouseAdapter() {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
                 		
-                		
-                		// Auslagern, Code is doppelt :) 
-                		// Den typ würd ich ned in WC speichern sondern einfach hier, beziehungsweise gelich die Dropdown benutzen
-                		
-                		/** WizzardController.question.setType(WizzardController.type);
-                		WizzardController.question.setName(textFieldName.getText());
-                		WizzardController.question.setQuestionText(textFieldQuestion.getText());
-                		WizzardController.question.setResults(WizzardController.answersToList(textFieldAnswers.getText())); */
-                		
-                		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
-                		System.out.println(WizzardController.survey.toString());
+                		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), getType(), WizzardController.answersToList(textFieldAnswers.getText()));
+                		FeebaCore.currentSurvey = WizzardController.survey;
                 		EditorGUI.main(null);
+                		dispose();
                 	// Hier müsste dann FeebaCore.currentSurevey auf WizzardController.survey gesetzt werden und dann in den editor geladen werden,
                     // dazu muss ich noch ne kleinigkeit ändern
                 		
@@ -220,24 +221,20 @@ public class NewQuestionGUI extends JFrame {
                 btnFinished.setBounds(656, 361, 108, 46);
                 contentPane.add(btnFinished);
                
-                FeebaButton btnNextQuestion = new FeebaButton("Neue Frage");
+                btnNextQuestion = new FeebaButton("Neue Frage");
+                btnNextQuestion.setEnabled(false);
                 btnNextQuestion.isWizzardButton();
                 btnNextQuestion.addMouseListener(new MouseAdapter() {
                         public void mouseClicked(MouseEvent arg0) {
                         
-                        		if(rdbtnMehrfachauswahl.isSelected() == true){
-                        			WizzardController.type = QuestionType.MULTIPLE_CHOICE;
-                        		} else if (rdbtnFreitext.isSelected() == true){
-                        			WizzardController.type = QuestionType.FREETEXT;
-                        		} else {
-                        			WizzardController.type = QuestionType.SINGLE_SELECTION;
-                        		}
 
-                        		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
+
+                        		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), getType(), WizzardController.answersToList(textFieldAnswers.getText()));
 
                         		textFieldName.setText(null);
                         		textFieldQuestion.setText(null);
                         		textFieldAnswers.setText(null);
+                        		enableButtons(false);
                         }
                 });
                 btnNextQuestion.setBounds(535, 361, 111, 46);
@@ -248,7 +245,14 @@ public class NewQuestionGUI extends JFrame {
                 background.setBounds(-61, -32, 882, 554);
                 contentPane.add(background);
     }
-    @SuppressWarnings("unused")
+    protected void enableButtons(boolean b) {
+		
+    	btnNextQuestion.setEnabled(b);
+    	btnFinished.setEnabled(b);
+		
+	}
+
+	@SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
             component.addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent e) {

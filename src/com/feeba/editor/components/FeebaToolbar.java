@@ -15,6 +15,7 @@ import javax.swing.SpringLayout;
 import com.feeba.core.FeebaCore;
 import com.feeba.editor.EditorController;
 import com.feeba.editor.EditorGUI;
+import com.feeba.wizzard.NewSurveyGUI;
 
 public class FeebaToolbar extends JPanel {
 
@@ -96,6 +97,16 @@ public class FeebaToolbar extends JPanel {
 				if(FeebaCore.currentSurvey!=null){
 				EditorController.startSurvey();}
 	        	else {JOptionPane.showMessageDialog(null, "Noch kein Fragebogen geladen!");}
+
+				
+			}
+		});
+		
+		newSurveyButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				NewSurveyGUI.main(null);
 
 				
 			}

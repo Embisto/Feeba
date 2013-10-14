@@ -41,6 +41,17 @@ public class EditorController {
 		showData(list,pp);
 		
 	}
+	
+	/**
+	 * Loads survey from current survey 
+	 * @param list the list to display the questions
+	 * @param pp the panel to show the preview
+	 */
+	public static void loadSurvey(JList list, PreviewPanel pp) {
+		
+		showData(list,pp);
+		
+	}
 
 	/**
 	 * Saves current survey to given location
@@ -54,7 +65,7 @@ public class EditorController {
 	}
 
 	/**
-	 * Checks if serverWindow is allready open and brings it to front or creates it
+	 * Checks if serverWindow is already open and brings it to front or creates it
 	 */
 	public static void startSurvey() {
 		

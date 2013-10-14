@@ -41,20 +41,27 @@ public class EditorGUI extends JFrame {
 	public static JPanel results;
 	public static QuestionContainer questionList;
 	public static ResultOptions resultOptions;
+	private static EditorGUI frame = null;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					
-					EditorGUI frame = new EditorGUI();
+					if(frame==null) {
+					frame = new EditorGUI();
 					frame.setState(Frame.NORMAL);
 					
 					//start editor maximized
 					Toolkit toolkit = Toolkit.getDefaultToolkit();
 					Dimension dimension = toolkit.getScreenSize();
 					frame.setSize(dimension);
-					frame.setVisible(true);
+					frame.setVisible(true);}
+					
+					if(FeebaCore.currentSurvey!=null) {
+						finishLoadingFile();
+					}
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,6 +69,7 @@ public class EditorGUI extends JFrame {
 			}
 
 		});
+		
 	}
 	
 	/**
@@ -125,6 +133,7 @@ public class EditorGUI extends JFrame {
 		
 		//init CenterTabListeners
 		centerTab.initListener();
+	
 		
 	}
 
@@ -162,6 +171,21 @@ public class EditorGUI extends JFrame {
 	        previewOptionPanel.initListeners();
 		
 	}
+	
+	/**
+	 * finishes loading a newly created survey
+	 */
+	public static void finishLoadingFile() {
+	    
+	    centerTab.setVisible(true);
+        questionList.setVisible(true);
+        EditorController.loadSurvey(questionList.getQuestionList(),pp);
+        previewOptionPanel.setVisible(true);
+        questionList.setButtonsVisible();
+        questionList.getQuestionList().requestFocus();
+        previewOptionPanel.initListeners();
+	
+}
 	
 	public static void selectedQuestionChanged() {
 		

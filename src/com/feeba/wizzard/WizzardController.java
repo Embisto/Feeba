@@ -16,7 +16,6 @@ public class WizzardController {
 	public static String QuestionName; 
 	public static ArrayList<String> answers = new ArrayList<String>(); // muss initialisiert werden sonst nullpointer
 	public static ArrayList<Question> allQuestions;
-	public static QuestionType type;
 	
 	public static Survey survey = new Survey(SurveyName);
 	public static Question question;
@@ -48,7 +47,6 @@ public class WizzardController {
 
 	public static void newQuestion(String name, String exactQuestion, QuestionType type, ArrayList<String> answers){
 		question= new Question(name, exactQuestion, type);
-		System.out.println(answers.get(0));
 		question.setChoices(answers); 
 		survey.addQuestion(question);
 	}
