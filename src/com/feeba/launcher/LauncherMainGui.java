@@ -1,11 +1,8 @@
 package com.feeba.launcher;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -17,7 +14,6 @@ import com.feeba.editor.EditorGUI;
 import com.feeba.editor.components.FeebaButton;
 import com.feeba.editor.components.FeebaLoadingFilechooser;
 import com.feeba.wizzard.GuiNewQuestionnaire;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 

@@ -3,27 +3,24 @@ package com.feeba.wizzard;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import com.feeba.data.Question;
 import com.feeba.editor.components.FeebaButton;
+import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
+import javax.swing.JScrollPane;
 
 public class GuiNewQuestionnaire {
  
-        private JFrame frame;
+        private JFrame frmNeuerFragebogen;
         private FeebaTextField nameTextField;
-        private FeebaTextField infoscreentextInput;
+        private FeebaTextArea infoscreentextInput;
  
         /**
          * Launch the application.
@@ -33,7 +30,7 @@ public class GuiNewQuestionnaire {
                         public void run() {
                                 try {
                                         GuiNewQuestionnaire window = new GuiNewQuestionnaire();
-                                        window.frame.setVisible(true);
+                                        window.frmNeuerFragebogen.setVisible(true);
                                 } catch (Exception e) {
                                         e.printStackTrace();
                                 }
@@ -52,38 +49,46 @@ public class GuiNewQuestionnaire {
          * Initialize the contents of the frame.
          */
         private void initialize() {
-                frame = new JFrame();
-                frame.getContentPane().setBackground(new Color(0x17748F));
-                frame.setBounds(100, 100, 655, 441);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().setLayout(null);
+                frmNeuerFragebogen = new JFrame();
+                frmNeuerFragebogen.setTitle("Neuer Fragebogen");
+                frmNeuerFragebogen.getContentPane().setBackground(new Color(0x17748F));
+                frmNeuerFragebogen.setBounds(100, 100, 655, 441);
+                frmNeuerFragebogen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frmNeuerFragebogen.getContentPane().setLayout(null);
                
                
                 nameTextField = new FeebaTextField();
-                nameTextField.setBounds(203, 22, 166, 20);
-                frame.getContentPane().add(nameTextField);
+                nameTextField.setBounds(203, 22, 300, 35);
+                frmNeuerFragebogen.getContentPane().add(nameTextField);
                 nameTextField.setColumns(10);
                 
-                JTextPane txtpnName = new JTextPane();
+                JLabel txtpnName = new JLabel();
+                txtpnName.setForeground(Color.WHITE);
                 txtpnName.setFont(new Font("Tahoma", Font.BOLD, 16));
-                txtpnName.setEditable(false);
                 txtpnName.setOpaque(false);
                 txtpnName.setText("Name:");
                 txtpnName.setBounds(43, 22, 73, 20);
-                frame.getContentPane().add(txtpnName);
+                frmNeuerFragebogen.getContentPane().add(txtpnName);
                
                 JTextPane txtpnInfoscreentext = new JTextPane();
+                txtpnInfoscreentext.setForeground(Color.WHITE);
                 txtpnInfoscreentext.setEditable(false);
                 txtpnInfoscreentext.setOpaque(false);
                 txtpnInfoscreentext.setText("Infoscreentext:");
+                txtpnInfoscreentext.setFont(new Font("Tahoma", Font.BOLD, 16));
                 txtpnInfoscreentext.setBounds(43, 95, 132, 20);
-                frame.getContentPane().add(txtpnInfoscreentext);
+                frmNeuerFragebogen.getContentPane().add(txtpnInfoscreentext);
+                
+                JScrollPane scrollPane = new JScrollPane();
+                scrollPane.setBorder(null);
+                scrollPane.setBounds(203, 95, 300, 129);
+                frmNeuerFragebogen.getContentPane().add(scrollPane);
                
-                infoscreentextInput = new FeebaTextField();
-                infoscreentextInput.setBounds(203, 95, 275, 129);
-                frame.getContentPane().add(infoscreentextInput);
+                infoscreentextInput = new FeebaTextArea();
+                scrollPane.setViewportView(infoscreentextInput);
                 
                 FeebaButton btnNewQuestion = new FeebaButton("Neue Frage");
+                btnNewQuestion.isWizzardButton();
                 btnNewQuestion.addMouseListener(new MouseAdapter() {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
@@ -92,13 +97,14 @@ public class GuiNewQuestionnaire {
                         QuestionGUI.main(null);
                 	}
                 });
+                
                 btnNewQuestion.setBounds(493, 254, 110, 42);
-                frame.getContentPane().add(btnNewQuestion);
+                frmNeuerFragebogen.getContentPane().add(btnNewQuestion);
                 
                 JLabel lblBackground = new JLabel("");
                 lblBackground.setIcon(new ImageIcon(GuiNewQuestionnaire.class.getResource("/images/Background.png")));
-                lblBackground.setBounds(0, -189, 639, 592);
-                frame.getContentPane().add(lblBackground);
+                lblBackground.setBounds(0, -189, 671, 618);
+                frmNeuerFragebogen.getContentPane().add(lblBackground);
                
                
                

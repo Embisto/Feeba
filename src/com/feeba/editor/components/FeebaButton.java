@@ -58,6 +58,16 @@ public class FeebaButton extends JButton {
 		
 	}
 	
+	public void isWizzardButton() {
+		
+		setForeground(Color.WHITE);
+		setOpaque(true);
+		setFont(new Font("Helvetica", Font.BOLD, 12));
+		setBackground(Color.LIGHT_GRAY);
+		setBorder(new LineBorder(Color.LIGHT_GRAY, 7));
+		
+	}
+	
 	
 	
 }

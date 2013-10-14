@@ -11,21 +11,19 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
-import com.feeba.data.Question;
 import com.feeba.data.QuestionType;
 import com.feeba.editor.EditorGUI;
 import com.feeba.editor.components.FeebaButton;
+import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
+import javax.swing.JScrollPane;
 
 public class QuestionGUI extends JFrame {
 	 
@@ -36,8 +34,13 @@ public class QuestionGUI extends JFrame {
 	private JPanel contentPane;
     private FeebaTextField textFieldName;
     private FeebaTextField textFieldQuestion;
-    private FeebaTextField textFieldAnswers;
+    private FeebaTextArea textFieldAnswers;
     private QuestionType type;
+    private JRadioButton rdbtnMehrfachauswahl;
+    private JRadioButton rdbtnFreitext;
+    private JRadioButton rdbtnRadiobutton;
+    private JLabel lblAnswers;
+    private JScrollPane scrollPane;
 
     /**
      * Launch the application.
@@ -59,7 +62,8 @@ public class QuestionGUI extends JFrame {
      * Create the frame.
      */
     public QuestionGUI() {
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setTitle("Frage hinzuf\u00FCgen");
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setBounds(100, 100, 821, 544);
             contentPane = new JPanel();
             contentPane.setBackground(new Color(0x17748F));
@@ -69,41 +73,38 @@ public class QuestionGUI extends JFrame {
            
            
             textFieldName = new FeebaTextField();
-            textFieldName.setBounds(305, 47, 287, 35);
+            textFieldName.setBounds(305, 47, 381, 35);
             contentPane.add(textFieldName);
             textFieldName.setColumns(10);
            
-            JTextPane txtpnName = new JTextPane();
+            JLabel txtpnName = new JLabel();
             txtpnName.setOpaque(false);
             txtpnName.setForeground(Color.WHITE);
             txtpnName.setFont(new Font("Tahoma", Font.BOLD, 16));
-            txtpnName.setEditable(false);
             txtpnName.setBackground(new Color(0x17748F));
             txtpnName.setText("Name:");
             txtpnName.setBounds(128, 47, 117, 35);
             contentPane.add(txtpnName);
            
-            JTextPane txtpnArt = new JTextPane();
+            JLabel txtpnArt = new JLabel();
             txtpnArt.setOpaque(false);
             txtpnArt.setForeground(Color.WHITE);
             txtpnArt.setFont(new Font("Tahoma", Font.BOLD, 16));
-            txtpnArt.setEditable(false);
             txtpnArt.setBackground(new Color(0x17748F));
             txtpnArt.setText("Art:");
             txtpnArt.setBounds(128, 155, 99, 20);
             contentPane.add(txtpnArt);
            
-            JTextPane txtpnAnzahlDerAntworten = new JTextPane();
-            txtpnAnzahlDerAntworten.setOpaque(false);
-            txtpnAnzahlDerAntworten.setForeground(Color.WHITE);
-            txtpnAnzahlDerAntworten.setFont(new Font("Tahoma", Font.BOLD, 16));
-            txtpnAnzahlDerAntworten.setEditable(false);
-            txtpnAnzahlDerAntworten.setBackground(new Color(0x17748F));
-            txtpnAnzahlDerAntworten.setText("Antworten:");
-            txtpnAnzahlDerAntworten.setBounds(128, 259, 120, 46);
-            contentPane.add(txtpnAnzahlDerAntworten);
+            lblAnswers = new JLabel();
+            lblAnswers.setOpaque(false);
+            lblAnswers.setForeground(Color.WHITE);
+            lblAnswers.setFont(new Font("Tahoma", Font.BOLD, 16));
+            lblAnswers.setBackground(new Color(0x17748F));
+            lblAnswers.setText("Antworten:");
+            lblAnswers.setBounds(128, 259, 120, 46);
+            contentPane.add(lblAnswers);
             
-            JTextPane txtpnFrage = new JTextPane();
+            JLabel txtpnFrage = new JLabel();
             txtpnFrage.setOpaque(false);
             txtpnFrage.setForeground(Color.WHITE);
             txtpnFrage.setBackground(new Color(0x17748F));
@@ -113,14 +114,19 @@ public class QuestionGUI extends JFrame {
             contentPane.add(txtpnFrage);
             
             textFieldQuestion = new FeebaTextField();
-            textFieldQuestion.setBounds(305, 102, 360, 33);
+            textFieldQuestion.setBounds(305, 102, 381, 33);
             contentPane.add(textFieldQuestion);
             
             textFieldQuestion.setColumns(10);
             
-            textFieldAnswers = new FeebaTextField();
-            textFieldAnswers.setBounds(305, 260, 381, 90);
-            contentPane.add(textFieldAnswers);
+            scrollPane = new JScrollPane();
+            scrollPane.setBorder(null);
+            scrollPane.setBounds(305, 260, 381, 90);
+            contentPane.add(scrollPane);
+            
+            textFieldAnswers = new FeebaTextArea();
+            scrollPane.setViewportView(textFieldAnswers);
+            textFieldAnswers.setToolTipText("");
             textFieldAnswers.setColumns(10);
             
             JPanel panel = new JPanel();
@@ -129,57 +135,69 @@ public class QuestionGUI extends JFrame {
             contentPane.add(panel);
               panel.setLayout(null);
              
-              final JRadioButton rdbtnMehrfachauswahl = new JRadioButton("Mehrfachauswahl");
+              rdbtnMehrfachauswahl = new JRadioButton("Mehrfachauswahl");
               rdbtnMehrfachauswahl.setBounds(0, 0, 327, 29);
               panel.add(rdbtnMehrfachauswahl);
               rdbtnMehrfachauswahl.setOpaque(false);
               rdbtnMehrfachauswahl.setForeground(Color.WHITE);
               rdbtnMehrfachauswahl.setFont(new Font("Tahoma", Font.BOLD, 16));
               rdbtnMehrfachauswahl.setBackground(new Color(0x17748F));
+              rdbtnMehrfachauswahl.addActionListener(new ActionListener(){
+            	    public void actionPerformed(ActionEvent e) {
+            	      
+            	    	textFieldAnswers.setVisible(true);
+            	    	lblAnswers.setVisible(true);
+            	    }
+            	});
               
-               final JRadioButton rdbtnFreitext = new JRadioButton("Freitext");
+               rdbtnFreitext = new JRadioButton("Freitext");
                rdbtnFreitext.setBounds(0, 32, 256, 29);
                panel.add(rdbtnFreitext);
                rdbtnFreitext.setOpaque(false);
                rdbtnFreitext.setForeground(Color.WHITE);
                rdbtnFreitext.setFont(new Font("Tahoma", Font.BOLD, 16));
                rdbtnFreitext.setBackground(new Color(0x17748F));
+               rdbtnFreitext.addActionListener(new ActionListener(){
+           	    public void actionPerformed(ActionEvent e) {
+           	      
+           	    	textFieldAnswers.setVisible(false);
+        	    	lblAnswers.setVisible(false);
+           	    }
+           	});
                
-                JRadioButton rdbtnRadiobutton = new JRadioButton("Radiobutton");
+                rdbtnRadiobutton = new JRadioButton("Einfachauswahl");
                 rdbtnRadiobutton.setBounds(0, 64, 256, 29);
                 panel.add(rdbtnRadiobutton);
                 rdbtnRadiobutton.setOpaque(false);
                 rdbtnRadiobutton.setForeground(Color.WHITE);
                 rdbtnRadiobutton.setFont(new Font("Tahoma", Font.BOLD, 16));
                 rdbtnRadiobutton.setBackground(new Color(0x17748F));
+                rdbtnRadiobutton.addActionListener(new ActionListener(){
+               	    public void actionPerformed(ActionEvent e) {
+               	      
+               	    	textFieldAnswers.setVisible(true);
+            	    	lblAnswers.setVisible(true);
+
+               	    }
+               	});
                 
                 ButtonGroup group = new ButtonGroup();
                 group.add(rdbtnRadiobutton);
                 group.add(rdbtnFreitext);
                 group.add(rdbtnMehrfachauswahl);
                 
-                //QuestionType hier wohl ned aufrufbar - aber die Radiobuttonelemente konnt ich auch ned in meinem Wizzard aufrufen
-                
-                public QuestionType getType(){
-            		if(rdbtnMehrfachauswahl.isSelected() == true){
-            			type = QuestionType.MULTIPLE_CHOICE;
-            		} else if (rdbtnFreitext.isSelected() == true){
-            			type = QuestionType.FREETEXT;
-            		} else {
-            			type = QuestionType.SINGLE_SELECTION;
-            		}
-            		return type;
-            	}
+                //QuestionType hier wohl ned aufrufbar - aber die Radiobuttonelemente konnt ich auch ned in meinem Wizzard aufrufe
+                // Weil du ned einfach ne methode innerhalb einer methode machen kannst :D
 
                 
-                
                 FeebaButton btnFinished = new FeebaButton("Fertig");
+                btnFinished.isWizzardButton();
                 btnFinished.addMouseListener(new MouseAdapter() {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
                 		
                 		
-                		// Aulagern Code is doppelt :) 
+                		// Auslagern, Code is doppelt :) 
                 		// Den typ würd ich ned in WC speichern sondern einfach hier, beziehungsweise gelich die Dropdown benutzen
                 		
                 		/** WizzardController.question.setType(WizzardController.type);
@@ -188,6 +206,7 @@ public class QuestionGUI extends JFrame {
                 		WizzardController.question.setResults(WizzardController.answersToList(textFieldAnswers.getText())); */
                 		
                 		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
+                		System.out.println(WizzardController.survey.toString());
                 		EditorGUI.main(null);
                 	// Hier müsste dann FeebaCore.currentSurevey auf WizzardController.survey gesetzt werden und dann in den editor geladen werden,
                     // dazu muss ich noch ne kleinigkeit ändern
@@ -202,6 +221,7 @@ public class QuestionGUI extends JFrame {
                 contentPane.add(btnFinished);
                
                 FeebaButton btnNextQuestion = new FeebaButton("Neue Frage");
+                btnNextQuestion.isWizzardButton();
                 btnNextQuestion.addMouseListener(new MouseAdapter() {
                         public void mouseClicked(MouseEvent arg0) {
                         
@@ -223,10 +243,10 @@ public class QuestionGUI extends JFrame {
                 btnNextQuestion.setBounds(535, 361, 111, 46);
                 contentPane.add(btnNextQuestion);
                 
-                JLabel label = new JLabel("");
-                label.setIcon(new ImageIcon(QuestionGUI.class.getResource("/images/Background.png")));
-                label.setBounds(10, -60, 785, 611);
-                contentPane.add(label);
+                JLabel background = new JLabel("");
+                background.setIcon(new ImageIcon(QuestionGUI.class.getResource("/images/Background.png")));
+                background.setBounds(-61, -32, 882, 554);
+                contentPane.add(background);
     }
     @SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -246,4 +266,17 @@ public class QuestionGUI extends JFrame {
                     }
             });
     }
+    
+    
+    public QuestionType getType(){
+		if(rdbtnMehrfachauswahl.isSelected() == true){
+			type = QuestionType.MULTIPLE_CHOICE;
+		} else if (rdbtnFreitext.isSelected() == true){
+			type = QuestionType.FREETEXT;
+		} else {
+			type = QuestionType.SINGLE_SELECTION;
+		}
+		return type;
+	}
+
 }
