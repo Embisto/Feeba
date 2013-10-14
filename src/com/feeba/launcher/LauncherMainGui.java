@@ -13,7 +13,8 @@ import javax.swing.border.EmptyBorder;
 import com.feeba.editor.EditorGUI;
 import com.feeba.editor.components.FeebaButton;
 import com.feeba.editor.components.FeebaLoadingFilechooser;
-import com.feeba.wizzard.GuiNewQuestionnaire;
+import com.feeba.wizzard.NewSurveyGUI;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -71,7 +72,7 @@ public class LauncherMainGui extends JFrame {
 		FeebaButton questionsButton = new FeebaButton("Neue Umfrage erstellen");
 		questionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				GuiNewQuestionnaire.main(null);
+				NewSurveyGUI.main(null);
 			}
 		});
 		questionsButton.setBounds(325, 100, 281, 67);

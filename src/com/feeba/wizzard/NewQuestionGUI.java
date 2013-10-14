@@ -25,7 +25,7 @@ import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
 import javax.swing.JScrollPane;
 
-public class QuestionGUI extends JFrame {
+public class NewQuestionGUI extends JFrame {
 	 
     /**
 	 * 
@@ -49,7 +49,7 @@ public class QuestionGUI extends JFrame {
             EventQueue.invokeLater(new Runnable() {
                     public void run() {
                             try {
-                                    QuestionGUI frame = new QuestionGUI();
+                                    NewQuestionGUI frame = new NewQuestionGUI();
                                     frame.setVisible(true);
                             } catch (Exception e) {
                                     e.printStackTrace();
@@ -61,7 +61,7 @@ public class QuestionGUI extends JFrame {
     /**
      * Create the frame.
      */
-    public QuestionGUI() {
+    public NewQuestionGUI() {
     	setTitle("Frage hinzuf\u00FCgen");
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setBounds(100, 100, 821, 544);
@@ -244,7 +244,7 @@ public class QuestionGUI extends JFrame {
                 contentPane.add(btnNextQuestion);
                 
                 JLabel background = new JLabel("");
-                background.setIcon(new ImageIcon(QuestionGUI.class.getResource("/images/Background.png")));
+                background.setIcon(new ImageIcon(NewQuestionGUI.class.getResource("/images/Background.png")));
                 background.setBounds(-61, -32, 882, 554);
                 contentPane.add(background);
     }

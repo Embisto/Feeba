@@ -16,7 +16,7 @@ import com.feeba.editor.components.FeebaTextArea;
 import com.feeba.editor.components.FeebaTextField;
 import javax.swing.JScrollPane;
 
-public class GuiNewQuestionnaire {
+public class NewSurveyGUI {
  
         private JFrame frmNeuerFragebogen;
         private FeebaTextField nameTextField;
@@ -29,7 +29,7 @@ public class GuiNewQuestionnaire {
                 EventQueue.invokeLater(new Runnable() {
                         public void run() {
                                 try {
-                                        GuiNewQuestionnaire window = new GuiNewQuestionnaire();
+                                        NewSurveyGUI window = new NewSurveyGUI();
                                         window.frmNeuerFragebogen.setVisible(true);
                                 } catch (Exception e) {
                                         e.printStackTrace();
@@ -41,7 +41,7 @@ public class GuiNewQuestionnaire {
         /**
          * Create the application.
          */
-        public GuiNewQuestionnaire() {
+        public NewSurveyGUI() {
                 initialize();
         }
  
@@ -94,7 +94,7 @@ public class GuiNewQuestionnaire {
                 	public void mouseClicked(MouseEvent arg0) {
                 		WizzardController.survey.setName(nameTextField.getText());
                 		WizzardController.survey.setWelcomeMessage(infoscreentextInput.getText());
-                        QuestionGUI.main(null);
+                        NewQuestionGUI.main(null);
                 	}
                 });
                 
@@ -102,7 +102,7 @@ public class GuiNewQuestionnaire {
                 frmNeuerFragebogen.getContentPane().add(btnNewQuestion);
                 
                 JLabel lblBackground = new JLabel("");
-                lblBackground.setIcon(new ImageIcon(GuiNewQuestionnaire.class.getResource("/images/Background.png")));
+                lblBackground.setIcon(new ImageIcon(NewSurveyGUI.class.getResource("/images/Background.png")));
                 lblBackground.setBounds(0, -189, 671, 618);
                 frmNeuerFragebogen.getContentPane().add(lblBackground);
                
