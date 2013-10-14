@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ public class QuestionGUI extends JFrame {
     private FeebaTextField textFieldName;
     private FeebaTextField textFieldQuestion;
     private FeebaTextField textFieldAnswers;
+    private QuestionType type;
 
     /**
      * Launch the application.
@@ -151,14 +153,23 @@ public class QuestionGUI extends JFrame {
                 rdbtnRadiobutton.setFont(new Font("Tahoma", Font.BOLD, 16));
                 rdbtnRadiobutton.setBackground(new Color(0x17748F));
                 
-                //Group the radio buttons. Dann kann immer nur eins ausgewählt werden. Oder mach es mit nem dropdown. Siehe PreviewOptions!
-                //Da würd da Code vermutlich ewtas schöner werden, also das auslesen. Is auch irgendwo zu finden. Einfach dem selectionChanged Event folgen
-//                ButtonGroup group = new ButtonGroup();
-//                group.add(birdButton);
-//                group.add(catButton);
-//                group.add(dogButton);
-//                group.add(rabbitButton);
-//                group.add(pigButton);
+                ButtonGroup group = new ButtonGroup();
+                group.add(rdbtnRadiobutton);
+                group.add(rdbtnFreitext);
+                group.add(rdbtnMehrfachauswahl);
+                
+                //QuestionType hier wohl ned aufrufbar - aber die Radiobuttonelemente konnt ich auch ned in meinem Wizzard aufrufen
+                
+                public QuestionType getType(){
+            		if(rdbtnMehrfachauswahl.isSelected() == true){
+            			type = QuestionType.MULTIPLE_CHOICE;
+            		} else if (rdbtnFreitext.isSelected() == true){
+            			type = QuestionType.FREETEXT;
+            		} else {
+            			type = QuestionType.SINGLE_SELECTION;
+            		}
+            		return type;
+            	}
 
                 
                 
@@ -167,24 +178,16 @@ public class QuestionGUI extends JFrame {
                 	@Override
                 	public void mouseClicked(MouseEvent arg0) {
                 		
+                		
                 		// Aulagern Code is doppelt :) 
                 		// Den typ würd ich ned in WC speichern sondern einfach hier, beziehungsweise gelich die Dropdown benutzen
-                		if(rdbtnMehrfachauswahl.isSelected() == true){
-                			WizzardController.type = QuestionType.MULTIPLE_CHOICE;
-                		} else if (rdbtnFreitext.isSelected() == true){
-                			WizzardController.type = QuestionType.FREETEXT;
-                		} else {
-                			WizzardController.type = QuestionType.SINGLE_SELECTION;
-                		}
+                		
                 		/** WizzardController.question.setType(WizzardController.type);
                 		WizzardController.question.setName(textFieldName.getText());
                 		WizzardController.question.setQuestionText(textFieldQuestion.getText());
                 		WizzardController.question.setResults(WizzardController.answersToList(textFieldAnswers.getText())); */
                 		
-                		WizzardController.setQuestionData(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
-                	// HIER IST MIR NICHT SO GANZ KLAR; WIE ICH DIE FRAGEN IN MEIN WIZZARD-SURVEY ABSPEICHERN SOLL... UND OB DAS ‹BERHAUPT
-                	// IN DIESER KLASSE HIER PASSIEREN SOLL
-                	//	WizzardController.survey.addQuestion(WizzardController.question, questionArgs);56t6
+                		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
                 		EditorGUI.main(null);
                 	// Hier müsste dann FeebaCore.currentSurevey auf WizzardController.survey gesetzt werden und dann in den editor geladen werden,
                     // dazu muss ich noch ne kleinigkeit ändern
@@ -210,12 +213,11 @@ public class QuestionGUI extends JFrame {
                         			WizzardController.type = QuestionType.SINGLE_SELECTION;
                         		}
 
-                        		WizzardController.setQuestionData(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
-                        	// HIER IST MIR NICHT SO GANZ KLAR; WIE ICH DIE FRAGEN IN MEIN WIZZARD-SURVEY ABSPEICHERN SOLL... UND OB DAS ‹BERHAUPT
-                        	// IN DIESER KLASSE HIER PASSIEREN SOLL
-                        	//	WizzardController.survey.addQuestion(WizzardController.question, questionArgs);
-                        		EditorGUI.main(null); // brauchts hier ned
-                        	QuestionGUI.main(null); // würd ich ned neu laden sondern einfach alle felder leeren sonst werdens 800 Felder
+                        		WizzardController.newQuestion(textFieldName.getText(), textFieldQuestion.getText(), WizzardController.type, WizzardController.answersToList(textFieldAnswers.getText()));
+
+                        		textFieldName.setText(null);
+                        		textFieldQuestion.setText(null);
+                        		textFieldAnswers.setText(null);
                         }
                 });
                 btnNextQuestion.setBounds(535, 361, 111, 46);

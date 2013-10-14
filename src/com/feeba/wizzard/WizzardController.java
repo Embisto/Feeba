@@ -14,7 +14,6 @@ public class WizzardController {
 	
 	public static String TheQuestion;
 	public static String QuestionName; 
-	//public static String AnswersString;
 	public static ArrayList<String> answers;
 	public static ArrayList<Question> allQuestions;
 	public static QuestionType type;
@@ -22,8 +21,7 @@ public class WizzardController {
 	public static Survey survey = new Survey(SurveyName);
 	public static Question question;
 	
-	
-	//public static Question question= new Question(QuestionName, TheQuestion, type);
+
 	
 	public static ArrayList<String> answersToList(String answersString){
 		String current = "";
@@ -41,14 +39,11 @@ public class WizzardController {
 		return answers;
 	}
 	
-	
-	
-	// die qürd ich void machen und new Question nennen, dann im listener alles auslesen und übergeben
-	public static Question setQuestionData(String name, String exactQuestion, QuestionType type, ArrayList<String> answers){
+
+	public static void newQuestion(String name, String exactQuestion, QuestionType type, ArrayList<String> answers){
 		question= new Question(name, exactQuestion, type);
-		question.setResults(answers); // setChoices ???
-		// und hier dann survey.addQuestion(question);
-		return question;
+		question.setChoices(answers); 
+		survey.addQuestion(question);
 	}
 	
 	
