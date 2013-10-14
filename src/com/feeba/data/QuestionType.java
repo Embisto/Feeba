@@ -27,7 +27,7 @@ public enum QuestionType {
 switch(this) {
 		
 		case MULTIPLE_CHOICE:
-			return "Multiple Choice";
+			return "Mehrfachauswahl";
 		case SINGLE_SELECTION:
 			return "Einfachauswahl";
 		case FREETEXT:
